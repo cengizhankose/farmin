@@ -7,18 +7,18 @@ export class DefiLlamaAdapter extends BaseAdapter {
   private service: DefiLlamaService;
   private protocolFilter: string[];
 
-  constructor(protocolFilter: string[] = ['alex', 'arkadiko', 'bitflow']) {
+  constructor(protocolFilter: string[] = ['folks-finance-lending']) {
     const protocolInfo: ProtocolInfo = {
       name: 'DefiLlama',
-      chain: 'stacks',
+      chain: 'algorand',
       baseUrl: 'https://yields.llama.fi',
-      description: 'Cross-chain yield aggregator data',
+      description: 'Algorand yield farming data from DeFiLlama',
       website: 'https://defillama.com',
       logo: '/logos/defillama.png',
-      supportedTokens: ['STX', 'USDA', 'xBTC', 'ALEX', 'DIKO'],
-      timeout: 10000,
-      retryAttempts: 3,
-      rateLimit: 60, // 60 requests per minute
+      supportedTokens: ['ALGO', 'USDC', 'USDT', 'GOBTC', 'GOETH', 'WBTC', 'WETH'],
+      timeout: 8000,
+      retryAttempts: 2,
+      rateLimit: 30, // 30 requests per minute
     };
     super(protocolInfo);
     this.service = new DefiLlamaService();
@@ -30,12 +30,10 @@ export class DefiLlamaAdapter extends BaseAdapter {
       return await this.fetchWithRetry(async () => {
         const pools = await this.service.getPools();
 
-        // Filter for Stacks ecosystem protocols or specified protocols
+        // Filter for Algorand pools (temporarily remove protocol filter for testing)
         const relevantPools = pools.filter(pool =>
-          pool.chain?.toLowerCase() === 'stacks' ||
-          this.protocolFilter.some(protocol =>
-            pool.project?.toLowerCase().includes(protocol.toLowerCase())
-          )
+          (pool.tvlUsd || 0) > 10000 && // Lower minimum TVL for testing
+          (pool.chain?.toLowerCase() === 'algorand')
         );
 
         // Map pools to opportunities in parallel
@@ -101,11 +99,11 @@ export class DefiLlamaAdapter extends BaseAdapter {
 
     return {
       id: `defillama-${pool.project}-${pool.symbol}`.toLowerCase().replace(/[^a-z0-9-]/g, '-'),
-      chain: 'stacks',
+      chain: 'algorand',
       protocol: pool.project.toUpperCase(),
-      pool: pool.symbol,
+      pool: pool.symbol || `${tokens.join('-')} Pool`,
       tokens,
-      apr: pool.apyBase || 0,
+      apr: pool.apyBase || pool.apy || 0,
       apy: totalApy,
       apyBase: pool.apyBase,
       apyReward: pool.apyReward,
@@ -128,7 +126,7 @@ export class DefiLlamaAdapter extends BaseAdapter {
 
 
   private isStablecoinPair(tokens: string[]): boolean {
-    const stablecoins = ['USDA', 'USDC', 'USDT', 'DAI', 'XUSD'];
+    const stablecoins = ['USDC', 'USDT', 'DAI', 'BUSD', 'USDC'];
     return tokens.some(token =>
       stablecoins.includes(token.toUpperCase())
     );
@@ -138,14 +136,15 @@ export class DefiLlamaAdapter extends BaseAdapter {
     if (tokens.length === 1) return 'single';
     if (isStablecoin) return 'stablecoin';
     if (tokens.some(t => t.toLowerCase().includes('btc'))) return 'btc';
-    if (tokens.some(t => t.toLowerCase().includes('stx'))) return 'stx';
+    if (tokens.some(t => t.toLowerCase().includes('eth'))) return 'eth';
+    if (tokens.some(t => t.toLowerCase().includes('algo'))) return 'algo';
     return 'multi';
   }
 
   private calculateILRisk(tokens: string[]): string {
     if (tokens.length === 1) return 'none';
 
-    const stablecoins = ['USDA', 'USDC', 'USDT', 'DAI', 'XUSD'];
+    const stablecoins = ['USDC', 'USDT', 'DAI', 'BUSD', 'USDC'];
     const isStablePair = tokens.every(token =>
       stablecoins.includes(token.toUpperCase())
     );

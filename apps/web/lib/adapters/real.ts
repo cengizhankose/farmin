@@ -396,8 +396,8 @@ class RealDataAdapter {
       // Transform to mock format
       const transformed = realOpportunities.map(transformOpportunity);
 
-      // Filter to only enabled chains (Stacks for now)
-      const filtered = transformed.filter((opp) => opp.chain === "stacks");
+      // Filter to only enabled chains (Algorand for now)
+      const filtered = transformed.filter((opp) => opp.chain === "algorand");
 
       Logger.info(
         `Transformed and filtered to ${filtered.length} opportunities`,

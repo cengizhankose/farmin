@@ -1,0 +1,125 @@
+
+> web@0.1.0 dev /Users/cengizhankose/dev/projects/farmin/apps/web
+> next dev
+
+   ▲ Next.js 15.5.3
+   - Local:        http://localhost:3000
+   - Network:      http://10.9.41.18:3000
+
+ ✓ Starting...
+ ✓ Ready in 1207ms
+ ✓ Compiled /api/opportunities in 397ms (902 modules)
+[2025-09-27T15:41:12.433Z] [INFO] [RealDataBridge] RealDataAdapter initialized
+[2025-09-27T15:41:12.433Z] [INFO] [RealDataBridge] Real data bridge layer initialized
+[2025-09-27T15:41:12.444Z] [DEBUG] [RealDataBridge] Cache miss: opportunities_all
+[2025-09-27T15:41:12.444Z] [INFO] [RealDataBridge] Fetching opportunities from real data sources...
+[2025-09-27T15:41:12.444Z] [DEBUG] [RealDataBridge] Loading adapter manager...
+[2025-09-27T15:41:12.444Z] [INFO] [RealDataBridge] Loading real data adapter manager...
+[2025-09-27T15:41:12.445Z] [INFO] [RealDataBridge] 🚀 REAL DATA ADAPTER FULLY ACTIVATED! All API calls now live!
+[2025-09-27T15:41:12.445Z] [INFO] [RealDataBridge] ✨ Fetching data from ALEX, Arkadiko, and DefiLlama APIs...
+[2025-09-27T15:41:12.445Z] [INFO] [RealDataBridge] Adapter manager loaded successfully
+[2025-09-27T15:41:13.754Z] [INFO] [RealDataBridge] Fetched 17 opportunities from adapter
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-xalgo
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-xalgo -> defillama-folks-finance-lending-xalgo
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-algo
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-algo -> defillama-folks-finance-lending-algo
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gobtc
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gobtc -> defillama-folks-finance-lending-gobtc
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdc
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdc -> defillama-folks-finance-lending-usdc
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-silver
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-silver -> defillama-folks-finance-lending-silver
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gold
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gold -> defillama-folks-finance-lending-gold
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-goeth
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-goeth -> defillama-folks-finance-lending-goeth
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wbtc
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wbtc -> defillama-folks-finance-lending-wbtc
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-weth
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-weth -> defillama-folks-finance-lending-weth
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-talgo
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-talgo -> defillama-folks-finance-lending-talgo
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-algo
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-algo -> defillama-folks-finance-lending-isolated-algo
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wlink
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wlink -> defillama-folks-finance-lending-wlink
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-galgo
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-galgo -> defillama-folks-finance-lending-galgo
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdt
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdt -> defillama-folks-finance-lending-usdt
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wsol
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wsol -> defillama-folks-finance-lending-wsol
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-tiny
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-tiny -> defillama-folks-finance-lending-isolated-tiny
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wavax
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wavax -> defillama-folks-finance-lending-wavax
+[2025-09-27T15:41:13.754Z] [INFO] [RealDataBridge] Transformed and filtered to 17 opportunities
+[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Cache set: opportunities_all, TTL: 300000ms
+ GET /api/opportunities 200 in 1751ms
+ ○ Compiling /opportunities ...
+ ✓ Compiled /opportunities in 1101ms (2179 modules)
+ ✓ Compiled in 149ms (2179 modules)
+[2025-09-27T15:41:24.240Z] [INFO] [RealDataBridge] RealDataAdapter initialized
+[2025-09-27T15:41:24.240Z] [INFO] [RealDataBridge] Real data bridge layer initialized
+`legacyBehavior` is deprecated and will be removed in a future release. A codemod is available to upgrade your components:
+
+npx @next/codemod@latest new-link .
+
+Learn more: https://nextjs.org/docs/app/building-your-application/upgrading/codemods#remove-a-tags-from-link-components
+[2025-09-27T15:41:24.566Z] [DEBUG] [RealDataBridge] 🔍 Filtering 0 opportunities with query='', risk='all'
+[2025-09-27T15:41:24.566Z] [DEBUG] [RealDataBridge] ✅ Filtered to 0 opportunities
+[2025-09-27T15:41:24.566Z] [DEBUG] [RealDataBridge] 📈 Sorted 0 opportunities by apr desc
+[2025-09-27T15:41:24.566Z] [DEBUG] [RealDataBridge] 📊 Display stats: count=0, avgAPR=0.0%, totalTVL=$0.0M
+ GET /opportunities 200 in 1789ms
+[2025-09-27T15:41:28.908Z] [DEBUG] [RealDataBridge] 🔍 Filtering 0 opportunities with query='', risk='all'
+[2025-09-27T15:41:28.908Z] [DEBUG] [RealDataBridge] ✅ Filtered to 0 opportunities
+[2025-09-27T15:41:28.908Z] [DEBUG] [RealDataBridge] 📈 Sorted 0 opportunities by apr desc
+[2025-09-27T15:41:28.908Z] [DEBUG] [RealDataBridge] 📊 Display stats: count=0, avgAPR=0.0%, totalTVL=$0.0M
+ GET /opportunities 200 in 211ms
+[2025-09-27T15:41:41.714Z] [INFO] [RealDataBridge] RealDataAdapter initialized
+[2025-09-27T15:41:41.714Z] [INFO] [RealDataBridge] Real data bridge layer initialized
+[2025-09-27T15:41:41.716Z] [DEBUG] [RealDataBridge] Cache miss: opportunities_all
+[2025-09-27T15:41:41.716Z] [INFO] [RealDataBridge] Fetching opportunities from real data sources...
+[2025-09-27T15:41:41.716Z] [DEBUG] [RealDataBridge] Loading adapter manager...
+[2025-09-27T15:41:41.716Z] [INFO] [RealDataBridge] Loading real data adapter manager...
+[2025-09-27T15:41:41.717Z] [INFO] [RealDataBridge] 🚀 REAL DATA ADAPTER FULLY ACTIVATED! All API calls now live!
+[2025-09-27T15:41:41.717Z] [INFO] [RealDataBridge] ✨ Fetching data from ALEX, Arkadiko, and DefiLlama APIs...
+[2025-09-27T15:41:41.717Z] [INFO] [RealDataBridge] Adapter manager loaded successfully
+[2025-09-27T15:41:43.407Z] [INFO] [RealDataBridge] Fetched 17 opportunities from adapter
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-xalgo
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-xalgo -> defillama-folks-finance-lending-xalgo
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-algo
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-algo -> defillama-folks-finance-lending-algo
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gobtc
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gobtc -> defillama-folks-finance-lending-gobtc
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdc
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdc -> defillama-folks-finance-lending-usdc
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-silver
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-silver -> defillama-folks-finance-lending-silver
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gold
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gold -> defillama-folks-finance-lending-gold
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-goeth
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-goeth -> defillama-folks-finance-lending-goeth
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wbtc
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wbtc -> defillama-folks-finance-lending-wbtc
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-weth
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-weth -> defillama-folks-finance-lending-weth
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-talgo
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-talgo -> defillama-folks-finance-lending-talgo
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-algo
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-algo -> defillama-folks-finance-lending-isolated-algo
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wlink
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wlink -> defillama-folks-finance-lending-wlink
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-galgo
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-galgo -> defillama-folks-finance-lending-galgo
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdt
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdt -> defillama-folks-finance-lending-usdt
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wsol
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wsol -> defillama-folks-finance-lending-wsol
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-tiny
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-tiny -> defillama-folks-finance-lending-isolated-tiny
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wavax
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wavax -> defillama-folks-finance-lending-wavax
+[2025-09-27T15:41:43.408Z] [INFO] [RealDataBridge] Transformed and filtered to 17 opportunities
+[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Cache set: opportunities_all, TTL: 300000ms
+ GET /api/opportunities 200 in 1702ms

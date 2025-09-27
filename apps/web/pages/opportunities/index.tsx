@@ -126,8 +126,8 @@ export default function OpportunitiesPage() {
     );
 
     const result = opportunities.filter((o) => {
-      // Only Stacks chain for now
-      if (o.chain !== "stacks") return false;
+      // Only Algorand chain for now
+      if (o.chain !== "algorand") return false;
 
       // Risk filter
       if (risk !== "all" && o.risk !== risk) return false;
@@ -191,8 +191,8 @@ export default function OpportunitiesPage() {
     };
   }, [filtered]);
 
-  // Currently only Stacks is supported
-  // const chainEnabled = chain === "stacks"; // Unused for now
+  // Currently only Algorand is supported
+  // const chainEnabled = chain === "algorand"; // Unused for now
 
   return (
     <>
@@ -200,25 +200,25 @@ export default function OpportunitiesPage() {
         <title>Yield Opportunities | Farmer UI</title>
         <meta
           name="description"
-          content="Explore the best yield farming opportunities on Stacks. Find highest APR/APY rates across DeFi protocols."
+          content="Explore the best yield farming opportunities on Algorand. Find highest APR/APY rates across DeFi protocols."
         />
         <meta property="og:title" content="Yield Opportunities | Farmer UI" />
         <meta
           property="og:description"
-          content="Explore the best yield farming opportunities on Stacks. Find highest APR/APY rates across DeFi protocols."
+          content="Explore the best yield farming opportunities on Algorand. Find highest APR/APY rates across DeFi protocols."
         />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Yield Opportunities | Farmer UI" />
         <meta
           name="twitter:description"
-          content="Explore the best yield farming opportunities on Stacks. Find highest APR/APY rates across DeFi protocols."
+          content="Explore the best yield farming opportunities on Algorand. Find highest APR/APY rates across DeFi protocols."
         />
       </Head>
       <main>
         <HeroHeader
           title="Explore Yield Opportunities"
-          subtitle="Find the best APR/APY on Stacks. Multichain coming soon."
+          subtitle="Find the best APR/APY on Algorand. Multichain coming soon."
           size="standard"
           // No chain pills needed - only Stacks for now
           kpis={<HeroKpiBar kpis={displayStats} />}
