@@ -11,13 +11,20 @@ const badgeAnim = (i: number) => ({
   opacity: 1,
   y: 0,
   scale: 1,
-  transition: { delay: i * 0.06, duration: 0.28, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  transition: {
+    delay: i * 0.06,
+    duration: 0.28,
+    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+  },
 });
 
 function ShieldIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
-      <path strokeWidth="1.8" d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z" />
+      <path
+        strokeWidth="1.8"
+        d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z"
+      />
       <path strokeWidth="1.8" d="M9.5 12l1.8 1.8L15 10" />
     </svg>
   );
@@ -40,14 +47,17 @@ export default function WhyUsInset() {
   // Subtle parallax for background fog; disabled on PRM
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
-  const onMouseMove = useCallback((e: React.MouseEvent) => {
-    if (prefersReducedMotion) return;
-    const rect = wrapRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    setParallax({ x: e.clientX - cx, y: e.clientY - cy });
-  }, [prefersReducedMotion]);
+  const onMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (prefersReducedMotion) return;
+      const rect = wrapRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      setParallax({ x: e.clientX - cx, y: e.clientY - cy });
+    },
+    [prefersReducedMotion],
+  );
   const onMouseLeave = useCallback(() => {
     if (prefersReducedMotion) return;
     setParallax({ x: 0, y: 0 });
@@ -56,10 +66,18 @@ export default function WhyUsInset() {
   const badges = useMemo(
     () => [
       { key: "audited", label: "Audited Pools", icon: null as React.ReactNode },
-      { key: "noncustodial", label: "Non-custodial", icon: <ShieldIcon className="h-4 w-4" /> },
-      { key: "pertx", label: "Per-tx Cap", icon: <LimitIcon className="h-4 w-4" /> },
+      {
+        key: "noncustodial",
+        label: "Non-custodial",
+        icon: <ShieldIcon className="h-4 w-4" />,
+      },
+      {
+        key: "pertx",
+        label: "Per-tx Cap",
+        icon: <LimitIcon className="h-4 w-4" />,
+      },
     ],
-    []
+    [],
   );
 
   return (
@@ -80,21 +98,34 @@ export default function WhyUsInset() {
         ].join(" ")}
         initial={prefersReducedMotion ? undefined : { opacity: 0, y: 8 }}
         animate={inView ? { opacity: 1, y: 0 } : undefined}
-        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+        transition={{
+          duration: 0.28,
+          ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+        }}
         aria-labelledby="whyus-title"
       >
-        <InsetBackgroundFx parallax={parallax} reduceMotion={!!prefersReducedMotion} className={!prefersReducedMotion ? "inset-sweep" : undefined} />
+        <InsetBackgroundFx
+          parallax={parallax}
+          reduceMotion={!!prefersReducedMotion}
+          className={!prefersReducedMotion ? "inset-sweep" : undefined}
+        />
 
         <div className="relative px-6 md:px-10 py-10 md:py-14">
           {/* Top row */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-7">
-              <div className="text-xs uppercase tracking-[0.18em] text-white/60">Why Us</div>
-              <h2 id="whyus-title" className="mt-2 text-4xl md:text-5xl text-white tracking-tight font-semibold">
+              <div className="text-xs uppercase tracking-[0.18em] text-white/60">
+                Why Us
+              </div>
+              <h2
+                id="whyus-title"
+                className="mt-2 text-4xl md:text-5xl text-white tracking-tight font-semibold"
+              >
                 Why Us
               </h2>
               <p className="mt-3 text-white/80 max-w-prose">
-                We focus on clarity and safety: curated pools, transparent metrics, non-custodial flows, and developer-grade discipline.
+                We focus on clarity and safety: curated pools, transparent
+                metrics, non-custodial flows, and developer-grade discipline.
               </p>
             </div>
 
@@ -107,7 +138,9 @@ export default function WhyUsInset() {
                       "inline-flex items-center gap-2 rounded-full",
                       "bg-white/10 ring-1 ring-white/15 px-3 py-1.5 text-sm text-white/90 backdrop-blur",
                       "transition-all",
-                      !prefersReducedMotion ? "hover:-translate-y-px hover:ring-white/25" : "",
+                      !prefersReducedMotion
+                        ? "hover:-translate-y-px hover:ring-white/25"
+                        : "",
                       !prefersReducedMotion ? "breath" : "",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20",
                     ].join(" ")}
@@ -139,13 +172,11 @@ export default function WhyUsInset() {
             {[
               {
                 title: "Curated, not exhaustive",
-                body:
-                  "Only solid, liquid and traceable opportunities — avoiding fuzzing and pump-and-dump risks.",
+                body: "Only solid, liquid and traceable opportunities — avoiding fuzzing and pump-and-dump risks.",
               },
               {
                 title: "Transparent metrics",
-                body:
-                  "See APR/APY, TVL, 24h volume, participant count and automatic risk score — the decision is entirely yours.",
+                body: "See APR/APY, TVL, 24h volume, participant count and automatic risk score — the decision is entirely yours.",
               },
               {
                 title: "Non-custodial by design",
@@ -153,16 +184,36 @@ export default function WhyUsInset() {
               },
               {
                 title: "Solution-oriented development",
-                body:
-                  "Audit-ready contracts with unit tests, continuous monitoring, and developer-first UX.",
+                body: "Audit-ready contracts with unit tests, continuous monitoring, and developer-first UX.",
               },
             ].map((card, idx) => (
               <motion.div
                 key={card.title + idx}
                 className="group relative z-0 h-full rounded-2xl bg-white/10 ring-1 ring-white/15 backdrop-blur-md p-5 md:p-6 transition-transform overflow-hidden isolation-isolate"
                 whileHover={prefersReducedMotion ? undefined : { y: -2 }}
-                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 12, filter: "blur(2px)" }}
-                animate={inView ? { opacity: 1, y: 0, filter: "blur(0)", transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } } : undefined}
+                initial={
+                  prefersReducedMotion
+                    ? undefined
+                    : { opacity: 0, y: 12, filter: "blur(2px)" }
+                }
+                animate={
+                  inView
+                    ? {
+                        opacity: 1,
+                        y: 0,
+                        filter: "blur(0)",
+                        transition: {
+                          duration: 0.3,
+                          ease: [0.22, 1, 0.36, 1] as [
+                            number,
+                            number,
+                            number,
+                            number,
+                          ],
+                        },
+                      }
+                    : undefined
+                }
               >
                 {/* Accent line */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-white/0 via-white/30 to-white/0" />
@@ -174,19 +225,26 @@ export default function WhyUsInset() {
                   >
                     <span
                       className="absolute -inset-y-4 -left-1/2 w-[60%] rotate-12 bg-gradient-to-r from-white/0 via-white/25 to-white/0"
-                      style={{ transition: "transform 420ms ease", transform: "translateX(-30%)" }}
+                      style={{
+                        transition: "transform 420ms ease",
+                        transform: "translateX(-30%)",
+                      }}
                     />
                   </span>
                 )}
 
                 <div className="relative">
                   <div className="text-white font-medium">{card.title}</div>
-                  <p className="mt-2 text-[15px] leading-relaxed text-white/80">{card.body}</p>
+                  <p className="mt-2 text-[15px] leading-relaxed text-white/80">
+                    {card.body}
+                  </p>
                 </div>
 
                 {/* Local hover style to move sweep across */}
                 <style jsx>{`
-                  .group:hover > span > span { transform: translateX(140%); }
+                  .group:hover > span > span {
+                    transform: translateX(140%);
+                  }
                 `}</style>
               </motion.div>
             ))}
@@ -197,8 +255,18 @@ export default function WhyUsInset() {
       {/* Local breathing keyframes for badges */}
       {!prefersReducedMotion && (
         <style jsx>{`
-          @keyframes breath { 0%, 100% { opacity: 1 } 50% { opacity: 0.9 } }
-          .breath { animation: breath 6s ease-in-out infinite; }
+          @keyframes breath {
+            0%,
+            100% {
+              opacity: 1;
+            }
+            50% {
+              opacity: 0.9;
+            }
+          }
+          .breath {
+            animation: breath 6s ease-in-out infinite;
+          }
         `}</style>
       )}
     </section>

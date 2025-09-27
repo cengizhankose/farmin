@@ -1,6 +1,11 @@
 export function formatUSD(n: number, opts: Intl.NumberFormatOptions = {}) {
   try {
-    return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2, ...opts }).format(n);
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 2,
+      ...opts,
+    }).format(n);
   } catch {
     return `$${n.toFixed(2)}`;
   }
@@ -21,4 +26,3 @@ export function relativeTimeFromMinutes(label: string) {
   // naive mapping e.g. "5m", "1h", "2h"
   return label;
 }
-

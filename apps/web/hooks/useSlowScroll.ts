@@ -11,7 +11,7 @@ export function useSlowScroll({ enabled = true, factor = 0.5 }: Options = {}) {
   useEffect(() => {
     if (!enabled) return;
     const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
     if (prefersReduced) return;
 
@@ -22,7 +22,7 @@ export function useSlowScroll({ enabled = true, factor = 0.5 }: Options = {}) {
     const clamp = (v: number) => {
       const max = Math.max(
         0,
-        document.documentElement.scrollHeight - window.innerHeight
+        document.documentElement.scrollHeight - window.innerHeight,
       );
       return Math.min(max, Math.max(0, v));
     };
@@ -47,7 +47,8 @@ export function useSlowScroll({ enabled = true, factor = 0.5 }: Options = {}) {
         const style = window.getComputedStyle(node);
         const canScrollY =
           (style.overflowY === "auto" || style.overflowY === "scroll") &&
-          (node as HTMLElement).scrollHeight > (node as HTMLElement).clientHeight;
+          (node as HTMLElement).scrollHeight >
+            (node as HTMLElement).clientHeight;
         if (canScrollY) return true;
         node = node.parentElement;
       }
@@ -89,8 +90,10 @@ export function useSlowScroll({ enabled = true, factor = 0.5 }: Options = {}) {
       if (isScrollableAncestor(e.target as Element)) return;
       const h = window.innerHeight;
       let delta = 0;
-      if (e.key === "PageDown" || (e.key === " " && !e.shiftKey)) delta = h * 0.9;
-      else if (e.key === "PageUp" || (e.key === " " && e.shiftKey)) delta = -h * 0.9;
+      if (e.key === "PageDown" || (e.key === " " && !e.shiftKey))
+        delta = h * 0.9;
+      else if (e.key === "PageUp" || (e.key === " " && e.shiftKey))
+        delta = -h * 0.9;
       else if (e.key === "ArrowDown") delta = 80;
       else if (e.key === "ArrowUp") delta = -80;
       if (delta !== 0) {
@@ -113,13 +116,21 @@ export function useSlowScroll({ enabled = true, factor = 0.5 }: Options = {}) {
 
     return () => {
       window.removeEventListener("wheel", onWheel as any as EventListener);
-      window.removeEventListener("touchstart", onTouchStart as any as EventListener);
-      window.removeEventListener("touchmove", onTouchMove as any as EventListener);
-      window.removeEventListener("touchend", onTouchEnd as any as EventListener);
+      window.removeEventListener(
+        "touchstart",
+        onTouchStart as any as EventListener,
+      );
+      window.removeEventListener(
+        "touchmove",
+        onTouchMove as any as EventListener,
+      );
+      window.removeEventListener(
+        "touchend",
+        onTouchEnd as any as EventListener,
+      );
       window.removeEventListener("keydown", onKeyDown as any as EventListener);
       if (raf) cancelAnimationFrame(raf as number);
       document.documentElement.style.scrollBehavior = prevScrollBehavior;
     };
   }, [enabled, factor]);
 }
-

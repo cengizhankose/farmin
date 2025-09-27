@@ -84,7 +84,12 @@ function CompareBar() {
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          transition={{ duration: 0.3, type: "spring", stiffness: 260, damping: 20 }}
+          transition={{
+            duration: 0.3,
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+          }}
           className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40"
         >
           <div className="flex items-center gap-3 rounded-2xl bg-white/95 px-4 py-3 shadow-xl ring-1 ring-black/5 backdrop-blur-xl">
@@ -99,10 +104,13 @@ function CompareBar() {
                 transition={{ duration: 0.2, delay: index * 0.05 }}
                 className="flex items-center gap-2 rounded-xl bg-zinc-100 px-3 py-2 ring-1 ring-zinc-200"
               >
-                <CompareItemSlot item={item} onRemove={() => removeItem(item.id)} />
+                <CompareItemSlot
+                  item={item}
+                  onRemove={() => removeItem(item.id)}
+                />
               </motion.div>
             ))}
-            
+
             {/* Add more hint */}
             {items.length < 2 && (
               <motion.span
@@ -127,7 +135,7 @@ function CompareBar() {
                   Compare
                 </motion.button>
               )}
-              
+
               <button
                 onClick={clearItems}
                 className="rounded-lg p-2 text-zinc-500 hover:bg-zinc-100 transition-colors"
@@ -152,35 +160,47 @@ function CompareBar() {
   );
 }
 
-function CompareItemSlot({ 
-  item, 
-  onRemove 
-}: { 
-  item: CompareItem; 
+function CompareItemSlot({
+  item,
+  onRemove,
+}: {
+  item: CompareItem;
   onRemove: () => void;
 }) {
   const logo = protocolLogo(item.protocol);
-  
+
   return (
     <>
-      <div 
+      <div
         className="h-7 w-7 rounded-lg grid place-items-center text-xs font-bold overflow-hidden"
         style={{ backgroundColor: "var(--badge-lilac)", color: logo.fg }}
       >
-        {item.protocol.toLowerCase() === 'arkadiko' ? (
+        {item.protocol.toLowerCase() === "arkadiko" ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src="/logos/arkadiko.svg"
             alt="Arkadiko logo"
-            style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '2px' }}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              padding: "2px",
+            }}
           />
         ) : item.logoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={item.logoUrl}
             alt={`${item.protocol} logo`}
-            style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '2px' }}
-            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              padding: "2px",
+            }}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+            }}
           />
         ) : (
           logo.letter

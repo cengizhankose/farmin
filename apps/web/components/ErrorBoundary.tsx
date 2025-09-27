@@ -1,16 +1,16 @@
 /**
  * Error Boundary Component for Real Data Integration
- * 
+ *
  * Provides graceful error handling and fallback UI for data loading failures
  */
 
 "use client";
 
-import React from 'react';
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Logger } from '@/lib/adapters/real';
+import React from "react";
+import { AlertTriangle, RefreshCw, Home } from "lucide-react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { Logger } from "@/lib/adapters/real";
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -26,7 +26,10 @@ interface ErrorBoundaryProps {
   maxRetries?: number;
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   private retryTimeoutId: NodeJS.Timeout | null = null;
 
   constructor(props: ErrorBoundaryProps) {
@@ -35,22 +38,24 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
       hasError: false,
       error: null,
       errorInfo: null,
-      retryCount: 0
+      retryCount: 0,
     };
   }
 
   static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
     return {
       hasError: true,
-      error
+      error,
     };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    Logger.error('ErrorBoundary caught an error', error, { component: 'ErrorBoundary' });
-    
+    Logger.error("ErrorBoundary caught an error", error, {
+      component: "ErrorBoundary",
+    });
+
     this.setState({
-      errorInfo
+      errorInfo,
     });
 
     // Call custom error handler if provided
@@ -73,12 +78,12 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     }
 
     Logger.info(`Retrying... attempt ${retryCount + 1}/${maxRetries}`);
-    
-    this.setState(prevState => ({
+
+    this.setState((prevState) => ({
       hasError: false,
       error: null,
       errorInfo: null,
-      retryCount: prevState.retryCount + 1
+      retryCount: prevState.retryCount + 1,
     }));
   };
 
@@ -128,7 +133,12 @@ interface DefaultErrorFallbackProps {
   onRetry: () => void;
 }
 
-function DefaultErrorFallback({ error, retryCount, maxRetries, onRetry }: DefaultErrorFallbackProps) {
+function DefaultErrorFallback({
+  error,
+  retryCount,
+  maxRetries,
+  onRetry,
+}: DefaultErrorFallbackProps) {
   const [autoRetrying, setAutoRetrying] = React.useState(retryCount === 0);
 
   React.useEffect(() => {
@@ -141,7 +151,8 @@ function DefaultErrorFallback({ error, retryCount, maxRetries, onRetry }: Defaul
   }, [retryCount]);
 
   const canRetry = retryCount < maxRetries;
-  const isDataError = error.name === 'DataFetchError' || error.name === 'DataTransformError';
+  const isDataError =
+    error.name === "DataFetchError" || error.name === "DataTransformError";
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-16">
@@ -153,21 +164,25 @@ function DefaultErrorFallback({ error, retryCount, maxRetries, onRetry }: Defaul
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
           <AlertTriangle className="h-8 w-8 text-red-600" />
         </div>
-        
+
         <h2 className="mt-6 text-2xl font-bold text-gray-900">
-          {isDataError ? 'Data Loading Error' : 'Something went wrong'}
+          {isDataError ? "Data Loading Error" : "Something went wrong"}
         </h2>
-        
+
         <p className="mt-4 text-gray-600">
-          {isDataError 
-            ? 'We encountered an issue loading the latest data. This might be temporary.'
-            : 'An unexpected error occurred. We\'re working to fix this.'}
+          {isDataError
+            ? "We encountered an issue loading the latest data. This might be temporary."
+            : "An unexpected error occurred. We're working to fix this."}
         </p>
 
         {error.message && (
           <div className="mt-4 rounded-lg bg-gray-50 p-4 text-left">
-            <h3 className="text-sm font-medium text-gray-900">Error Details:</h3>
-            <p className="mt-1 text-sm text-gray-700 font-mono">{error.message}</p>
+            <h3 className="text-sm font-medium text-gray-900">
+              Error Details:
+            </h3>
+            <p className="mt-1 text-sm text-gray-700 font-mono">
+              {error.message}
+            </p>
           </div>
         )}
 
@@ -184,11 +199,13 @@ function DefaultErrorFallback({ error, retryCount, maxRetries, onRetry }: Defaul
               disabled={autoRetrying}
               className="inline-flex items-center gap-2 rounded-lg bg-[var(--brand-orange)] px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              <RefreshCw className={`h-4 w-4 ${autoRetrying ? 'animate-spin' : ''}`} />
-              {autoRetrying ? 'Auto-retrying...' : 'Try Again'}
+              <RefreshCw
+                className={`h-4 w-4 ${autoRetrying ? "animate-spin" : ""}`}
+              />
+              {autoRetrying ? "Auto-retrying..." : "Try Again"}
             </button>
           )}
-          
+
           <Link
             href="/"
             className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
@@ -200,7 +217,9 @@ function DefaultErrorFallback({ error, retryCount, maxRetries, onRetry }: Defaul
 
         {isDataError && (
           <div className="mt-8 text-left rounded-lg border border-blue-200 bg-blue-50 p-4">
-            <h3 className="text-sm font-medium text-blue-900">Troubleshooting Tips:</h3>
+            <h3 className="text-sm font-medium text-blue-900">
+              Troubleshooting Tips:
+            </h3>
             <ul className="mt-2 text-sm text-blue-800 space-y-1">
               <li>• Check your internet connection</li>
               <li>• The data provider API might be temporarily unavailable</li>
@@ -221,7 +240,7 @@ export function useErrorHandler() {
   const [error, setError] = React.useState<Error | null>(null);
 
   const handleError = React.useCallback((error: Error) => {
-    Logger.error('useErrorHandler caught error', error);
+    Logger.error("useErrorHandler caught error", error);
     setError(error);
   }, []);
 
@@ -229,24 +248,24 @@ export function useErrorHandler() {
     setError(null);
   }, []);
 
-  const wrapAsync = React.useCallback(async <T,>(
-    operation: () => Promise<T>,
-    fallback?: T
-  ): Promise<T> => {
-    try {
-      clearError();
-      return await operation();
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
-      handleError(error);
-      
-      if (fallback !== undefined) {
-        return fallback;
+  const wrapAsync = React.useCallback(
+    async <T,>(operation: () => Promise<T>, fallback?: T): Promise<T> => {
+      try {
+        clearError();
+        return await operation();
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        handleError(error);
+
+        if (fallback !== undefined) {
+          return fallback;
+        }
+
+        throw error;
       }
-      
-      throw error;
-    }
-  }, [handleError, clearError]);
+    },
+    [handleError, clearError],
+  );
 
   // Throw error to trigger error boundary (but only after component is mounted)
   React.useEffect(() => {
@@ -262,7 +281,7 @@ export function useErrorHandler() {
     wrapAsync,
     handleError,
     clearError,
-    hasError: !!error
+    hasError: !!error,
   };
 }
 

@@ -8,4 +8,3 @@ export function aprToApy(apr: number) {
   const apy = Math.E ** (apr / 100) - 1;
   return Number(apy.toFixed(2));
 }
-

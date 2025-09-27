@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CountUp from "react-countup";
-import { 
-  ResponsiveContainer, 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
   Tooltip,
-  CartesianGrid 
+  CartesianGrid,
 } from "recharts";
 import {
   Calculator,
@@ -20,7 +20,7 @@ import {
   Percent,
   TrendingUp,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 type Opportunity = {
@@ -43,21 +43,29 @@ interface DepositCalculatorProps {
   data: Opportunity;
 }
 
-type CompoundFrequency = "Daily" | "Weekly" | "Monthly" | "Quarterly" | "Annually";
+type CompoundFrequency =
+  | "Daily"
+  | "Weekly"
+  | "Monthly"
+  | "Quarterly"
+  | "Annually";
 
 export function DepositCalculator({ data }: DepositCalculatorProps) {
   const [amount, setAmount] = useState(1000);
   const [days, setDays] = useState(90);
-  const [compoundFrequency, setCompoundFrequency] = useState<CompoundFrequency>("Daily");
+  const [compoundFrequency, setCompoundFrequency] =
+    useState<CompoundFrequency>("Daily");
   const [isRouterMode, setIsRouterMode] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [projectionData, setProjectionData] = useState<Array<{ day: number; value: number; label: string }>>([]);
+  const [projectionData, setProjectionData] = useState<
+    Array<{ day: number; value: number; label: string }>
+  >([]);
 
   // Calculate returns
   const calculateReturns = () => {
     const dailyRate = data.apr / 365 / 100;
     const simpleReturn = amount * dailyRate * days;
-    
+
     // Compound frequency to periods per year
     const periodsPerYear: Record<CompoundFrequency, number> = {
       Daily: 365,
@@ -66,16 +74,17 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
       Quarterly: 4,
       Annually: 1,
     };
-    
+
     const n = periodsPerYear[compoundFrequency];
-    const compoundedAmount = amount * Math.pow(1 + data.apr / 100 / n, (n * days) / 365);
+    const compoundedAmount =
+      amount * Math.pow(1 + data.apr / 100 / n, (n * days) / 365);
     const compoundReturn = compoundedAmount - amount;
-    
+
     return {
       simple: simpleReturn,
       compound: compoundReturn,
       final: compoundedAmount,
-      effectiveAPY: ((compoundedAmount / amount - 1) * 365 / days) * 100
+      effectiveAPY: (((compoundedAmount / amount - 1) * 365) / days) * 100,
     };
   };
 
@@ -85,22 +94,22 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
       const projData: Array<{ day: number; value: number; label: string }> = [];
       const intervals = Math.min(days, 30); // Max 30 points for performance
       const dayStep = Math.floor(days / intervals);
-      
+
       for (let i = 0; i <= intervals; i++) {
         const currentDay = i * dayStep;
         const dailyRate = data.apr / 365 / 100;
         const value = amount * (1 + dailyRate * currentDay);
-        
+
         projData.push({
           day: currentDay,
           value: Math.round(value * 100) / 100,
-          label: `Day ${currentDay}`
+          label: `Day ${currentDay}`,
         });
       }
-      
+
       return projData;
     };
-    
+
     setProjectionData(generateProjection());
   }, [amount, days, data.apr]);
 
@@ -109,15 +118,15 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
   const handleDeposit = async () => {
     if (isRouterMode) {
       toast.info("Router integration coming soon", {
-        description: "One-click routing will be available in the next update"
+        description: "One-click routing will be available in the next update",
       });
       return;
     }
 
     setShowSuccess(true);
-    
+
     // Add to portfolio history (implementation would go here)
-    console.log('Adding to portfolio:', {
+    console.log("Adding to portfolio:", {
       id: data.id,
       protocol: data.protocol,
       pair: data.pair,
@@ -125,14 +134,14 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
       amount,
       days,
       ts: Date.now(),
-      chain: data.chain
+      chain: data.chain,
     });
 
     // Redirect after animation
     setTimeout(() => {
       window.open(data.originalUrl, "_blank");
       toast.success("Redirected to protocol", {
-        description: `${data.protocol} opened in a new tab. Position added to your portfolio.`
+        description: `${data.protocol} opened in a new tab. Position added to your portfolio.`,
       });
       setShowSuccess(false);
     }, 1500);
@@ -151,9 +160,11 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <Calculator className="text-zinc-400" size={20} />
-            <h4 className="font-display text-lg text-zinc-900">Deposit Calculator</h4>
+            <h4 className="font-display text-lg text-zinc-900">
+              Deposit Calculator
+            </h4>
           </div>
-          
+
           {/* Mode Switcher */}
           <div className="inline-flex rounded-lg bg-zinc-100 p-0.5">
             <button
@@ -205,7 +216,7 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                 <span className="text-xs text-zinc-500">USD</span>
               </div>
             </div>
-            
+
             {/* Quick Amount Buttons */}
             <div className="mt-2 flex gap-2">
               {[100, 500, 1000, 5000].map((val) => (
@@ -240,7 +251,7 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
               max={365}
               step={1}
               style={{
-                background: `linear-gradient(to right, var(--brand-orange) 0%, var(--brand-orange) ${(days / 365) * 100}%, #e5e7eb ${(days / 365) * 100}%, #e5e7eb 100%)`
+                background: `linear-gradient(to right, var(--brand-orange) 0%, var(--brand-orange) ${(days / 365) * 100}%, #e5e7eb ${(days / 365) * 100}%, #e5e7eb 100%)`,
               }}
             />
             <div className="mt-2 flex justify-between text-xs text-zinc-500">
@@ -260,7 +271,9 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
               </span>
             </label>
             <div className="grid grid-cols-3 gap-2">
-              {(["Daily", "Weekly", "Monthly", "Quarterly", "Annually"] as const).map((freq) => (
+              {(
+                ["Daily", "Weekly", "Monthly", "Quarterly", "Annually"] as const
+              ).map((freq) => (
                 <button
                   key={freq}
                   onClick={() => setCompoundFrequency(freq)}
@@ -292,7 +305,7 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                   />
                 </span>
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <span className="text-xs text-zinc-600 flex items-center gap-1">
                   Compound Return
@@ -309,11 +322,13 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                   />
                 </span>
               </div>
-              
+
               <div className="h-px bg-zinc-200" />
-              
+
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-zinc-700">Final Amount</span>
+                <span className="text-xs font-medium text-zinc-700">
+                  Final Amount
+                </span>
                 <span className="text-lg font-bold text-zinc-900 tabular-nums">
                   <CountUp
                     start={amount}
@@ -326,7 +341,7 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                   />
                 </span>
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <span className="text-xs text-zinc-600">Effective APY</span>
                 <span className="text-sm font-semibold text-zinc-900 tabular-nums">
@@ -346,7 +361,9 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                 className="flex items-center justify-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-emerald-700"
               >
                 <CheckCircle size={16} />
-                <span className="text-sm font-medium">Redirecting to {data.protocol}...</span>
+                <span className="text-sm font-medium">
+                  Redirecting to {data.protocol}...
+                </span>
               </motion.div>
             ) : (
               <motion.button
@@ -388,21 +405,44 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
       <div className="rounded-3xl border border-black/5 bg-white p-5 shadow-sm">
         <div className="flex items-center gap-2 mb-4">
           <TrendingUp className="text-zinc-400" size={16} />
-          <h5 className="text-sm font-medium text-zinc-700">Value Projection</h5>
+          <h5 className="text-sm font-medium text-zinc-700">
+            Value Projection
+          </h5>
         </div>
-        
+
         <div className="h-[160px]">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={projectionData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+            <AreaChart
+              data={projectionData}
+              margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+            >
               <defs>
-                <linearGradient id="projectionGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={colors.emerald[600]} stopOpacity={0.6} />
-                  <stop offset="100%" stopColor={colors.emerald[600]} stopOpacity={0.1} />
+                <linearGradient
+                  id="projectionGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor={colors.emerald[600]}
+                    stopOpacity={0.6}
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor={colors.emerald[600]}
+                    stopOpacity={0.1}
+                  />
                 </linearGradient>
               </defs>
-              
-              <CartesianGrid stroke="rgba(0,0,0,.04)" strokeDasharray="0" vertical={false} />
-              
+
+              <CartesianGrid
+                stroke="rgba(0,0,0,.04)"
+                strokeDasharray="0"
+                vertical={false}
+              />
+
               <XAxis
                 dataKey="day"
                 axisLine={false}
@@ -410,25 +450,29 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                 tick={{ fontSize: 10, fill: "rgba(0,0,0,.5)" }}
                 tickFormatter={(value) => `${value}d`}
               />
-              
+
               <YAxis
                 axisLine={false}
                 tickLine={false}
                 tick={{ fontSize: 10, fill: "rgba(0,0,0,.5)" }}
                 tickFormatter={(value) => `$${(value / 1000).toFixed(1)}k`}
               />
-              
+
               <Tooltip
                 content={({ active, payload }) =>
                   active && payload ? (
                     <div className="rounded-lg bg-white px-2 py-1 shadow-lg ring-1 ring-black/5">
-                      <div className="text-xs text-zinc-600">{payload[0]?.payload?.label}</div>
-                      <div className="text-xs font-semibold">${payload[0]?.value?.toLocaleString()}</div>
+                      <div className="text-xs text-zinc-600">
+                        {payload[0]?.payload?.label}
+                      </div>
+                      <div className="text-xs font-semibold">
+                        ${payload[0]?.value?.toLocaleString()}
+                      </div>
                     </div>
                   ) : null
                 }
               />
-              
+
               <Area
                 type="monotone"
                 dataKey="value"

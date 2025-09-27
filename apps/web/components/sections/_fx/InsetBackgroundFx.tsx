@@ -8,7 +8,11 @@ type Props = {
   className?: string;
 };
 
-export function InsetBackgroundFx({ parallax, reduceMotion = false, className }: Props) {
+export function InsetBackgroundFx({
+  parallax,
+  reduceMotion = false,
+  className,
+}: Props) {
   const p = parallax ?? { x: 0, y: 0 };
 
   const fogTransformA = useMemo(() => {
@@ -24,7 +28,10 @@ export function InsetBackgroundFx({ parallax, reduceMotion = false, className }:
   }, [p.x, p.y]);
 
   return (
-    <div className={"absolute inset-0 pointer-events-none " + (className ?? "")} aria-hidden="true">
+    <div
+      className={"absolute inset-0 pointer-events-none " + (className ?? "")}
+      aria-hidden="true"
+    >
       {/* Subtle grid layer */}
       <div
         className="absolute inset-0 opacity-[0.06]"
@@ -36,9 +43,17 @@ export function InsetBackgroundFx({ parallax, reduceMotion = false, className }:
       />
 
       {/* Very light noise via SVG feTurbulence */}
-      <svg className="absolute inset-0 w-full h-full opacity-[0.04]" aria-hidden="true">
+      <svg
+        className="absolute inset-0 w-full h-full opacity-[0.04]"
+        aria-hidden="true"
+      >
         <filter id="noiseFilter">
-          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves={4} stitchTiles="stitch" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.8"
+            numOctaves={4}
+            stitchTiles="stitch"
+          />
         </filter>
         <rect width="100%" height="100%" filter="url(#noiseFilter)" />
       </svg>
@@ -51,7 +66,10 @@ export function InsetBackgroundFx({ parallax, reduceMotion = false, className }:
             "bg-[radial-gradient(closest-side,rgba(255,122,26,0.18),transparent_70%)]",
             reduceMotion ? "" : "animate-fog-drift-a",
           ].join(" ")}
-          style={{ filter: "blur(40px)", transform: reduceMotion ? undefined : fogTransformA }}
+          style={{
+            filter: "blur(40px)",
+            transform: reduceMotion ? undefined : fogTransformA,
+          }}
         />
         <div
           className={[
@@ -59,7 +77,10 @@ export function InsetBackgroundFx({ parallax, reduceMotion = false, className }:
             "bg-[radial-gradient(closest-side,rgba(107,179,255,0.14),transparent_70%)]",
             reduceMotion ? "" : "animate-fog-drift-b",
           ].join(" ")}
-          style={{ filter: "blur(52px)", transform: reduceMotion ? undefined : fogTransformB }}
+          style={{
+            filter: "blur(52px)",
+            transform: reduceMotion ? undefined : fogTransformB,
+          }}
         />
       </div>
 
@@ -78,28 +99,56 @@ export function InsetBackgroundFx({ parallax, reduceMotion = false, className }:
 
       <style jsx>{`
         @keyframes fog-drift-a {
-          0% { transform: translate3d(-4px, 0, 0); }
-          50% { transform: translate3d(4px, -2px, 0); }
-          100% { transform: translate3d(-4px, 0, 0); }
+          0% {
+            transform: translate3d(-4px, 0, 0);
+          }
+          50% {
+            transform: translate3d(4px, -2px, 0);
+          }
+          100% {
+            transform: translate3d(-4px, 0, 0);
+          }
         }
         @keyframes fog-drift-b {
-          0% { transform: translate3d(0, 2px, 0); }
-          50% { transform: translate3d(-3px, -2px, 0); }
-          100% { transform: translate3d(0, 2px, 0); }
+          0% {
+            transform: translate3d(0, 2px, 0);
+          }
+          50% {
+            transform: translate3d(-3px, -2px, 0);
+          }
+          100% {
+            transform: translate3d(0, 2px, 0);
+          }
         }
-        .animate-fog-drift-a { animation: fog-drift-a 14s ease-in-out infinite; }
-        .animate-fog-drift-b { animation: fog-drift-b 16s ease-in-out infinite; }
+        .animate-fog-drift-a {
+          animation: fog-drift-a 14s ease-in-out infinite;
+        }
+        .animate-fog-drift-b {
+          animation: fog-drift-b 16s ease-in-out infinite;
+        }
         @keyframes sweep {
-          0% { transform: translateX(-60%) rotate(30deg); opacity: 0; }
-          8% { opacity: 1; }
-          40% { transform: translateX(60%) rotate(30deg); opacity: 0; }
-          100% { transform: translateX(60%) rotate(30deg); opacity: 0; }
+          0% {
+            transform: translateX(-60%) rotate(30deg);
+            opacity: 0;
+          }
+          8% {
+            opacity: 1;
+          }
+          40% {
+            transform: translateX(60%) rotate(30deg);
+            opacity: 0;
+          }
+          100% {
+            transform: translateX(60%) rotate(30deg);
+            opacity: 0;
+          }
         }
-        :global(.inset-sweep .rotate-\[30deg\]) { animation: sweep 12s ease-in-out infinite; }
+        :global(.inset-sweep .rotate-\[30deg\]) {
+          animation: sweep 12s ease-in-out infinite;
+        }
       `}</style>
     </div>
   );
 }
 
 export default InsetBackgroundFx;
-

@@ -6,13 +6,13 @@
  */
 
 export const colors = {
-  // Primary Brand Colors
-  orange: {
-    50: "#ff7d27", // Primary orange brand color
-    100: "#ff7d27", // Orange hover states
-    300: "#ff7d27", // Orange borders
-    600: "#ff7d27", // Default orange button
-    700: "#e06b20", // Orange button hover
+  // Primary Brand Colors (purple)
+  purple: {
+    50: "#F1E9FF", // Primary purple brand color
+    100: "#E0D2FF", // Purple hover states
+    300: "#B28DFF", // Purple borders
+    600: "#8C45FF", // Default purple button
+    700: "#6D2EE6", // Purple button hover
   },
 
   // Emerald/Green (Success, Actions)
@@ -78,22 +78,24 @@ export const colors = {
   // Special Colors
   gradients: {
     sceneBg: "linear-gradient(to right, #e9e9e9, #1c1d1f)",
-    orangeToBlack: "linear-gradient(to right, #ff7d27, #0a0a0a)",
+    purpleToBlack: "linear-gradient(to right, #8C45FF, #0a0a0a)",
     blackToAmber: "linear-gradient(to right, #0a0a0a, #e8de73)",
     brownToBlack: "linear-gradient(to right, #9a8068, #0a0a0a)",
+    grayToBlack:
+      "linear-gradient(120deg, #6b7280 0%, #374151 50%, #111827 100%)",
     whiteToZinc:
       "linear-gradient(to b, rgba(255, 255, 255, 0.6), rgba(244, 244, 245, 0.6))",
   },
 
   // Radial gradients for effects
   radial: {
-    orangeGlow:
-      "radial-gradient(ellipse_at_center, rgba(255, 125, 39, 0.22), transparent_60%)",
+    purpleGlow:
+      "radial-gradient(ellipse_at_center, rgba(140, 69, 255, 0.22), transparent_60%)",
     darkGlow:
       "radial-gradient(ellipse_at_center, rgba(15, 16, 18, 0.18), transparent_60%)",
-    orangeIntense: {
-      from: "rgba(255, 125, 39, 0.95)",
-      to: "rgba(255, 125, 39, 0.5)",
+    purpleIntense: {
+      from: "rgba(140, 69, 255, 0.95)",
+      to: "rgba(140, 69, 255, 0.5)",
     },
   },
 
@@ -144,9 +146,9 @@ export const buttonColors = {
     hover: colors.zinc[200],
   },
   primary: {
-    bg: colors.orange[600],
+    bg: colors.purple[600],
     text: colors.white.DEFAULT,
-    hover: colors.orange[700],
+    hover: colors.purple[700],
   },
   success: {
     bg: colors.emerald[600],

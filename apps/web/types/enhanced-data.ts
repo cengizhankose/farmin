@@ -1,5 +1,5 @@
 // Enhanced types for frontend data visualization
-export type Timeframe = '24H' | '7D' | '30D' | '90D' | '1Y' | 'ALL';
+export type Timeframe = "24H" | "7D" | "30D" | "90D" | "1Y" | "ALL";
 
 // Basic chart data interface
 export interface ChartData {
@@ -107,7 +107,7 @@ export interface EnhancedConcentrationData {
   whaleTransactionRatio: number;
   concentrationScore: number;
   distributionScore: number;
-  decentralizationLevel: 'high' | 'medium' | 'low';
+  decentralizationLevel: "high" | "medium" | "low";
 }
 
 // Enhanced momentum data with trend analysis
@@ -125,7 +125,7 @@ export interface EnhancedMomentumData {
 
 // Value projection data with Monte Carlo simulation
 export interface ValueProjection {
-  timeframe: '1d' | '3d' | '7d' | '15d' | '30d' | '90d';
+  timeframe: "1d" | "3d" | "7d" | "15d" | "30d" | "90d";
   scenarios: {
     bearish: {
       projectedValue: number;
@@ -158,7 +158,7 @@ export interface MarketSentimentData {
   newsSentiment: number;
   onchainSentiment: number;
   overallSentiment: number;
-  sentimentTrend: 'improving' | 'stable' | 'declining';
+  sentimentTrend: "improving" | "stable" | "declining";
   socialVolume: number;
   mentions24h: number;
   uniqueMentions: number;
@@ -290,12 +290,12 @@ export interface MetricsCardProps {
   title: string;
   value: number | string;
   change?: number;
-  changeType?: 'positive' | 'negative' | 'neutral';
+  changeType?: "positive" | "negative" | "neutral";
   icon?: string;
   description?: string;
-  format?: 'currency' | 'percentage' | 'number' | 'custom';
+  format?: "currency" | "percentage" | "number" | "custom";
   precision?: number;
-  trend?: 'up' | 'down' | 'stable';
+  trend?: "up" | "down" | "stable";
 }
 
 // Data table component props
@@ -304,7 +304,7 @@ export interface DataTableProps {
   columns: {
     key: string;
     label: string;
-    type?: 'string' | 'number' | 'percentage' | 'currency' | 'date';
+    type?: "string" | "number" | "percentage" | "currency" | "date";
     format?: (value: any) => string;
     sortable?: boolean;
   }[];

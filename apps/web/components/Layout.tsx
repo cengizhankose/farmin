@@ -2,7 +2,6 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useWallet } from "@/contexts/WalletContext";
 import { useSlowScroll } from "@/hooks/useSlowScroll";
 import { colors, buttonColors } from "../lib/colors";
 import NavigationButtons from "@/components/landing/NavigationButtons";
@@ -41,25 +40,26 @@ function Badge(
   );
 }
 
-export const ChainGuardBanner = () => {
-  const { networkMismatch, network, expected } = useWallet();
-  if (!networkMismatch) return null;
-  return (
-    <div
-      className={`relative z-30 w-full border-b border-[${
-        colors.amber[300]
-      }] bg-[${colors.purple[50] || colors.purple[100]}]/80 backdrop-blur-xl`}
-    >
-      <div
-        className={`mx-auto max-w-7xl px-6 py-2 text-sm text-[${colors.purple[700]}]`}
-      >
-        Network mismatch: Wallet on <strong>{network}</strong> but app expects{" "}
-        <strong>{expected}</strong>. Open Leather &gt; Settings &gt; Network and
-        switch. Refresh after switching.
-      </div>
-    </div>
-  );
-};
+// Wallet integration removed - ChainGuardBanner disabled
+// export const ChainGuardBanner = () => {
+//   const { networkMismatch, network, expected } = useWallet();
+//   if (!networkMismatch) return null;
+//   return (
+//     <div
+//       className={`relative z-30 w-full border-b border-[${
+//         colors.amber[300]
+//       }] bg-[${colors.purple[50] || colors.purple[100]}]/80 backdrop-blur-xl`}
+//     >
+//       <div
+//         className={`mx-auto max-w-7xl px-6 py-2 text-sm text-[${colors.purple[700]}]`}
+//       >
+//         Network mismatch: Wallet on <strong>{network}</strong> but app expects{" "}
+//         <strong>{expected}</strong>. Open Leather &gt; Settings &gt; Network and
+//         switch. Refresh after switching.
+//       </div>
+//     </div>
+//   );
+// };
 
 // const ConnectButton = () => {
 //   const { installed, connecting, stxAddress, connect, disconnect } =
@@ -131,7 +131,7 @@ export const Header = () => {
     // return () => window.removeEventListener("scroll", handleScroll);
   }, []); // lastScrollY removed as it's unused
 
-  useWallet();
+  // useWallet(); // Wallet integration removed
 
   return (
     <header
@@ -154,7 +154,7 @@ export const Header = () => {
           {/* Navigation links removed */}
         </nav>
       </div>
-      <ChainGuardBanner />
+      {/* <ChainGuardBanner /> */} {/* Wallet integration removed */}
     </header>
   );
 };

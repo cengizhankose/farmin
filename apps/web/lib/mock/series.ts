@@ -10,9 +10,11 @@ export type SeriesPoint = {
 // Generate consistent base timestamp to avoid hydration mismatch
 function getConsistentBaseTimestamp(): number {
   // Use client-side only timestamp generation with consistent alignment
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     // Server-side: use a fixed base timestamp
-    return Math.floor(Date.now() / (12 * 60 * 60 * 1000)) * (12 * 60 * 60 * 1000);
+    return (
+      Math.floor(Date.now() / (12 * 60 * 60 * 1000)) * (12 * 60 * 60 * 1000)
+    );
   }
   // Client-side: use consistent alignment
   return Math.floor(Date.now() / (12 * 60 * 60 * 1000)) * (12 * 60 * 60 * 1000);
@@ -38,8 +40,10 @@ export function generateMockSeries(count = 60, seed = 42): SeriesPoint[] {
   let s = seed >>> 0;
   const rand = () => {
     // xorshift32
-    s ^= s << 13; s ^= s >>> 17; s ^= s << 5;
-    return ((s >>> 0) / 0xffffffff);
+    s ^= s << 13;
+    s ^= s >>> 17;
+    s ^= s << 5;
+    return (s >>> 0) / 0xffffffff;
   };
   const randn = () => {
     // Box-Muller
@@ -53,7 +57,9 @@ export function generateMockSeries(count = 60, seed = 42): SeriesPoint[] {
   price[0] = 100;
   for (let i = 1; i < count; i++) {
     const dW = randn();
-    const step = Math.exp((mu - 0.5 * sigma * sigma) * 1 + sigma * Math.sqrt(1) * dW);
+    const step = Math.exp(
+      (mu - 0.5 * sigma * sigma) * 1 + sigma * Math.sqrt(1) * dW,
+    );
     price[i] = Math.max(1, price[i - 1] * step);
   }
 
@@ -68,7 +74,9 @@ export function generateMockSeries(count = 60, seed = 42): SeriesPoint[] {
   const pnl: number[] = value.map((_, i) => value[i] - sma(value, 10, i));
 
   // 24h change as value[t] - value[t-2] (2 steps ~ 24h)
-  const change24h: number[] = value.map((v, i) => (i >= 2 ? v - value[i - 2] : 0));
+  const change24h: number[] = value.map((v, i) =>
+    i >= 2 ? v - value[i - 2] : 0,
+  );
 
   const series: SeriesPoint[] = new Array(count);
   for (let i = 0; i < count; i++) {
@@ -88,7 +96,7 @@ export function kpiFromSeries(series: SeriesPoint[]) {
   const agoIdx = Math.max(0, n - 1 - 14); // ~7 days (14x 12h)
   const weekAgo = series[agoIdx]?.value ?? last;
   // approximate APR from 7d run-rate
-  const apr7d = weekAgo > 0 ? ((last / weekAgo) - 1) * 52 : 0;
+  const apr7d = weekAgo > 0 ? (last / weekAgo - 1) * 52 : 0;
   // mock TVL: scale last value to a few millions
   const tvl = Math.max(1_200_000, Math.min(6_500_000, last * 120));
   const netPnl = series[n - 1]?.pnl ?? 0;
@@ -113,4 +121,3 @@ export function compactCurrency(num: number): string {
 export function percent1(v: number): string {
   return `${(v * 100).toFixed(1)}%`;
 }
-

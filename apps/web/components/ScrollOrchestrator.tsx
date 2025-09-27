@@ -31,14 +31,15 @@ export function ScrollOrchestrator({
     const onScroll = () => {
       const maxScroll = Math.max(
         1,
-        totalHeightRef.current - window.innerHeight
+        totalHeightRef.current - window.innerHeight,
       );
       const p = Math.min(1, Math.max(0, window.scrollY / maxScroll));
       setProgress(p);
     };
     const onResize = () => {
       totalHeightRef.current = Math.round(
-        ((scenes.length * heightPerSceneVh + tailVh) * window.innerHeight) / 100
+        ((scenes.length * heightPerSceneVh + tailVh) * window.innerHeight) /
+          100,
       );
       onScroll();
     };
@@ -56,10 +57,15 @@ export function ScrollOrchestrator({
     // Expose global page progress for UI sync (0..1)
     document.documentElement.style.setProperty(
       "--page-progress",
-      String(progress)
+      String(progress),
     );
-    const activeNow = scenes.find((s) => progress >= s.start && progress < s.end);
-    const fallback = scenes.reduce((acc, s) => (progress >= s.start ? s : acc), scenes[0]);
+    const activeNow = scenes.find(
+      (s) => progress >= s.start && progress < s.end,
+    );
+    const fallback = scenes.reduce(
+      (acc, s) => (progress >= s.start ? s : acc),
+      scenes[0],
+    );
     const scene = activeNow || fallback;
     const theme = scene?.theme;
     const root = document.documentElement;
@@ -73,7 +79,9 @@ export function ScrollOrchestrator({
 
   // Determine the active scene index (single interactive scene)
   const activeIndex = React.useMemo(() => {
-    const idx = scenes.findIndex((s) => progress >= s.start && progress < s.end);
+    const idx = scenes.findIndex(
+      (s) => progress >= s.start && progress < s.end,
+    );
     if (idx !== -1) return idx;
     // fallback to the last scene whose start <= progress
     let last = 0;
@@ -106,10 +114,10 @@ export function ScrollOrchestrator({
           if (s.start === 0 && clamped <= 0.08) {
             opacity = 1;
           }
-          
+
           // Only allow pointer events for the active scene
           const isInteractive = i === activeIndex;
-          
+
           const style: React.CSSProperties = {
             opacity,
             transition: "opacity 120ms linear, filter 120ms linear",
@@ -131,7 +139,7 @@ export function ScrollOrchestrator({
           }
           if (blur)
             (style as React.CSSProperties).filter = `blur(${blur.toFixed(
-              2
+              2,
             )}px)`;
           return (
             <div key={s.id} className="absolute inset-0" style={style}>

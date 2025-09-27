@@ -2,13 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production'
+    removeConsole: process.env.NODE_ENV === "production",
   },
   images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'images.unsplash.com' }
-    ]
-  }
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
+  },
 };
 
 module.exports = nextConfig;

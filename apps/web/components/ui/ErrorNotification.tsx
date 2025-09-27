@@ -1,9 +1,14 @@
-import React from 'react';
-import { AlertTriangle, Info, RefreshCw, ExternalLink } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { AlertTriangle, Info, RefreshCw, ExternalLink } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface ErrorNotificationProps {
-  type: 'arkadiko-detail' | 'arkadiko-chart' | 'defillama-chart' | 'general' | 'warning';
+  type:
+    | "arkadiko-detail"
+    | "arkadiko-chart"
+    | "defillama-chart"
+    | "general"
+    | "warning";
   title: string;
   message: string;
   onRetry?: () => void;
@@ -12,36 +17,37 @@ interface ErrorNotificationProps {
 }
 
 const errorConfig = {
-  'arkadiko-detail': {
-    color: 'border-orange-200 bg-orange-50',
-    textColor: 'text-orange-800',
-    iconColor: 'text-orange-600',
-    description: 'Arkadiko protocol detailed information is temporarily unavailable'
+  "arkadiko-detail": {
+    color: "border-orange-200 bg-orange-50",
+    textColor: "text-orange-800",
+    iconColor: "text-orange-600",
+    description:
+      "Arkadiko protocol detailed information is temporarily unavailable",
   },
-  'arkadiko-chart': {
-    color: 'border-amber-200 bg-amber-50',
-    textColor: 'text-amber-800',
-    iconColor: 'text-amber-600',
-    description: 'Chart data from Arkadiko is currently unavailable'
+  "arkadiko-chart": {
+    color: "border-amber-200 bg-amber-50",
+    textColor: "text-amber-800",
+    iconColor: "text-amber-600",
+    description: "Chart data from Arkadiko is currently unavailable",
   },
-  'defillama-chart': {
-    color: 'border-yellow-200 bg-yellow-50',
-    textColor: 'text-yellow-800',
-    iconColor: 'text-yellow-600',
-    description: 'Chart data from DeFiLlama is currently unavailable'
+  "defillama-chart": {
+    color: "border-yellow-200 bg-yellow-50",
+    textColor: "text-yellow-800",
+    iconColor: "text-yellow-600",
+    description: "Chart data from DeFiLlama is currently unavailable",
   },
-  'general': {
-    color: 'border-red-200 bg-red-50',
-    textColor: 'text-red-800',
-    iconColor: 'text-red-600',
-    description: 'An unexpected error occurred'
+  general: {
+    color: "border-red-200 bg-red-50",
+    textColor: "text-red-800",
+    iconColor: "text-red-600",
+    description: "An unexpected error occurred",
   },
-  'warning': {
-    color: 'border-blue-200 bg-blue-50',
-    textColor: 'text-blue-800',
-    iconColor: 'text-blue-600',
-    description: 'Important information about this opportunity'
-  }
+  warning: {
+    color: "border-blue-200 bg-blue-50",
+    textColor: "text-blue-800",
+    iconColor: "text-blue-600",
+    description: "Important information about this opportunity",
+  },
 };
 
 export function ErrorNotification({
@@ -50,7 +56,7 @@ export function ErrorNotification({
   message,
   onRetry,
   actionUrl,
-  actionText = 'Learn More'
+  actionText = "Learn More",
 }: ErrorNotificationProps) {
   const config = errorConfig[type];
 
@@ -62,7 +68,7 @@ export function ErrorNotification({
     >
       <div className="flex items-start space-x-3">
         <div className="flex-shrink-0">
-          {type === 'warning' ? (
+          {type === "warning" ? (
             <Info className={`h-5 w-5 ${config.iconColor}`} />
           ) : (
             <AlertTriangle className={`h-5 w-5 ${config.iconColor}`} />
@@ -70,9 +76,7 @@ export function ErrorNotification({
         </div>
 
         <div className="flex-1 min-w-0">
-          <h3 className={`text-sm font-medium ${config.textColor}`}>
-            {title}
-          </h3>
+          <h3 className={`text-sm font-medium ${config.textColor}`}>{title}</h3>
           <p className={`text-sm ${config.textColor} opacity-90 mt-1`}>
             {message}
           </p>
@@ -125,10 +129,20 @@ export function ArkadikoDetailError({ onRetry }: { onRetry?: () => void }) {
   );
 }
 
-export function ChartDataError({ protocol = 'Data Provider', onRetry }: { protocol?: string; onRetry?: () => void }) {
+export function ChartDataError({
+  protocol = "Data Provider",
+  onRetry,
+}: {
+  protocol?: string;
+  onRetry?: () => void;
+}) {
   return (
     <ErrorNotification
-      type={protocol.toLowerCase().includes('arkadiko') ? 'arkadiko-chart' : 'defillama-chart'}
+      type={
+        protocol.toLowerCase().includes("arkadiko")
+          ? "arkadiko-chart"
+          : "defillama-chart"
+      }
       title={`${protocol} Chart Data Unavailable`}
       message="Historical chart data is temporarily unavailable. This may be due to API rate limits or service maintenance."
       onRetry={onRetry}
@@ -138,7 +152,13 @@ export function ChartDataError({ protocol = 'Data Provider', onRetry }: { protoc
   );
 }
 
-export function DataLoadingError({ message, onRetry }: { message: string; onRetry?: () => void }) {
+export function DataLoadingError({
+  message,
+  onRetry,
+}: {
+  message: string;
+  onRetry?: () => void;
+}) {
   return (
     <ErrorNotification
       type="general"

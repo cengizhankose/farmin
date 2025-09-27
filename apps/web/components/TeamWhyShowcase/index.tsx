@@ -1,12 +1,12 @@
-import { useRef } from 'react'
-import BackgroundFx from './BackgroundFx'
-import TitlePair from './TitlePair'
-import Card from './Card'
-import { useScrollStage } from './useScrollStage'
+import { useRef } from "react";
+import BackgroundFx from "./BackgroundFx";
+import TitlePair from "./TitlePair";
+import Card from "./Card";
+import { useScrollStage } from "./useScrollStage";
 
 export default function TeamWhyShowcase() {
-  const ref = useRef<HTMLElement>(null)
-  const { play } = useScrollStage(ref)
+  const ref = useRef<HTMLElement>(null);
+  const { play } = useScrollStage(ref);
 
   return (
     <section
@@ -45,38 +45,30 @@ export default function TeamWhyShowcase() {
 
           {/* Right column */}
           <div className="space-y-6 md:space-y-7">
-            <Card
-              title="Curated, not exhaustive"
-              delay={0.18}
-            >
-              We handpick the best yield opportunities, focusing on quality over quantity to ensure optimal returns and minimal risk.
+            <Card title="Curated, not exhaustive" delay={0.18}>
+              We handpick the best yield opportunities, focusing on quality over
+              quantity to ensure optimal returns and minimal risk.
             </Card>
 
-            <Card
-              title="Transparent metrics"
-              delay={0.24}
-            >
-              Real-time APR/APY calculations with comprehensive risk analysis, audited protocols, and clear performance tracking.
+            <Card title="Transparent metrics" delay={0.24}>
+              Real-time APR/APY calculations with comprehensive risk analysis,
+              audited protocols, and clear performance tracking.
             </Card>
 
             <div className="space-y-6 md:space-y-7">
-              <Card
-                title="Non-custodial by design"
-                delay={0.30}
-              >
-                Your funds remain in your control at all times. We never hold your assets—just facilitate secure, optimized deposits.
+              <Card title="Non-custodial by design" delay={0.3}>
+                Your funds remain in your control at all times. We never hold
+                your assets—just facilitate secure, optimized deposits.
               </Card>
 
-              <Card
-                title="Solution-oriented development"
-                delay={0.36}
-              >
-                Built by DeFi natives solving real yield farming challenges. Every feature addresses actual user needs and market gaps.
+              <Card title="Solution-oriented development" delay={0.36}>
+                Built by DeFi natives solving real yield farming challenges.
+                Every feature addresses actual user needs and market gaps.
               </Card>
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

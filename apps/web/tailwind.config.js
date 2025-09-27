@@ -4,14 +4,14 @@ module.exports = {
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./contexts/**/*.{ts,tsx}",
-    "./lib/**/*.{ts,tsx}"
+    "./lib/**/*.{ts,tsx}",
   ],
   theme: {
     container: { center: true },
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)'],
-        display: ['var(--font-display)'],
+        sans: ["var(--font-inter)"],
+        display: ["var(--font-display)"],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -6,4 +6,3 @@ export function normalizeRisk(input: string): Risk {
   if (v.startsWith("med")) return "Medium";
   return "High";
 }
-

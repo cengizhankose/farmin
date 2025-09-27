@@ -15,7 +15,9 @@ export function Marquee({ progress = 0 }: { progress?: number }) {
         >
           <div className="text-center mb-8">
             <div className="typo-eyebrow">Live Opportunities</div>
-            <h2 className="typo-h2">Real-time yield opportunities flowing through the ecosystem</h2>
+            <h2 className="typo-h2">
+              Real-time yield opportunities flowing through the ecosystem
+            </h2>
           </div>
           <div className="marquee-group">
             <CardsGrid progress={progress} />

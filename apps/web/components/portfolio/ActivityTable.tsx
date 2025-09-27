@@ -14,7 +14,14 @@ type RedirectEntry = {
   txid?: string;
   action?: "Deposit" | "Withdraw";
 };
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/primitives";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/primitives";
 import { colors } from "@/lib/colors";
 
 type SortKey = "ts" | "amount" | "apr" | "days" | "est";
@@ -27,7 +34,10 @@ export const ActivityTable: React.FC<{
   highlightTs?: number | null;
 }> = ({ rows, sort, onSortChange, highlightTs = null }) => {
   const sorted = React.useMemo(() => {
-    const withEst = rows.map((r) => ({ ...r, est: r.amount * (r.apr / 100) * (r.days / 365) }));
+    const withEst = rows.map((r) => ({
+      ...r,
+      est: r.amount * (r.apr / 100) * (r.days / 365),
+    }));
     const dir = sort.dir === "asc" ? 1 : -1;
     return [...withEst].sort((a, b) => {
       const va = a[sort.key];
@@ -43,7 +53,17 @@ export const ActivityTable: React.FC<{
     const caret = active ? (sort.dir === "asc" ? "↑" : "↓") : "";
     const className = `${alignRight ? "text-right" : "text-left"}`;
     return (
-      <TableHead className={className} onClick={() => key && onSortChange({ key, dir: active && sort.dir === "desc" ? "asc" : "desc" })} style={{ cursor: key ? "pointer" : "default" }}>
+      <TableHead
+        className={className}
+        onClick={() =>
+          key &&
+          onSortChange({
+            key,
+            dir: active && sort.dir === "desc" ? "asc" : "desc",
+          })
+        }
+        style={{ cursor: key ? "pointer" : "default" }}
+      >
         {label} {caret}
       </TableHead>
     );
@@ -69,11 +89,21 @@ export const ActivityTable: React.FC<{
             const when = new Date(r.ts).toLocaleString();
             const highlight = highlightTs && r.ts >= highlightTs;
             return (
-              <TableRow key={idx} className={highlight ? "bg-amber-50 transition-colors" : undefined}>
+              <TableRow
+                key={idx}
+                className={
+                  highlight ? "bg-amber-50 transition-colors" : undefined
+                }
+              >
                 <TableCell>{when}</TableCell>
                 <TableCell>{r.protocol}</TableCell>
                 <TableCell>
-                  <Link href={`/opportunities/${r.id}`} className={`text-[${colors.emerald[700]}] hover:underline`}>{r.pair}</Link>
+                  <Link
+                    href={`/opportunities/${r.id}`}
+                    className={`text-[${colors.emerald[700]}] hover:underline`}
+                  >
+                    {r.pair}
+                  </Link>
                 </TableCell>
                 <TableCell className="text-right">${r.amount}</TableCell>
                 <TableCell className="text-right">{r.apr}%</TableCell>

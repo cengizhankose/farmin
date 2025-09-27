@@ -6,10 +6,14 @@ import clsx from "clsx";
 
 type RiskKey = "all" | "low" | "medium" | "high";
 type SortKey =
-  | "apr-desc" | "apr-asc"
-  | "apy-desc" | "apy-asc"
-  | "tvl-desc" | "tvl-asc"
-  | "risk-desc" | "risk-asc";
+  | "apr-desc"
+  | "apr-asc"
+  | "apy-desc"
+  | "apy-asc"
+  | "tvl-desc"
+  | "tvl-asc"
+  | "risk-desc"
+  | "risk-asc";
 
 export default function AnimatedFilterBar({
   defaultRisk = "all",
@@ -32,7 +36,8 @@ export default function AnimatedFilterBar({
     <div
       className={clsx(
         "w-full",
-        sticky && "sticky top-0 z-30 backdrop-blur bg-white/70 supports-[backdrop-filter]:bg-white/60"
+        sticky &&
+          "sticky top-0 z-30 backdrop-blur bg-white/70 supports-[backdrop-filter]:bg-white/60",
       )}
       role="toolbar"
       aria-label="Filters and sorting"
@@ -48,7 +53,7 @@ export default function AnimatedFilterBar({
             className="w-full rounded-full border border-black/5 bg-[var(--sand-50)] px-4 py-2 text-sm text-zinc-900 placeholder-zinc-500 shadow-sm transition-colors focus:border-[var(--brand-orange)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-orange)]/20"
           />
         </div>
-        
+
         {/* Filters - right side */}
         <div className="flex items-center gap-3 ml-auto">
           <Menu
@@ -65,22 +70,34 @@ export default function AnimatedFilterBar({
           <Menu
             label="Sort"
             items={[
-              { group: "APR", options: [
-                { key: "apr-desc", label: "High → Low" },
-                { key: "apr-asc", label: "Low → High" },
-              ]},
-              { group: "APY", options: [
-                { key: "apy-desc", label: "High → Low" },
-                { key: "apy-asc", label: "Low → High" },
-              ]},
-              { group: "TVL", options: [
-                { key: "tvl-desc", label: "High → Low" },
-                { key: "tvl-asc", label: "Low → High" },
-              ]},
-              { group: "Risk", options: [
-                { key: "risk-desc", label: "High → Low" },
-                { key: "risk-asc", label: "Low → High" },
-              ]},
+              {
+                group: "APR",
+                options: [
+                  { key: "apr-desc", label: "High → Low" },
+                  { key: "apr-asc", label: "Low → High" },
+                ],
+              },
+              {
+                group: "APY",
+                options: [
+                  { key: "apy-desc", label: "High → Low" },
+                  { key: "apy-asc", label: "Low → High" },
+                ],
+              },
+              {
+                group: "TVL",
+                options: [
+                  { key: "tvl-desc", label: "High → Low" },
+                  { key: "tvl-asc", label: "Low → High" },
+                ],
+              },
+              {
+                group: "Risk",
+                options: [
+                  { key: "risk-desc", label: "High → Low" },
+                  { key: "risk-asc", label: "Low → High" },
+                ],
+              },
             ]}
             onSelect={(k) => onSortChange?.(k as SortKey)}
             defaultKey={defaultSort}
@@ -139,7 +156,7 @@ function Menu({
           open
             ? activeStyles
             : "bg-[var(--sand-50)] border border-black/5 text-zinc-800 ring-black/5 hover:bg-white hover:shadow-sm",
-          "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--brand-orange)]/20"
+          "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--brand-orange)]/20",
         )}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -159,12 +176,17 @@ function Menu({
             transition={{ duration: 0.18 }}
             className={clsx(
               "absolute left-0 mt-2 rounded-2xl bg-white shadow-lg ring-1 ring-black/5",
-              wide ? "w-64" : "w-48"
+              wide ? "w-64" : "w-48",
             )}
           >
             {Array.isArray(items) && items.length > 0 && "group" in items[0] ? (
               <div className="max-h-[60vh] overflow-auto p-2">
-                {(items as { group: string; options: { key: string; label: string }[] }[]).map((g) => (
+                {(
+                  items as {
+                    group: string;
+                    options: { key: string; label: string }[];
+                  }[]
+                ).map((g) => (
                   <div key={g.group} className="mb-1 last:mb-0">
                     <div className="px-2 py-1 text-[11px] uppercase tracking-wide text-neutral-500">
                       {g.group}
@@ -225,7 +247,7 @@ function MenuItem({
         "flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm",
         active
           ? "bg-neutral-100 text-neutral-900"
-          : "text-neutral-700 hover:bg-neutral-50"
+          : "text-neutral-700 hover:bg-neutral-50",
       )}
     >
       <span>{label}</span>
@@ -244,7 +266,13 @@ function Chevron({ open }: { open: boolean }) {
       animate={{ rotate: open ? 180 : 0 }}
       transition={{ duration: 0.18 }}
     >
-      <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path
+        d="M1 1l4 4 4-4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+      />
     </motion.svg>
   );
 }

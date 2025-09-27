@@ -7,9 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "stacks:prepare": "pnpm install @stacks/connect @stacks/transactions @stacks/network"
   },
   "dependencies": {
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
     "@tanstack/react-query": "^5.89.0",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
@@ -23,10 +26,11 @@
     "react-dom": "^18.3.1",
     "recharts": "^3.2.1",
     "sonner": "^1.5.0",
+    "three": "^0.165.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@types/node": "^20.11.30",
+    "@types/node": "^20.19.17",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "autoprefixer": "^10.4.19",

@@ -8,41 +8,41 @@ interface MetricsCardProps {
   title: string;
   value: number | string;
   change?: number;
-  changeType?: 'positive' | 'negative' | 'neutral';
+  changeType?: "positive" | "negative" | "neutral";
   icon?: React.ReactNode;
   description?: string;
-  format?: 'currency' | 'percentage' | 'number' | 'custom';
+  format?: "currency" | "percentage" | "number" | "custom";
   precision?: number;
-  trend?: 'up' | 'down' | 'stable';
+  trend?: "up" | "down" | "stable";
 }
 
 const MetricsCard: React.FC<MetricsCardProps> = ({
   title,
   value,
   change,
-  changeType = 'neutral',
+  changeType = "neutral",
   icon,
   description,
-  format = 'number',
+  format = "number",
   precision = 2,
-  trend
+  trend,
 }) => {
   const formatValue = (val: number | string): string => {
-    if (typeof val === 'string') return val;
+    if (typeof val === "string") return val;
 
     switch (format) {
-      case 'currency':
-        return new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD',
-          notation: val > 1000000 ? 'compact' : 'standard'
+      case "currency":
+        return new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+          notation: val > 1000000 ? "compact" : "standard",
         }).format(val);
-      case 'percentage':
+      case "percentage":
         return `${val.toFixed(precision)}%`;
-      case 'number':
-        return new Intl.NumberFormat('en-US', {
-          notation: val > 1000000 ? 'compact' : 'standard',
-          maximumFractionDigits: precision
+      case "number":
+        return new Intl.NumberFormat("en-US", {
+          notation: val > 1000000 ? "compact" : "standard",
+          maximumFractionDigits: precision,
         }).format(val);
       default:
         return val.toString();
@@ -52,9 +52,9 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
   const getTrendIcon = () => {
     if (!trend) return null;
     switch (trend) {
-      case 'up':
+      case "up":
         return <ArrowUp className="h-4 w-4 text-green-400" />;
-      case 'down':
+      case "down":
         return <ArrowDown className="h-4 w-4 text-red-400" />;
       default:
         return <Minus className="h-4 w-4 text-gray-400" />;
@@ -62,10 +62,10 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
   };
 
   const getChangeColor = () => {
-    if (!change && change !== 0) return 'text-gray-400';
-    if (changeType === 'positive') return 'text-green-400';
-    if (changeType === 'negative') return 'text-red-400';
-    return 'text-gray-400';
+    if (!change && change !== 0) return "text-gray-400";
+    if (changeType === "positive") return "text-green-400";
+    if (changeType === "negative") return "text-red-400";
+    return "text-gray-400";
   };
 
   return (
@@ -86,9 +86,10 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
         {trend && getTrendIcon()}
       </div>
 
-      {(change !== undefined && change !== null) && (
+      {change !== undefined && change !== null && (
         <div className={`text-xs font-medium ${getChangeColor()}`}>
-          {change > 0 ? '+' : ''}{formatValue(change)}
+          {change > 0 ? "+" : ""}
+          {formatValue(change)}
         </div>
       )}
 
@@ -109,24 +110,32 @@ export const APRMetricsCard: React.FC<{
     title="APR"
     value={apr}
     change={change24h}
-    changeType={change24h && change24h > 0 ? 'positive' : 'negative'}
+    changeType={change24h && change24h > 0 ? "positive" : "negative"}
     format="percentage"
     precision={2}
-    trend={change24h && change24h > 0 ? 'up' : change24h && change24h < 0 ? 'down' : 'stable'}
-    description={volatility ? `Volatility: ${(volatility * 100).toFixed(1)}%` : undefined}
+    trend={
+      change24h && change24h > 0
+        ? "up"
+        : change24h && change24h < 0
+          ? "down"
+          : "stable"
+    }
+    description={
+      volatility ? `Volatility: ${(volatility * 100).toFixed(1)}%` : undefined
+    }
   />
 );
 
 export const TVLMetricsCard: React.FC<{
   tvl: number;
   change24h?: number;
-  trend?: 'up' | 'down' | 'stable';
+  trend?: "up" | "down" | "stable";
 }> = ({ tvl, change24h, trend }) => (
   <MetricsCard
     title="TVL"
     value={tvl}
     change={change24h}
-    changeType={change24h && change24h > 0 ? 'positive' : 'negative'}
+    changeType={change24h && change24h > 0 ? "positive" : "negative"}
     format="currency"
     trend={trend}
   />
@@ -141,7 +150,7 @@ export const VolumeMetricsCard: React.FC<{
     title="Volume"
     value={volume}
     change={change24h}
-    changeType={change24h && change24h > 0 ? 'positive' : 'negative'}
+    changeType={change24h && change24h > 0 ? "positive" : "negative"}
     format="currency"
     description={participants ? `${participants} participants` : undefined}
   />
@@ -156,7 +165,7 @@ export const ParticipantMetricsCard: React.FC<{
     title="Participants"
     value={participants}
     change={growth}
-    changeType={growth && growth > 0 ? 'positive' : 'negative'}
+    changeType={growth && growth > 0 ? "positive" : "negative"}
     format="number"
     description={newUsers ? `${newUsers} new users` : undefined}
   />

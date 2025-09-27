@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import MarketMetricCard from "./MarketMetricCard";
 
 export function Market({ progress = 0 }: { progress?: number }) {
   return (
@@ -12,26 +13,43 @@ export function Market({ progress = 0 }: { progress?: number }) {
             transition: "transform 120ms linear",
           }}
         >
-          <div className="typo-eyebrow">Market Environment</div>
-          <h2 className="typo-h2">Built with awareness of liquidity, risk, and opportunity</h2>
+          <div className="typo-eyebrow text-white">Market Environment</div>
+          <h2 className="typo-h2 text-white">
+            Built with awareness of liquidity, risk, and opportunity
+          </h2>
           <p className="text-white/80 text-base leading-relaxed max-w-3xl mx-auto mt-6">
-            High APR in DeFi is often illusory. We match high returns with solid liquidity,
-            street-tested mechanics, and risk measurement. We've built an infrastructure that
-            tracks the market and responds immediately to anomalies.
+            High APR in DeFi is often illusory. We match high returns with solid
+            liquidity, street-tested mechanics, and risk measurement. We've
+            built an infrastructure that tracks the market and responds
+            immediately to anomalies.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-            <div className="rounded-2xl card-market p-6">
-              <h3 className="typo-card-h">Why TVL matters</h3>
-              <p className="typo-card-p">TVL → slippage & withdrawal safety</p>
-            </div>
-            <div className="rounded-2xl card-market p-6">
-              <h3 className="typo-card-h">Why volume matters</h3>
-              <p className="typo-card-p">High turnover = easy entry/exit</p>
-            </div>
-            <div className="rounded-2xl card-market p-6">
-              <h3 className="typo-card-h">Why risk scoring</h3>
-              <p className="typo-card-p">Risk explained with sub-metrics, not a single number</p>
-            </div>
+            <MarketMetricCard
+              className="h-[250px]"
+              primaryText="Withdraw anytime with zero friction & no hidden fees"
+              secondaryText=""
+            />
+            <MarketMetricCard
+              className="h-[250px]"
+              primaryText="$50M+ liquidity analyzed daily"
+              secondaryText=""
+            />
+            <MarketMetricCard
+              className="h-[250px]"
+              primaryText="Insurance-backed, multi-metric risk score"
+              secondaryText=""
+            />
+          </div>
+          <div className="mt-12">
+            <h3 className="typo-h3 text-white mb-4">
+              First insurance-integrated yield aggregator on Stacks
+            </h3>
+            <p className="text-white/70 text-sm">
+              Not just yield — audited safety layer.
+            </p>
+            <p className="text-white/60 text-xs mt-3">
+              More than metrics. A new standard of safety in DeFi.
+            </p>
           </div>
         </div>
       </div>

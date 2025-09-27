@@ -1,4 +1,7 @@
-export type CSVRow = Record<string, string | number | boolean | null | undefined>;
+export type CSVRow = Record<
+  string,
+  string | number | boolean | null | undefined
+>;
 
 export function toCSV(rows: CSVRow[], headers?: string[]): string {
   if (!rows.length) return "";
@@ -27,4 +30,3 @@ export function downloadCSV(fileName: string, csv: string) {
   a.click();
   URL.revokeObjectURL(url);
 }
-

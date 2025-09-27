@@ -1,4 +1,8 @@
-export function protocolLogo(protocol: string): { letter: string; bg: string; fg: string } {
+export function protocolLogo(protocol: string): {
+  letter: string;
+  bg: string;
+  fg: string;
+} {
   const p = protocol.toLowerCase();
   // Lightweight color coding per protocol
   const map: Record<string, { bg: string; fg: string }> = {
@@ -9,5 +13,9 @@ export function protocolLogo(protocol: string): { letter: string; bg: string; fg
     zest: { bg: "#3b0764", fg: "#e9d5ff" },
   };
   const style = map[p] || { bg: "#111827", fg: "#e5e7eb" };
-  return { letter: protocol[0]?.toUpperCase() || "?", bg: style.bg, fg: style.fg };
+  return {
+    letter: protocol[0]?.toUpperCase() || "?",
+    bg: style.bg,
+    fg: style.fg,
+  };
 }

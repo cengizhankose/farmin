@@ -3,10 +3,11 @@
 Place `ClashDisplay-Variable.woff2` in this directory to enable the Clash Display font.
 
 The font is referenced in `styles/globals.css` at:
+
 ```css
 @font-face {
-  font-family: 'Clash Display';
-  src: url('/fonts/ClashDisplay-Variable.woff2') format('woff2-variations');
+  font-family: "Clash Display";
+  src: url("/fonts/ClashDisplay-Variable.woff2") format("woff2-variations");
   font-weight: 200 700;
   font-style: normal;
   font-display: swap;

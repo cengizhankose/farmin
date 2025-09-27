@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import * as React from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
-export type ChainKey = 'ethereum' | 'solana';
+export type ChainKey = "stacks" | "ethereum" | "solana";
 
 type Props = {
   defaultChain?: ChainKey;
@@ -13,12 +13,13 @@ type Props = {
 };
 
 const CHAINS: Array<{ key: ChainKey; label: string; disabled: boolean }> = [
-  { key: 'ethereum', label: 'Ethereum', disabled: true },
-  { key: 'solana', label: 'Solana', disabled: true },
+  { key: "stacks", label: "Stacks", disabled: false },
+  { key: "ethereum", label: "Ethereum", disabled: true },
+  { key: "solana", label: "Solana", disabled: true },
 ];
 
 export function ChainFilterPills({
-  defaultChain = 'ethereum',
+  defaultChain = "stacks",
   onChange,
   sticky = true,
   className,
@@ -27,12 +28,14 @@ export function ChainFilterPills({
   const reduceMotion = useReducedMotion();
 
   const wrapperClasses = [
-    'w-full',
-    sticky ? 'sticky top-0 z-20 backdrop-blur bg-white/70 border-t border-b border-neutral-200 supports-[backdrop-filter]:bg-white/60' : '',
-    className ?? '',
+    "w-full",
+    sticky
+      ? "sticky top-0 z-20 backdrop-blur bg-white/70 border-t border-b border-neutral-200 supports-[backdrop-filter]:bg-white/60"
+      : "",
+    className ?? "",
   ]
     .filter(Boolean)
-    .join(' ');
+    .join(" ");
 
   const barAnim = reduceMotion
     ? {}
@@ -55,20 +58,21 @@ export function ChainFilterPills({
           {CHAINS.map(({ key, label, disabled }) => {
             const isActive = key === active;
             const base =
-              'inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium ' +
-              'transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
-            const activeCls = 'text-white ring-[var(--brand-orange)] hover:bg-[var(--brand-orange-700)]';
-            const inactiveCls = 'text-white hover:bg-white/15 ring-white/20';
-            const disabledCls = 'opacity-50 cursor-not-allowed';
+              "inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium " +
+              "transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
+            const activeCls =
+              "text-white ring-[var(--brand-orange)] hover:bg-[var(--brand-orange-700)]";
+            const inactiveCls = "text-white hover:bg-white/15 ring-white/20";
+            const disabledCls = "opacity-50 cursor-not-allowed";
 
             const classes = [
               base,
               disabled ? disabledCls : isActive ? activeCls : inactiveCls,
-            ].join(' ');
+            ].join(" ");
 
-            const buttonStyle = isActive 
-              ? { backgroundColor: 'var(--brand-orange)' } 
-              : { backgroundColor: 'rgba(255, 255, 255, 0.1)' };
+            const buttonStyle = isActive
+              ? { backgroundColor: "var(--brand-orange)" }
+              : { backgroundColor: "rgba(255, 255, 255, 0.1)" };
 
             return (
               <button
@@ -79,7 +83,7 @@ export function ChainFilterPills({
                 className={classes}
                 style={buttonStyle}
                 disabled={disabled}
-                title={disabled ? 'Coming soon' : undefined}
+                title={disabled ? "Coming soon" : undefined}
                 onClick={() => handleClick(key, disabled)}
               >
                 {label}

@@ -1,9 +1,22 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-type Particle = { x: number; y: number; r: number; a: number; vy: number; ax: number; life: number; maxLife: number };
+type Particle = {
+  x: number;
+  y: number;
+  r: number;
+  a: number;
+  vy: number;
+  ax: number;
+  life: number;
+  maxLife: number;
+};
 
-export default function SoftParticles({ className = "" }: { className?: string }) {
+export default function SoftParticles({
+  className = "",
+}: {
+  className?: string;
+}) {
   const ref = React.useRef<HTMLCanvasElement | null>(null);
   const rafRef = React.useRef<number | null>(null);
   const particlesRef = React.useRef<Particle[]>([]);
@@ -23,7 +36,8 @@ export default function SoftParticles({ className = "" }: { className?: string }
     // Only run on client side
     if (!isClient) return;
 
-    const c = ref.current; if (!c) return;
+    const c = ref.current;
+    if (!c) return;
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     c.width = Math.floor(c.clientWidth * dpr);
     c.height = Math.floor(c.clientHeight * dpr);
@@ -60,11 +74,16 @@ export default function SoftParticles({ className = "" }: { className?: string }
     // Only run on client side
     if (!isClient) return;
 
-    const c = ref.current; if (!c) return;
-    const ctx = c.getContext("2d"); if (!ctx) return;
+    const c = ref.current;
+    if (!c) return;
+    const ctx = c.getContext("2d");
+    if (!ctx) return;
     let last = performance.now();
 
-    const onResize = () => { resize(); spawn(c.clientWidth, c.clientHeight); };
+    const onResize = () => {
+      resize();
+      spawn(c.clientWidth, c.clientHeight);
+    };
     onResize();
     window.addEventListener("resize", onResize);
 
@@ -72,10 +91,11 @@ export default function SoftParticles({ className = "" }: { className?: string }
       rafRef.current = requestAnimationFrame(loop);
       const dt = Math.min(1 / 30, (t - last) / 1000); // clamp ~30fps
       last = t;
-      if (typeof document !== 'undefined' && document.hidden) return; // pause when hidden
+      if (typeof document !== "undefined" && document.hidden) return; // pause when hidden
 
       const dpr = Math.min(2, window.devicePixelRatio || 1);
-      const w = c.width; const h = c.height;
+      const w = c.width;
+      const h = c.height;
       ctx.clearRect(0, 0, w, h);
       ctx.globalCompositeOperation = "lighter";
 
@@ -123,4 +143,3 @@ export default function SoftParticles({ className = "" }: { className?: string }
     />
   );
 }
-

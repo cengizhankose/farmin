@@ -5,7 +5,11 @@ import { motion, useReducedMotion } from "framer-motion";
 import InsetBackgroundFx from "./_fx/InsetBackgroundFx";
 import { useSectionInView } from "./_fx/useSectionInView";
 
-export type CTA = { label: string; href: string; variant?: "primary" | "ghost" };
+export type CTA = {
+  label: string;
+  href: string;
+  variant?: "primary" | "ghost";
+};
 
 type Props = {
   kicker?: string;
@@ -25,33 +29,49 @@ export default function InsetShowcase({
   className,
 }: Props) {
   const prefersReducedMotion = useReducedMotion();
-  const { ref, inView } = useSectionInView<HTMLDivElement>({ threshold: 0.3, once: true });
+  const { ref, inView } = useSectionInView<HTMLDivElement>({
+    threshold: 0.3,
+    once: true,
+  });
 
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
-  const onMouseMove = useCallback((e: React.MouseEvent) => {
-    if (prefersReducedMotion) return;
-    const rect = wrapRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    setParallax({ x: e.clientX - cx, y: e.clientY - cy });
-  }, [prefersReducedMotion]);
+  const onMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (prefersReducedMotion) return;
+      const rect = wrapRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      setParallax({ x: e.clientX - cx, y: e.clientY - cy });
+    },
+    [prefersReducedMotion],
+  );
   const onMouseLeave = useCallback(() => {
     if (prefersReducedMotion) return;
     setParallax({ x: 0, y: 0 });
   }, [prefersReducedMotion]);
 
-  const fadeUpCls = useMemo(() => (inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"), [inView]);
-  const fadeInCls = useMemo(() => (inView ? "opacity-100" : "opacity-0"), [inView]);
+  const fadeUpCls = useMemo(
+    () => (inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"),
+    [inView],
+  );
+  const fadeInCls = useMemo(
+    () => (inView ? "opacity-100" : "opacity-0"),
+    [inView],
+  );
 
   return (
-    <section className={"relative mx-auto max-w-[1200px] " + (className ?? "")} aria-label={title || kicker}>
+    <section
+      className={"relative mx-auto max-w-[1200px] " + (className ?? "")}
+      aria-label={title || kicker}
+    >
       <motion.div
-        ref={((node: HTMLDivElement | null) => {
+        ref={(node: HTMLDivElement | null) => {
           (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-          (wrapRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-        })}
+          (wrapRef as React.MutableRefObject<HTMLDivElement | null>).current =
+            node;
+        }}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
         className={[
@@ -67,18 +87,48 @@ export default function InsetShowcase({
         animate={inView ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: 0.28, ease: "easeOut" }}
       >
-        <InsetBackgroundFx parallax={parallax} reduceMotion={!!prefersReducedMotion} className={!prefersReducedMotion ? "inset-sweep" : undefined} />
+        <InsetBackgroundFx
+          parallax={parallax}
+          reduceMotion={!!prefersReducedMotion}
+          className={!prefersReducedMotion ? "inset-sweep" : undefined}
+        />
 
         <div className="relative grid grid-cols-12 gap-y-10 lg:gap-y-0 lg:gap-x-10 py-14 md:py-20">
           <div className="col-span-12 lg:col-span-6 py-0 px-6 md:px-10">
             {kicker && (
-              <div className={["text-sm uppercase tracking-[.18em] text-white/60", prefersReducedMotion ? "" : fadeInCls, "transition-all duration-300"].join(" ")}>{kicker}</div>
+              <div
+                className={[
+                  "text-sm uppercase tracking-[.18em] text-white/60",
+                  prefersReducedMotion ? "" : fadeInCls,
+                  "transition-all duration-300",
+                ].join(" ")}
+              >
+                {kicker}
+              </div>
             )}
             {title && (
-              <h2 className={["mt-3 font-semibold text-white tracking-tight", "text-5xl md:text-6xl", prefersReducedMotion ? "" : fadeUpCls, "transition-all duration-300"].join(" ")}>{title}</h2>
+              <h2
+                className={[
+                  "mt-3 font-semibold text-white tracking-tight",
+                  "text-5xl md:text-6xl",
+                  prefersReducedMotion ? "" : fadeUpCls,
+                  "transition-all duration-300",
+                ].join(" ")}
+              >
+                {title}
+              </h2>
             )}
             {body && (
-              <p className={["mt-5 text-base md:text-lg text-white/80 max-w-prose", prefersReducedMotion ? "" : fadeUpCls, "transition-all duration-300"].join(" ")} style={{ transitionDelay: !prefersReducedMotion ? "70ms" : undefined }}>
+              <p
+                className={[
+                  "mt-5 text-base md:text-lg text-white/80 max-w-prose",
+                  prefersReducedMotion ? "" : fadeUpCls,
+                  "transition-all duration-300",
+                ].join(" ")}
+                style={{
+                  transitionDelay: !prefersReducedMotion ? "70ms" : undefined,
+                }}
+              >
                 {body}
               </p>
             )}
@@ -96,7 +146,11 @@ export default function InsetShowcase({
                       prefersReducedMotion ? "" : fadeUpCls,
                       "transition-all duration-300",
                     ].join(" ")}
-                    style={{ transitionDelay: !prefersReducedMotion ? `${70 * (i + 1)}ms` : undefined }}
+                    style={{
+                      transitionDelay: !prefersReducedMotion
+                        ? `${70 * (i + 1)}ms`
+                        : undefined,
+                    }}
                   >
                     {cta.label}
                   </a>
@@ -108,8 +162,16 @@ export default function InsetShowcase({
           <div className="col-span-12 lg:col-span-6 p-6 md:p-10">
             <motion.div
               className="will-change-transform"
-              initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.98, filter: "blur(2px)" }}
-              animate={inView ? { opacity: 1, scale: 1, filter: "blur(0px)" } : undefined}
+              initial={
+                prefersReducedMotion
+                  ? undefined
+                  : { opacity: 0, scale: 0.98, filter: "blur(2px)" }
+              }
+              animate={
+                inView
+                  ? { opacity: 1, scale: 1, filter: "blur(0px)" }
+                  : undefined
+              }
               transition={{ duration: 0.24, ease: "easeOut" }}
             >
               {rightSlot ?? (

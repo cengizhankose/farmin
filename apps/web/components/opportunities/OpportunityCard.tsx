@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/router";
-import { CHAINS } from "@/lib/chains";
+// Wallet integration removed - chains configuration disabled
+// import { CHAINS } from "@/lib/chains";
 // Temporarily removed risk components due to TypeScript errors
 // import { RiskTooltip } from "@/components/risk/RiskTooltip";
 // import { RiskScore } from "@shared/core";
@@ -20,7 +21,7 @@ type Opportunity = {
   lastUpdated: string;
   originalUrl: string;
   summary: string;
-  source?: 'live' | 'demo';
+  source?: "live" | "demo";
   logoUrl?: string;
 };
 import {
@@ -39,10 +40,9 @@ export const OpportunityCard: React.FC<
   { data: Opportunity } & { disabled?: boolean } & { onClick?: () => void }
 > = ({ data, disabled, onClick }) => {
   const router = useRouter();
-  const chainLabel =
-    CHAINS.find((c) => c.id === data.chain)?.label || data.chain;
+  const chainLabel = data.chain; // Wallet integration removed - simplified chain display
   const [imgOk, setImgOk] = React.useState(Boolean(data.logoUrl));
-  const isArkadiko = data.protocol.toLowerCase() === 'arkadiko';
+  const isArkadiko = data.protocol.toLowerCase() === "arkadiko";
 
   // Risk components temporarily removed due to TypeScript errors
   // const getMockRiskScore = (): RiskScore => {
@@ -71,8 +71,8 @@ export const OpportunityCard: React.FC<
   // const riskScore = getMockRiskScore();
   const Action = (
     <Button
-      className="w-full text-white hover:bg-[var(--brand-orange-700)] transition-colors"
-      style={{ backgroundColor: 'var(--brand-orange)' }}
+      className="w-full text-white hover:bg-[var(--brand-purple-700)] transition-colors"
+      style={{ backgroundColor: "var(--brand-purple)" }}
       onClick={() =>
         onClick ? onClick() : router.push(`/opportunities/${data.id}`)
       }
@@ -90,8 +90,9 @@ export const OpportunityCard: React.FC<
 
   return (
     <Card
-      className={`group relative overflow-hidden rounded-3xl border border-black/5 bg-[var(--sand-50)] shadow-sm p-5 md:p-6 transition hover:-translate-y-1 hover:shadow-md ${disabled ? "opacity-60" : ""
-        }`}
+      className={`group relative overflow-hidden rounded-3xl border border-black/5 bg-[var(--sand-50)] shadow-sm p-5 md:p-6 transition hover:-translate-y-1 hover:shadow-md ${
+        disabled ? "opacity-60" : ""
+      }`}
     >
       {/* Curved corner logo badge */}
       {(() => {
@@ -102,14 +103,14 @@ export const OpportunityCard: React.FC<
           <div
             className="absolute grid place-items-center"
             style={{
-              top: '-3px',
-              left: '-3px',
+              top: "-3px",
+              left: "-3px",
               width: `${size.w}px`,
               height: `${size.h}px`,
-              background: 'var(--badge-lilac)',
-              borderRadius: '18px 0px 18px 0px',
-              boxShadow: '0 4px 10px rgba(0,0,0,.06)',
-              overflow: 'hidden'
+              background: "var(--badge-lilac)",
+              borderRadius: "18px 0px 18px 0px",
+              boxShadow: "0 4px 10px rgba(0,0,0,.06)",
+              overflow: "hidden",
             }}
             title={data.protocol}
             aria-hidden
@@ -121,12 +122,12 @@ export const OpportunityCard: React.FC<
                 src="/logos/arkadiko.svg"
                 alt="Arkadiko logo"
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  objectPosition: 'center',
-                  display: 'block',
-                  borderRadius: 'inherit'
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  objectPosition: "center",
+                  display: "block",
+                  borderRadius: "inherit",
                 }}
               />
             ) : imgOk && data.logoUrl ? (
@@ -135,17 +136,20 @@ export const OpportunityCard: React.FC<
                 src={data.logoUrl}
                 alt={data.protocol}
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  objectPosition: 'center',
-                  display: 'block',
-                  borderRadius: 'inherit'
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  objectPosition: "center",
+                  display: "block",
+                  borderRadius: "inherit",
                 }}
                 onError={() => setImgOk(false)}
               />
             ) : (
-              <span className="text-sm md:text-base font-semibold" style={{ color: l.fg }}>
+              <span
+                className="text-sm md:text-base font-semibold"
+                style={{ color: l.fg }}
+              >
                 {l.letter}
               </span>
             )}
@@ -163,7 +167,9 @@ export const OpportunityCard: React.FC<
           </div>
         </div>
         {/* RiskTooltip temporarily removed due to TypeScript errors */}
-        <Badge className={`${riskColors[data.risk]} border-0 text-xs font-medium`}>
+        <Badge
+          className={`${riskColors[data.risk]} border-0 text-xs font-medium`}
+        >
           {data.risk}
         </Badge>
       </div>
@@ -171,19 +177,25 @@ export const OpportunityCard: React.FC<
       {/* Metrics */}
       <div className="mt-4 grid grid-cols-3 gap-4">
         <div>
-          <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">APR</div>
+          <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">
+            APR
+          </div>
           <div className="text-sm md:text-base font-semibold leading-tight text-zinc-900 tabular-nums">
             {formatPct(data.apr, 2)}
           </div>
         </div>
         <div>
-          <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">APY</div>
+          <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">
+            APY
+          </div>
           <div className="text-sm md:text-base font-semibold leading-tight text-zinc-900 tabular-nums">
             {formatPct(data.apy, 2)}
           </div>
         </div>
         <div>
-          <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">TVL</div>
+          <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">
+            TVL
+          </div>
           <div className="text-sm md:text-base font-semibold leading-tight text-zinc-900 tabular-nums">
             {formatTVL(data.tvlUsd)}
           </div>

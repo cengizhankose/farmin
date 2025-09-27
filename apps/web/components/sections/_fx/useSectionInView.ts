@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from "react";
 
 type Options = {
   threshold?: number; // defaults to 0.3
-  once?: boolean;     // defaults to true
+  once?: boolean; // defaults to true
   rootMargin?: string;
 };
 
-export function useSectionInView<T extends HTMLElement = HTMLElement>(opts: Options = {}) {
+export function useSectionInView<T extends HTMLElement = HTMLElement>(
+  opts: Options = {},
+) {
   const { threshold = 0.3, once = true, rootMargin } = opts;
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
@@ -25,7 +27,7 @@ export function useSectionInView<T extends HTMLElement = HTMLElement>(opts: Opti
           if (once) observer.disconnect();
         }
       },
-      { threshold, rootMargin }
+      { threshold, rootMargin },
     );
 
     observer.observe(el);
@@ -34,4 +36,3 @@ export function useSectionInView<T extends HTMLElement = HTMLElement>(opts: Opti
 
   return { ref, inView } as const;
 }
-

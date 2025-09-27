@@ -1,100 +1,106 @@
 "use client";
+
 import React from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import HeroRightChart from "@/components/HeroRightChart";
-import { Badge } from "@/components/ui/primitives";
-import { generateMockSeries, kpiFromSeries } from "@/lib/mock/series";
+import TextPressure from "./TextPressure";
+import HeroSvg from "../herosvgs/planet";
+import HeroSvg2 from "../herosvgs/planetgrid";
+import Moon from "../herosvgs/moon";
+import NavigationButtons from "./NavigationButtons";
 
-export function Hero({ progress = 0 }: { progress?: number }) {
-  // Mock series for landing hero chart (deterministic seed for stability)
-  const series = React.useMemo(() => generateMockSeries(60, 1337), []);
-  const { apr7d, tvl, netPnl } = React.useMemo(() => kpiFromSeries(series), [series]);
+export default function Hero() {
+  const services = [
+    { label: "Comprehensive Analysis", state: "weak" },
+    { label: "Risk Analysis & Score", state: "weak" },
+    { label: "Insurance Integration", state: "strong" },
+    { label: "Yield Opportunities", state: "weak" },
+    { label: "Transparent TVL & APR/APY", state: "weak" },
+    { label: "Portfolio Management", state: "weak" },
+    { label: "One-Click Investment", state: "weak" },
+    { label: "Rewards Programs", state: "weak" },
+  ];
+
+  const [activeIndex, setActiveIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    if (services.length === 0) return;
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % services.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [services.length]);
+
   return (
-    <section className="relative h-full">
-      <div className="mx-auto flex h-full items-center max-w-6xl px-8 pt-20">
-        <div className="relative w-full overflow-hidden rounded-[28px] ring-1 ring-white/10 px-8 py-16 md:py-18 grad-breathe graph-bg noise-overlay">
-          <div
-            className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
-            style={{
-              transform: `translateY(${progress * 10}px)`,
-              transition: "transform 120ms linear",
-            }}
-          >
-            {/* Left column: H1, subcopy, badge, and actions */}
-            <div>
-              <motion.h1
-                className="typo-h1-hero"
-                aria-label="Build yield on Stacks — beautifully"
-                initial="hidden"
-                animate="visible"
-                variants={{ visible: { transition: { staggerChildren: 0.03 } } }}
-              >
-                {"Build yield on Stacks — beautifully".split("").map((ch, i) => (
-                  <motion.span
-                    key={i}
-                    variants={{ 
-                      hidden: { y: 8, opacity: 0 }, 
-                      visible: { y: 0, opacity: 1 } 
-                    }}
-                  >
-                    {ch}
-                  </motion.span>
-                ))}
-              </motion.h1>
-              <motion.p
-                className="text-white/85 text-lg leading-relaxed mt-6"
-                initial={{ y: 8, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.15, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                Curated, detailed yield analysis. Clear data and instant risk scoring
-              </motion.p>
+    <>
+      <NavigationButtons />
+      <div className="relative mx-auto max-w-[1400px] px-6 pt-10 md:pt-12 min-h-[80vh] z-30">
+        <div className="grid grid-cols-[0.46fr_0.54fr] md:grid-cols-[0.5fr_0.5fr] gap-6 min-h-[80vh]">
+          {/* SOL: Planet Panel (z-10) */}
+          <div className="relative">
+            {/* z-0: Background - Beams full screen behind everything */}
 
-              <motion.div
-                className="mt-4"
-                initial={{ y: 8, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.25, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Badge variant="outline" className="uppercase tracking-wide text-white border-white/30">one click deposit</Badge>
-              </motion.div>
-
-              <motion.div
-                className="mt-8 flex flex-wrap gap-4"
-                initial={{ y: 8, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.35, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Link
-                  href="/opportunities"
-                  className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium bg-[var(--brand-orange)] text-white typo-focus"
-                  aria-label="Explore yield opportunities"
-                >
-                  Explore opportunities →
-                </Link>
-                <Link
-                  href="/portfolio"
-                  className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium bg-white/10 text-white ring-1 ring-white/20 typo-focus"
-                  aria-label="View your portfolio"
-                >
-                  View portfolio →
-                </Link>
-              </motion.div>
-
-              <div className="typo-microcopy mt-4">
-                Non-custodial flows — funds stay in your wallet. Smart-contract limits and per-tx caps protect users.
+            {/* z-10: Sol panel / gezegen katmanı */}
+            <div
+              className="z-10 absolute inset-y-0 left-[-15%] flex w-[60%] items-center"
+              style={{ pointerEvents: "none" }}
+            >
+              <div className="relative flex w-full items-center justify-center">
+                <HeroSvg className="absolute left-0 top-1/2 -translate-y-1/2 h-[250vh] w-[160%] rotate-180" />
+                <HeroSvg2 className="absolute left-0 z-20 h-auto w-[160%] -translate-x-[0%] pt-12" />
+                <Moon className="absolute top-4/17 z-30 h-[120px] w-[120px] -translate-x-[-380%] -translate-y-1/2" />
               </div>
             </div>
-            
-            {/* Right column: animated chart card */}
-            <div className="relative pt-8">
-              <HeroRightChart series={series} apr7d={apr7d} tvl={tvl} netPnl={netPnl} />
-              <div id="token-dock" className="absolute right-4 top-4 h-[72px] w-[72px] rounded-xl bg-white/6 ring-1 ring-white/10 overflow-hidden z-10" aria-hidden></div>
+
+            {/* Services (z-30) - H1 ile aynı hizada */}
+            <div className="absolute top-[65%] left-[10%] z-30 space-y-3">
+              {services.map((it, index) => (
+                <div key={it.label} className="relative">
+                  <span className="text-[1rem] leading-[1.6] block text-black">
+                    {it.label}
+                  </span>
+                  <span
+                    className={`absolute top-1/2 -translate-y-1/2 left-60 h-[3px] rounded-full transition-all duration-500 right-5/5 ${
+                      index === activeIndex
+                        ? "w-14 bg-black/90 opacity-100"
+                        : "w-7 bg-black/50 opacity-70"
+                    }`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* SAĞ: İçerik (z-30) */}
+          <div className="relative z-30">
+            {/* Sağ metin bloğu */}
+            <div className="absolute right-[8%] top-[28%] max-w-xs text-right">
+              <p className="text-[1.1rem] leading-[1.6] text-white/85">
+                Comprehensive
+                <br />
+                Analysis Center
+              </p>
+            </div>
+
+            {/* H1 – en üst katmanda, stabil ölçüm (transform yok) */}
+            <div className="absolute left-[-14%] top-[82%] pointer-events-none z-40">
+              <div className="w-[120%]">
+                <TextPressure
+                  text="FarmIN"
+                  alpha={false}
+                  stroke={false}
+                  flex={true}
+                  weight={true}
+                  italic={true}
+                  width={true}
+                  textColor="white"
+                  minFontSize={96}
+                  maxFontSize={186}
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </>
   );
 }

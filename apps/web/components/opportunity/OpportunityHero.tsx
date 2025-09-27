@@ -67,7 +67,7 @@ export function OpportunityHero({ data }: OpportunityHeroProps) {
       {/* Gradient overlays */}
       <div
         className="absolute -left-24 -top-24 h-96 w-96 rounded-full"
-        style={{ background: colors.radial.orangeGlow }}
+        style={{ background: colors.radial.purpleGlow }}
       />
       <div
         className="absolute -bottom-16 -right-24 h-80 w-80 rounded-full"

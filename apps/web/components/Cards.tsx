@@ -38,7 +38,9 @@ type CardItem = {
   source?: "live" | "demo";
 };
 
-export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => {
+export const CardsGrid: React.FC<{ progress?: number }> = ({
+  progress = 0,
+}) => {
   const router = useRouter();
   const [hasAnimated, setHasAnimated] = React.useState(false);
   const [items, setItems] = React.useState<CardItem[] | null>(null);
@@ -56,16 +58,18 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
     let mounted = true;
     async function load() {
       try {
-        const resp = await fetch('/api/opportunities');
-        console.log("🚀 ~ load ~ resp:", resp)
+        const resp = await fetch("/api/opportunities");
+        console.log("🚀 ~ load ~ resp:", resp);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const json = await resp.json();
-        const ops: CardOpportunity[] = Array.isArray(json.items) ? json.items : [];
-        console.log("🚀 ~ load ~ ops:", ops)
+        const ops: CardOpportunity[] = Array.isArray(json.items)
+          ? json.items
+          : [];
+        console.log("🚀 ~ load ~ ops:", ops);
 
         // Prefer top by TVL, then APR
         const top = ops
-          .filter((o) => o.chain === 'stacks')
+          .filter((o) => o.chain === "stacks")
           .sort((a, b) => {
             const tvlDiff = b.tvlUsd - a.tvlUsd;
             if (tvlDiff !== 0) return tvlDiff;
@@ -84,14 +88,15 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
             color: logo.fg,
             letter: logo.letter,
             // Always use local Arkadiko logo to avoid broken/blank logos
-            logoUrl: o.protocol.toLowerCase() === 'arkadiko'
-              ? '/logos/arkadiko.svg'
-              : (o as unknown as { logoUrl?: string }).logoUrl,
+            logoUrl:
+              o.protocol.toLowerCase() === "arkadiko"
+                ? "/logos/arkadiko.svg"
+                : (o as unknown as { logoUrl?: string }).logoUrl,
             apr: Number(o.apr),
             apy: Number(o.apy),
             tvl: Math.round((o.tvlUsd / 1_000_000) * 10) / 10,
             lastUpdated: o.lastUpdated,
-            source: o.source || 'live',
+            source: o.source || "live",
           };
         });
 
@@ -104,7 +109,9 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
       }
     }
     load();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const data = items || [];
@@ -114,12 +121,14 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
   const renderRow = (row: CardItem[], direction: "left" | "right") => {
     // Duplicate content for seamless loop
     const doubled = [...row, ...row];
-    const animClass = direction === "right" ? "animate-marquee-rev" : "animate-marquee";
+    const animClass =
+      direction === "right" ? "animate-marquee-rev" : "animate-marquee";
     return (
       <div
         className="relative mb-8 flex overflow-hidden"
         style={{
-          maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+          maskImage:
+            "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
           WebkitMaskImage:
             "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
         }}
@@ -141,36 +150,50 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
                 <div
                   className="absolute grid place-items-center"
                   style={{
-                    top: '-3px',
-                    left: '-3px',
+                    top: "-3px",
+                    left: "-3px",
                     width: `46px`,
                     height: `46px`,
-                    background: 'var(--badge-lilac)',
-                    borderRadius: '18px 0px 18px 0px',
-                    boxShadow: '0 4px 10px rgba(0,0,0,.06)',
-                    overflow: 'hidden'
+                    background: "var(--badge-lilac)",
+                    borderRadius: "18px 0px 18px 0px",
+                    boxShadow: "0 4px 10px rgba(0,0,0,.06)",
+                    overflow: "hidden",
                   }}
                   title={it.protocol}
                   aria-hidden
                 >
-                  {it.protocol.toLowerCase() === 'arkadiko' ? (
+                  {it.protocol.toLowerCase() === "arkadiko" ? (
                     // Force local Arkadiko logo (no letter fallback)
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src="/logos/arkadiko.svg"
                       alt="Arkadiko logo"
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                      }}
                     />
                   ) : it.logoUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={it.logoUrl}
                       alt={it.protocol}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                      onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                      }}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display =
+                          "none";
+                      }}
                     />
                   ) : (
-                    <span className="text-sm md:text-base font-semibold" style={{ color: it.color }}>
+                    <span
+                      className="text-sm md:text-base font-semibold"
+                      style={{ color: it.color }}
+                    >
                       {it.letter}
                     </span>
                   )}
@@ -187,7 +210,9 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
                       {it.pair}
                     </div>
                   </div>
-                  <div className={`${riskColors[it.risk as keyof typeof riskColors]} border-0 text-xs font-medium px-2 py-1 rounded-md`}>
+                  <div
+                    className={`${riskColors[it.risk as keyof typeof riskColors]} border-0 text-xs font-medium px-2 py-1 rounded-md`}
+                  >
                     {it.risk}
                   </div>
                 </div>
@@ -195,7 +220,9 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
                 {/* Metrics */}
                 <div className="mt-4 grid grid-cols-3 gap-4">
                   <div>
-                    <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">APR</div>
+                    <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">
+                      APR
+                    </div>
                     <div className="text-sm md:text-base font-semibold leading-tight text-zinc-900 tabular-nums">
                       {hasAnimated ? (
                         <CountUp
@@ -211,7 +238,9 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
                     </div>
                   </div>
                   <div>
-                    <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">APY</div>
+                    <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">
+                      APY
+                    </div>
                     <div className="text-sm md:text-base font-semibold leading-tight text-zinc-900 tabular-nums">
                       {hasAnimated ? (
                         <CountUp
@@ -227,7 +256,9 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
                     </div>
                   </div>
                   <div>
-                    <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">TVL</div>
+                    <div className="text-[11px] uppercase font-medium text-zinc-500 tracking-wide">
+                      TVL
+                    </div>
                     <div className="text-sm md:text-base font-semibold leading-tight text-zinc-900 tabular-nums">
                       {hasAnimated ? (
                         <CountUp
@@ -247,7 +278,7 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
 
                 <div className="mt-3 flex items-center justify-between text-[11px] text-zinc-600">
                   <div className="flex items-center gap-1">
-                    <span>Last updated {it.lastUpdated || '5m'}</span>
+                    <span>Last updated {it.lastUpdated || "5m"}</span>
                     <span className="text-zinc-400">·</span>
                     {it.source && (
                       <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-zinc-700">
@@ -263,7 +294,7 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({ progress = 0 }) => 
                 <div className="mt-5">
                   <button
                     className="w-full text-white hover:bg-[var(--brand-orange-700)] transition-colors rounded-md py-2 px-4 text-sm font-medium"
-                    style={{ backgroundColor: 'var(--brand-orange)' }}
+                    style={{ backgroundColor: "var(--brand-orange)" }}
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();

@@ -21,7 +21,7 @@ type Point = { date: string; ALEX: number; DIKO: number; OTHER?: number };
 // Seeded random number generator for consistent data generation
 function createSeededRandom(seed: number) {
   let state = seed;
-  return function() {
+  return function () {
     state = (state * 9301 + 49297) % 233280;
     return state / 233280;
   };
@@ -29,14 +29,18 @@ function createSeededRandom(seed: number) {
 
 function genData(days = 30, seed?: number): Point[] {
   const out: Point[] = [];
-  let a = 40, d = 18, o = 8;
+  let a = 40,
+    d = 18,
+    o = 8;
 
   // Use consistent seed for reproducible data
   const consistentSeed = seed || Math.floor(Date.now() / (24 * 3600 * 1000));
   const random = createSeededRandom(consistentSeed);
 
   // Use consistent base date to avoid hydration mismatch
-  const baseDate = new Date(Math.floor(Date.now() / (24 * 3600 * 1000)) * (24 * 3600 * 1000));
+  const baseDate = new Date(
+    Math.floor(Date.now() / (24 * 3600 * 1000)) * (24 * 3600 * 1000),
+  );
 
   for (let i = days - 1; i >= 0; i--) {
     // küçük dalgalanmalar (demo) - use seeded random
@@ -59,7 +63,11 @@ function sumRow(p: Point) {
   return (p.ALEX ?? 0) + (p.DIKO ?? 0) + (p.OTHER ?? 0);
 }
 function usd(n: number) {
-  return n.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+  return n.toLocaleString(undefined, {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
 }
 
 type RewardsChartProps = {
@@ -85,7 +93,7 @@ export default function RewardsChart({
 
   const totalRewards = useMemo(
     () => data.reduce((acc, p) => acc + sumRow(p), 0),
-    [data]
+    [data],
   );
 
   // skeleton simulate (remove when real fetch)
@@ -101,7 +109,7 @@ export default function RewardsChart({
       transition={{ duration: 0.35 }}
       className={clsx(
         "rounded-3xl border border-black/5 bg-[var(--sand-50,#F6F4EF)] p-4 md:p-6",
-        className
+        className,
       )}
     >
       {/* Header */}
@@ -129,12 +137,15 @@ export default function RewardsChart({
       <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3">
         <Kpi label="Total Rewards">
           <span className="tabular-nums">
-            <CountUp end={totalRewards} duration={0.8} prefix="$" separator="," />
+            <CountUp
+              end={totalRewards}
+              duration={0.8}
+              prefix="$"
+              separator=","
+            />
           </span>
         </Kpi>
-        <Kpi label="Top Token">
-          {topTokenLabel(data, tokens)}
-        </Kpi>
+        <Kpi label="Top Token">{topTokenLabel(data, tokens)}</Kpi>
         <Kpi label="Last Update" className="hidden md:block">
           {data.at(-1)?.date}
         </Kpi>
@@ -146,7 +157,10 @@ export default function RewardsChart({
           <div className="h-full animate-pulse rounded-2xl bg-white/60 ring-1 ring-black/5" />
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data} margin={{ left: 0, right: 0, top: 10, bottom: 0 }}>
+            <AreaChart
+              data={data}
+              margin={{ left: 0, right: 0, top: 10, bottom: 0 }}
+            >
               <defs>
                 <linearGradient id="gALEX" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#6C7BFF" stopOpacity={0.8} />
@@ -186,7 +200,9 @@ export default function RewardsChart({
               <Legend
                 verticalAlign="top"
                 height={24}
-                formatter={(v) => <span className="text-xs text-neutral-600">{v}</span>}
+                formatter={(v) => (
+                  <span className="text-xs text-neutral-600">{v}</span>
+                )}
               />
 
               {/* stacked areas (animated) */}
@@ -248,7 +264,7 @@ function TimeBtn({
         "rounded-full px-3.5 py-1.5 text-sm ring-1 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400",
         active
           ? "bg-[var(--brand-orange)] text-white ring-[var(--brand-orange)]"
-          : "bg-white text-neutral-700 ring-neutral-200 hover:bg-neutral-100"
+          : "bg-white text-neutral-700 ring-neutral-200 hover:bg-neutral-100",
       )}
       aria-pressed={!!active}
     >
@@ -270,7 +286,7 @@ function Kpi({
     <div
       className={clsx(
         "rounded-2xl bg-white/60 px-4 py-3 ring-1 ring-black/5",
-        className
+        className,
       )}
     >
       <div className="text-[11px] uppercase tracking-wide text-neutral-500">
@@ -296,8 +312,7 @@ function RewardsTooltip({
 }) {
   if (!active || !payload?.length) return null;
   const row = Object.fromEntries(payload.map((p) => [p.name, p.value]));
-  const total =
-    (row["ALEX"] ?? 0) + (row["DIKO"] ?? 0) + (row["OTHER"] ?? 0);
+  const total = (row["ALEX"] ?? 0) + (row["DIKO"] ?? 0) + (row["OTHER"] ?? 0);
 
   const chips = [
     ["ALEX", "#6C7BFF"],
@@ -334,7 +349,10 @@ function RewardsTooltip({
 function topTokenLabel(data: Point[], tokens: string[]) {
   const totals: Record<string, number> = {};
   data.forEach((p) => {
-    tokens.forEach((t) => (totals[t] = (totals[t] ?? 0) + (p[t as keyof Point] as number || 0)));
+    tokens.forEach(
+      (t) =>
+        (totals[t] = (totals[t] ?? 0) + ((p[t as keyof Point] as number) || 0)),
+    );
   });
   const best = Object.entries(totals).sort((a, b) => b[1] - a[1])[0];
   if (!best) return "—";
