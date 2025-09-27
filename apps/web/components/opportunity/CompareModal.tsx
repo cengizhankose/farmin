@@ -9,9 +9,15 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  CartesianGrid
+  CartesianGrid,
 } from "recharts";
-import { X, ArrowLeftRight, TrendingUp, Shield, DollarSign } from "lucide-react";
+import {
+  X,
+  ArrowLeftRight,
+  TrendingUp,
+  Shield,
+  DollarSign,
+} from "lucide-react";
 import type { CompareItem } from "./CompareBar";
 import { colors } from "@/lib/colors";
 import { protocolLogo } from "@/lib/logos";
@@ -39,7 +45,12 @@ export function CompareModal({ itemA, itemB, onClose }: CompareModalProps) {
       const resp = await fetch(`/api/opportunities/${id}/chart?days=30`);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const json = await resp.json();
-      const pts: Array<{ timestamp: number; tvlUsd: number; apy?: number; apr?: number }> = json.series || [];
+      const pts: Array<{
+        timestamp: number;
+        tvlUsd: number;
+        apy?: number;
+        apr?: number;
+      }> = json.series || [];
       return pts.map((p) => ({
         date: new Date(p.timestamp).toISOString().slice(5, 10),
         apr: Number((p.apy ?? p.apr ?? 0).toFixed(2)),
@@ -52,13 +63,15 @@ export function CompareModal({ itemA, itemB, onClose }: CompareModalProps) {
         if (!mounted) return;
         setLeftSeries(l);
         setRightSeries(r);
-      } catch (e) {
+      } catch {
         if (!mounted) return;
         setLeftSeries([]);
         setRightSeries([]);
       }
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [left.id, right.id]);
 
   return (
@@ -139,9 +152,15 @@ interface ComparePanelProps {
   setHoveredIndex: (index: number | null) => void;
 }
 
-function ComparePanel({ item, series, side, hoveredIndex, setHoveredIndex }: ComparePanelProps) {
+function ComparePanel({
+  item,
+  series,
+  side,
+  hoveredIndex,
+  setHoveredIndex,
+}: ComparePanelProps) {
   const logo = protocolLogo(item.protocol);
-  const chartColor = side === "left" ? colors.orange[600] : "#6C7BFF";
+  const chartColor = side === "left" ? colors.purple[600] : "#6C7BFF";
 
   const riskColors = {
     Low: "bg-emerald-100 text-emerald-700",
@@ -154,13 +173,13 @@ function ComparePanel({ item, series, side, hoveredIndex, setHoveredIndex }: Com
       {/* Header */}
       <div className="flex items-start gap-3 mb-6">
         <>
-          {item.protocol.toLowerCase() === 'arkadiko' ? (
+          {item.protocol.toLowerCase() === "arkadiko" ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               className="h-12 w-12 rounded-xl grid place-items-center text-lg font-bold shadow-sm overflow-hidden"
               src="/logos/arkadiko.svg"
               alt="Arkadiko logo"
-              style={{ objectFit: 'contain', padding: '4px' }}
+              style={{ objectFit: "contain", padding: "4px" }}
             />
           ) : item.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -168,8 +187,10 @@ function ComparePanel({ item, series, side, hoveredIndex, setHoveredIndex }: Com
               className="h-12 w-12 rounded-xl grid place-items-center text-lg font-bold shadow-sm overflow-hidden"
               src={item.logoUrl}
               alt={`${item.protocol} logo`}
-              style={{ objectFit: 'contain', padding: '4px' }}
-              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              style={{ objectFit: "contain", padding: "4px" }}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
             />
           ) : (
             logo.letter
@@ -180,13 +201,13 @@ function ComparePanel({ item, series, side, hoveredIndex, setHoveredIndex }: Com
             {item.protocol} — {item.pair}
           </h3>
           <div className="mt-1 flex items-center gap-2">
-            <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${riskColors[item.risk]}`}>
+            <span
+              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${riskColors[item.risk]}`}
+            >
               <Shield size={10} />
               {item.risk} Risk
             </span>
-            <span className="text-xs text-zinc-500">
-              {item.chain}
-            </span>
+            <span className="text-xs text-zinc-500">{item.chain}</span>
           </div>
         </div>
       </div>
@@ -214,7 +235,9 @@ function ComparePanel({ item, series, side, hoveredIndex, setHoveredIndex }: Com
       {/* Chart */}
       <div className="flex-1 min-h-[200px]">
         {series.length === 0 ? (
-          <div className="text-xs text-zinc-500">No comparison data available.</div>
+          <div className="text-xs text-zinc-500">
+            No comparison data available.
+          </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart
@@ -227,13 +250,27 @@ function ComparePanel({ item, series, side, hoveredIndex, setHoveredIndex }: Com
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <defs>
-                <linearGradient id={`gradient-${side}`} x1="0" y1="0" x2="0" y2="1">
+                <linearGradient
+                  id={`gradient-${side}`}
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
                   <stop offset="0%" stopColor={chartColor} stopOpacity={0.6} />
-                  <stop offset="100%" stopColor={chartColor} stopOpacity={0.1} />
+                  <stop
+                    offset="100%"
+                    stopColor={chartColor}
+                    stopOpacity={0.1}
+                  />
                 </linearGradient>
               </defs>
 
-              <CartesianGrid stroke="rgba(0,0,0,.04)" strokeDasharray="0" vertical={false} />
+              <CartesianGrid
+                stroke="rgba(0,0,0,.04)"
+                strokeDasharray="0"
+                vertical={false}
+              />
 
               <XAxis
                 dataKey="date"
@@ -270,11 +307,15 @@ function ComparePanel({ item, series, side, hoveredIndex, setHoveredIndex }: Com
                       <div className="space-y-0.5 mt-1">
                         <div className="text-xs">
                           <span className="text-zinc-500">TVL:</span>{" "}
-                          <span className="font-medium">${payload[0]?.value}M</span>
+                          <span className="font-medium">
+                            ${payload[0]?.value}M
+                          </span>
                         </div>
                         <div className="text-xs">
                           <span className="text-zinc-500">APR:</span>{" "}
-                          <span className="font-medium">{payload[1]?.value}%</span>
+                          <span className="font-medium">
+                            {payload[1]?.value}%
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -344,7 +385,7 @@ function MetricCard({
   label,
   value,
   icon,
-  highlight = false
+  highlight = false,
 }: {
   label: string;
   value: string;
@@ -352,18 +393,20 @@ function MetricCard({
   highlight?: boolean;
 }) {
   return (
-    <div className={`rounded-xl px-3 py-2 ${highlight ? "bg-zinc-900 text-white" : "bg-zinc-100"}`}>
+    <div
+      className={`rounded-xl px-3 py-2 ${highlight ? "bg-zinc-900 text-white" : "bg-zinc-100"}`}
+    >
       <div className="flex items-center justify-between mb-1">
-        <span className={`text-[10px] uppercase tracking-wide ${highlight ? "text-white/80" : "text-zinc-500"}`}>
+        <span
+          className={`text-[10px] uppercase tracking-wide ${highlight ? "text-white/80" : "text-zinc-500"}`}
+        >
           {label}
         </span>
         <span className={highlight ? "text-white/60" : "text-zinc-400"}>
           {icon}
         </span>
       </div>
-      <div className="text-sm font-semibold tabular-nums">
-        {value}
-      </div>
+      <div className="text-sm font-semibold tabular-nums">{value}</div>
     </div>
   );
 }

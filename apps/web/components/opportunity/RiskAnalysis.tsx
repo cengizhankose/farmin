@@ -1,7 +1,14 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Shield, AlertTriangle, TrendingDown, Info, Activity, LineChart } from "lucide-react";
+import {
+  Shield,
+  AlertTriangle,
+  TrendingDown,
+  Info,
+  Activity,
+  LineChart,
+} from "lucide-react";
 type Opportunity = {
   id: string;
   protocol: string;
@@ -63,11 +70,21 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
       }
     }
     loadEnhanced();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [data.id]);
 
   // Fetch recent series to compute heuristic risk metrics if needed
-  const [series, setSeries] = React.useState<Array<{ timestamp: number; tvlUsd: number; apy?: number; apr?: number; volume24h?: number }>>([]);
+  const [series, setSeries] = React.useState<
+    Array<{
+      timestamp: number;
+      tvlUsd: number;
+      apy?: number;
+      apr?: number;
+      volume24h?: number;
+    }>
+  >([]);
 
   React.useEffect(() => {
     let mounted = true;
@@ -87,13 +104,16 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
       }
     }
     load();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [data.id]);
 
   // Helpers
   const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
   const pct = (n: number) => Math.round(n * 100);
-  const mean = (arr: number[]) => (arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0);
+  const mean = (arr: number[]) =>
+    arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
   const stdev = (arr: number[]) => {
     if (arr.length < 2) return 0;
     const m = mean(arr);
@@ -125,9 +145,17 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
   };
 
   // Build time-series vectors
-  const tvlVec = series.map((p) => p.tvlUsd).filter((n) => Number.isFinite(n)) as number[];
-  const apyVec = series.map((p) => (typeof p.apy === 'number' ? p.apy : typeof p.apr === 'number' ? p.apr : 0)).filter((n) => Number.isFinite(n)) as number[];
-  const volVec = series.map((p) => p.volume24h ?? 0).filter((n) => Number.isFinite(n)) as number[];
+  const tvlVec = series
+    .map((p) => p.tvlUsd)
+    .filter((n) => Number.isFinite(n)) as number[];
+  const apyVec = series
+    .map((p) =>
+      typeof p.apy === "number" ? p.apy : typeof p.apr === "number" ? p.apr : 0,
+    )
+    .filter((n) => Number.isFinite(n)) as number[];
+  const volVec = series
+    .map((p) => p.volume24h ?? 0)
+    .filter((n) => Number.isFinite(n)) as number[];
 
   const latestTvl = tvlVec.length ? tvlVec[tvlVec.length - 1] : data.tvlUsd;
   const tvlMean = mean(tvlVec);
@@ -141,7 +169,9 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
   const apyCv = apyMean ? apyVol / Math.abs(apyMean) : 0;
   const apySlope = slope(apyVec);
 
-  const volHerf = volVec.length ? herfindahl(volVec) : 1 / Math.max(1, volVec.length || 1);
+  const volHerf = volVec.length
+    ? herfindahl(volVec)
+    : 1 / Math.max(1, volVec.length || 1);
   const turnover = tvlMean ? mean(volVec) / tvlMean : 0; // approx daily
 
   // Risk mappings (0..100 higher = higher risk)
@@ -153,7 +183,7 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
 
   const stabilityRisk = (() => {
     const volRisk = clamp01(tvlCv); // variability
-    const ddRisk = clamp01(tvlDD);  // deep drawdowns
+    const ddRisk = clamp01(tvlDD); // deep drawdowns
     return pct(clamp01(0.6 * volRisk + 0.4 * ddRisk));
   })();
 
@@ -179,7 +209,8 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
     return pct(clamp01(mapped));
   })();
 
-  const toStatus = (score: number): RiskItem["status"] => (score < 33 ? "Low" : score < 66 ? "Medium" : "High");
+  const toStatus = (score: number): RiskItem["status"] =>
+    score < 33 ? "Low" : score < 66 ? "Medium" : "High";
 
   // Prefer backend-enhanced values when present
   const scores = enhanced ?? {
@@ -188,21 +219,30 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
     yield: yieldRisk,
     concentration: concentrationRisk,
     momentum: momentumRisk,
-    total: Math.round((liquidityRisk + stabilityRisk + yieldRisk + concentrationRisk + momentumRisk) / 5),
+    total: Math.round(
+      (liquidityRisk +
+        stabilityRisk +
+        yieldRisk +
+        concentrationRisk +
+        momentumRisk) /
+        5,
+    ),
   };
 
   // Create seeded random for consistent risk scores
   const createSeededRandom = (seed: number) => {
     let state = seed;
-    return function() {
+    return function () {
       state = (state * 9301 + 49297) % 233280;
       return state / 233280;
     };
   };
 
   // Use opportunity ID as seed for consistency
-  const riskSeed = data.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const random = createSeededRandom(riskSeed);
+  const riskSeed = data.id
+    .split("")
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  // const random = createSeededRandom(riskSeed); // Unused variable
 
   const risks: RiskItem[] = [
     {
@@ -211,7 +251,11 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
       status: toStatus(scores.liquidity),
       description: "Exit depth and turnover vs TVL (derived from real series)",
       icon: <AlertTriangle size={16} />,
-      color: { bg: "bg-purple-50", bar: "bg-purple-500", text: "text-purple-700" },
+      color: {
+        bg: "bg-purple-50",
+        bar: "bg-purple-500",
+        text: "text-purple-700",
+      },
     },
     {
       category: "Stability Risk",
@@ -233,7 +277,8 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
       category: "Concentration Risk",
       level: scores.concentration,
       status: toStatus(scores.concentration),
-      description: "Volume distribution proxy (higher concentration = higher risk)",
+      description:
+        "Volume distribution proxy (higher concentration = higher risk)",
       icon: <Shield size={16} />,
       color: { bg: "bg-rose-50", bar: "bg-rose-500", text: "text-rose-700" },
     },
@@ -243,11 +288,19 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
       status: toStatus(scores.momentum),
       description: "Recent TVL momentum; weakening momentum increases risk",
       icon: <Activity size={16} />,
-      color: { bg: "bg-emerald-50", bar: "bg-emerald-500", text: "text-emerald-700" },
+      color: {
+        bg: "bg-emerald-50",
+        bar: "bg-emerald-500",
+        text: "text-emerald-700",
+      },
     },
   ];
 
-  const overallRiskScore = scores.total ?? Math.round(risks.reduce((sum, r) => sum + r.level, 0) / (risks.length || 1));
+  const overallRiskScore =
+    scores.total ??
+    Math.round(
+      risks.reduce((sum, r) => sum + r.level, 0) / (risks.length || 1),
+    );
 
   const getRiskLabel = (score: number) => {
     if (score < 33) return { label: "Low Risk", color: "text-emerald-600" };
@@ -275,7 +328,7 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
             Multi-factor risk assessment based on protocol metrics
           </p>
         </div>
-        
+
         {/* Overall Score */}
         <div className="text-right">
           <div className="text-2xl font-bold text-zinc-900 tabular-nums">
@@ -318,13 +371,17 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
                 </div>
               </div>
             </div>
-            
+
             {/* Progress Bar */}
             <div className="relative h-2 rounded-full bg-zinc-100 overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${risk.level}%` }}
-                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 + index * 0.1 }}
+                transition={{
+                  duration: 0.8,
+                  ease: "easeOut",
+                  delay: 0.2 + index * 0.1,
+                }}
                 className={`absolute left-0 top-0 h-full rounded-full ${risk.color.bar}`}
               />
             </div>
@@ -337,8 +394,9 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
         <Info size={14} className="text-blue-600 mt-0.5" />
         <div className="flex-1">
           <p className="text-xs text-blue-700">
-            Risk scores are derived from real series: TVL volatility/drawdown, APR/APY volatility, 
-            liquidity turnover, volume concentration and recent momentum. Lower scores indicate lower risk.
+            Risk scores are derived from real series: TVL volatility/drawdown,
+            APR/APY volatility, liquidity turnover, volume concentration and
+            recent momentum. Lower scores indicate lower risk.
           </p>
         </div>
       </div>

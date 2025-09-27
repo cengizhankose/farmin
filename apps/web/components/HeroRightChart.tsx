@@ -1,6 +1,11 @@
 "use client";
 import React from "react";
-import { motion, useReducedMotion, useMotionValue, animate } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  // useMotionValue, // Unused import
+  // animate, // Unused import
+} from "framer-motion";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -26,27 +31,53 @@ type HeroRightChartProps = {
   netPnl?: number;
 };
 
-function AnimatedNumber({ value, prefix = "", suffix = "", decimals = 0, duration = 0.8 }: { value: number; prefix?: string; suffix?: string; decimals?: number; duration?: number }) {
-  const prefersReducedMotion = useReducedMotion();
-  const ref = React.useRef<HTMLSpanElement | null>(null);
-  const mv = useMotionValue(0);
-  React.useEffect(() => {
-    if (prefersReducedMotion) {
-      if (ref.current) ref.current.textContent = `${prefix}${value.toFixed(decimals)}${suffix}`;
-      return;
-    }
-    const controls = animate(mv, value, { duration, ease: [0.22, 1, 0.36, 1] });
-    const unsub = mv.on("change", (v) => {
-      if (ref.current) ref.current.textContent = `${prefix}${Number(v).toFixed(decimals)}${suffix}`;
-    });
-    return () => { controls.stop(); unsub(); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, duration, prefix, suffix, decimals, prefersReducedMotion]);
-  return <span ref={ref} />;
-}
+// function AnimatedNumber({
+//   value,
+//   prefix = "",
+//   suffix = "",
+//   decimals = 0,
+//   duration = 0.8,
+// }: {
+//   value: number;
+//   prefix?: string;
+//   suffix?: string;
+//   decimals?: number;
+//   duration?: number;
+// }) {
+//   const prefersReducedMotion = useReducedMotion();
+//   const ref = React.useRef<HTMLSpanElement | null>(null);
+//   const mv = useMotionValue(0);
+//   React.useEffect(() => {
+//     if (prefersReducedMotion) {
+//       if (ref.current)
+//         ref.current.textContent = `${prefix}${value.toFixed(decimals)}${suffix}`;
+//       return;
+//     }
+//     const controls = animate(mv, value, { duration, ease: [0.22, 1, 0.36, 1] });
+//     const unsub = mv.on("change", (v) => {
+//       if (ref.current)
+//         ref.current.textContent = `${prefix}${Number(v).toFixed(decimals)}${suffix}`;
+//     });
+//     return () => {
+//       controls.stop();
+//       unsub();
+//     };
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [value, duration, prefix, suffix, decimals, prefersReducedMotion]);
+//   return <span ref={ref} />;
+// }
 
-type TooltipItem = { dataKey?: string; value?: number | string; name?: string; payload?: unknown };
-type TooltipContentProps = { active?: boolean; payload?: TooltipItem[]; label?: number | string };
+type TooltipItem = {
+  dataKey?: string;
+  value?: number | string;
+  name?: string;
+  payload?: unknown;
+};
+type TooltipContentProps = {
+  active?: boolean;
+  payload?: TooltipItem[];
+  label?: number | string;
+};
 
 function CustomTooltip({ active, payload, label }: TooltipContentProps) {
   if (!active || !payload || !payload.length) return null;
@@ -54,11 +85,22 @@ function CustomTooltip({ active, payload, label }: TooltipContentProps) {
   const pnl = Number(payload.find((p) => p.dataKey === "pnl")?.value ?? 0);
   const ch = Number(payload.find((p) => p.dataKey === "change24h")?.value ?? 0);
   return (
-    <div className="rounded-lg bg-white/10 ring-1 ring-white/15 backdrop-blur px-3 py-2 text-xs text-white/90" aria-live="polite">
-      <div className="opacity-80">{label ? new Date(label).toLocaleString() : 'N/A'}</div>
-      <div className="mt-1">Value: <span className="tabular-nums">{compactCurrency(v)}</span></div>
-      <div>PnL: <span className="tabular-nums">{compactCurrency(pnl)}</span></div>
-      <div>24h: <span className="tabular-nums">{compactCurrency(ch)}</span></div>
+    <div
+      className="rounded-lg bg-white/10 ring-1 ring-white/15 backdrop-blur px-3 py-2 text-xs text-white/90"
+      aria-live="polite"
+    >
+      <div className="opacity-80">
+        {label ? new Date(label).toLocaleString() : "N/A"}
+      </div>
+      <div className="mt-1">
+        Value: <span className="tabular-nums">{compactCurrency(v)}</span>
+      </div>
+      <div>
+        PnL: <span className="tabular-nums">{compactCurrency(pnl)}</span>
+      </div>
+      <div>
+        24h: <span className="tabular-nums">{compactCurrency(ch)}</span>
+      </div>
     </div>
   );
 }
@@ -69,8 +111,9 @@ export default function HeroRightChart(props: HeroRightChartProps) {
   // Slightly amplify bar heights without affecting KPIs/lines
   const barScale = 1.35;
   const derivedSeries = React.useMemo(
-    () => series.map(s => ({ ...s, change24hScaled: s.change24h * barScale })),
-    [series]
+    () =>
+      series.map((s) => ({ ...s, change24hScaled: s.change24h * barScale })),
+    [series],
   );
   const apr7d = props.apr7d ?? 0;
   const tvl = props.tvl ?? 0;
@@ -93,12 +136,17 @@ export default function HeroRightChart(props: HeroRightChartProps) {
     const loop = () => {
       t += 0.008; // 6–8s per loop approx
       const L = series.length - 1;
-      const idx = Math.max(0, Math.min(L, Math.floor((Math.sin(t) * 0.5 + 0.5) * L)));
+      const idx = Math.max(
+        0,
+        Math.min(L, Math.floor((Math.sin(t) * 0.5 + 0.5) * L)),
+      );
       setIBeacon(idx);
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
-    return () => { if (raf) cancelAnimationFrame(raf); };
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [series.length, prefersReducedMotion, isClient]);
 
   // keyboard-accessible demo tooltip
@@ -118,8 +166,14 @@ export default function HeroRightChart(props: HeroRightChartProps) {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.25 }}
       aria-label="Yield overview chart"
-      onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}
-      onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+      onMouseDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
     >
       {/* Particles layer */}
       <SoftParticles />
@@ -128,7 +182,8 @@ export default function HeroRightChart(props: HeroRightChartProps) {
       <div
         className="pointer-events-none absolute -right-8 -top-8 h-40 w-56 -rotate-12"
         style={{
-          background: "linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,0) 60%)",
+          background:
+            "linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,0) 60%)",
           mixBlendMode: "screen",
         }}
         aria-hidden
@@ -146,15 +201,23 @@ export default function HeroRightChart(props: HeroRightChartProps) {
         {/* Placeholder for TVL Metrics Card */}
         <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-xl p-3">
           <h3 className="text-white/70 text-xs font-medium mb-1">TVL</h3>
-          <p className="text-lg font-bold text-white">${(tvl / 1000000).toFixed(1)}M</p>
-          <p className="text-green-400 text-xs">+{(tvl * 0.05 / 1000000).toFixed(1)}M</p>
+          <p className="text-lg font-bold text-white">
+            ${(tvl / 1000000).toFixed(1)}M
+          </p>
+          <p className="text-green-400 text-xs">
+            +{((tvl * 0.05) / 1000000).toFixed(1)}M
+          </p>
         </div>
 
         {/* Placeholder for Volume Metrics Card */}
         <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-xl p-3">
           <h3 className="text-white/70 text-xs font-medium mb-1">Volume</h3>
-          <p className="text-lg font-bold text-white">${Math.abs(netPnl / 1000000).toFixed(1)}M</p>
-          <p className="text-green-400 text-xs">+{(netPnl * 0.08 / 1000000).toFixed(1)}M</p>
+          <p className="text-lg font-bold text-white">
+            ${Math.abs(netPnl / 1000000).toFixed(1)}M
+          </p>
+          <p className="text-green-400 text-xs">
+            +{((netPnl * 0.08) / 1000000).toFixed(1)}M
+          </p>
         </div>
       </div>
 
@@ -169,20 +232,48 @@ export default function HeroRightChart(props: HeroRightChartProps) {
         <motion.div
           className="absolute inset-0 z-20"
           style={{ willChange: "clip-path" }}
-          initial={prefersReducedMotion ? { clipPath: "inset(0% 0% 0% 0%)" } : { clipPath: "inset(0% 100% 0% 0%)" }}
+          initial={
+            prefersReducedMotion
+              ? { clipPath: "inset(0% 0% 0% 0%)" }
+              : { clipPath: "inset(0% 100% 0% 0%)" }
+          }
           animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
-          transition={{ duration: prefersReducedMotion ? 0 : 1.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{
+            duration: prefersReducedMotion ? 0 : 1.2,
+            ease: [0.22, 1, 0.36, 1],
+          }}
         >
           {series.length > 0 && (
             <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={derivedSeries} margin={{ top: 24, right: 12, bottom: 26, left: 0 }}>
+              <ComposedChart
+                data={derivedSeries}
+                margin={{ top: 24, right: 12, bottom: 26, left: 0 }}
+              >
                 <defs>
                   <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--brand-orange, #FF7A1A)" stopOpacity={0.24} />
-                    <stop offset="60%" stopColor="var(--burnt-orange, #C6561A)" stopOpacity={0.12} />
-                    <stop offset="100%" stopColor="var(--bronze, #8C5A3A)" stopOpacity={0} />
+                    <stop
+                      offset="0%"
+                      stopColor="var(--brand-orange, #FF7A1A)"
+                      stopOpacity={0.24}
+                    />
+                    <stop
+                      offset="60%"
+                      stopColor="var(--burnt-orange, #C6561A)"
+                      stopOpacity={0.12}
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor="var(--bronze, #8C5A3A)"
+                      stopOpacity={0}
+                    />
                   </linearGradient>
-                  <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <filter
+                    id="glow"
+                    x="-20%"
+                    y="-20%"
+                    width="140%"
+                    height="140%"
+                  >
                     <feGaussianBlur stdDeviation="2.2" result="coloredBlur" />
                     <feMerge>
                       <feMergeNode in="coloredBlur" />
@@ -196,7 +287,12 @@ export default function HeroRightChart(props: HeroRightChartProps) {
                   type="number"
                   domain={xDomain}
                   allowDataOverflow
-                  tickFormatter={(t) => new Date(t).toLocaleDateString(undefined, { month: "short", day: "2-digit" })}
+                  tickFormatter={(t) =>
+                    new Date(t).toLocaleDateString(undefined, {
+                      month: "short",
+                      day: "2-digit",
+                    })
+                  }
                   tick={{ fill: axisStroke, fontSize: 11 }}
                   tickMargin={8}
                   tickLine={false}
@@ -212,16 +308,47 @@ export default function HeroRightChart(props: HeroRightChartProps) {
                   width={60}
                 />
                 <Tooltip content={<CustomTooltip />} trigger="hover" />
-                <Bar dataKey="change24hScaled" strokeWidth={0} fillOpacity={0.9} barSize={4} radius={[3, 3, 0, 0]}>
+                <Bar
+                  dataKey="change24hScaled"
+                  strokeWidth={0}
+                  fillOpacity={0.9}
+                  barSize={4}
+                  radius={[3, 3, 0, 0]}
+                >
                   {series.map((pt, idx) => (
-                    <Cell key={`c-${idx}`} fill={pt.change24h >= 0 ? "var(--bar-pos, #34D399)" : "var(--bar-neg, #FCA5A5)"} />
+                    <Cell
+                      key={`c-${idx}`}
+                      fill={
+                        pt.change24h >= 0
+                          ? "var(--bar-pos, #34D399)"
+                          : "var(--bar-neg, #FCA5A5)"
+                      }
+                    />
                   ))}
                 </Bar>
-                <Area type="monotone" dataKey="value" stroke="var(--line, #FFE7D1)" strokeWidth={2.2} fill="url(#areaGrad)" />
-                <Line type="monotone" dataKey="pnl" stroke="var(--pnl, #93C5FD)" strokeOpacity={0.85} strokeWidth={1.6} dot={false} />
+                <Area
+                  type="monotone"
+                  dataKey="value"
+                  stroke="var(--line, #FFE7D1)"
+                  strokeWidth={2.2}
+                  fill="url(#areaGrad)"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="pnl"
+                  stroke="var(--pnl, #93C5FD)"
+                  strokeOpacity={0.85}
+                  strokeWidth={1.6}
+                  dot={false}
+                />
                 {!prefersReducedMotion && series.length > 0 && (
-                  <ReferenceDot x={series[iBeacon]?.t} y={series[iBeacon]?.value} r={4}
-                    fill="var(--line, #FFE7D1)" stroke="transparent" />
+                  <ReferenceDot
+                    x={series[iBeacon]?.t}
+                    y={series[iBeacon]?.value}
+                    r={4}
+                    fill="var(--line, #FFE7D1)"
+                    stroke="transparent"
+                  />
                 )}
               </ComposedChart>
             </ResponsiveContainer>
@@ -239,9 +366,16 @@ export default function HeroRightChart(props: HeroRightChartProps) {
         {kbdTip && (
           <div className="absolute right-2 top-2 z-30 rounded-md bg-white/10 ring-1 ring-white/15 backdrop-blur px-3 py-2 text-xs text-white/90">
             <div className="opacity-80">Keyboard Tooltip</div>
-            <div>APR (7d): <span className="tabular-nums">{percent1(apr7d)}</span></div>
-            <div>TVL: <span className="tabular-nums">{compactCurrency(tvl)}</span></div>
-            <div>Net PnL: <span className="tabular-nums">{compactCurrency(netPnl)}</span></div>
+            <div>
+              APR (7d): <span className="tabular-nums">{percent1(apr7d)}</span>
+            </div>
+            <div>
+              TVL: <span className="tabular-nums">{compactCurrency(tvl)}</span>
+            </div>
+            <div>
+              Net PnL:{" "}
+              <span className="tabular-nums">{compactCurrency(netPnl)}</span>
+            </div>
           </div>
         )}
       </div>

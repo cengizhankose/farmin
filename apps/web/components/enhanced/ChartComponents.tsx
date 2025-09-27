@@ -3,7 +3,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BarChart3, TrendingUp, TrendingDown, Activity } from "lucide-react";
-import { ChartData, Timeframe, ChartComponentProps } from "@/types/enhanced-data";
+import {
+  // ChartData, // Unused import
+  // Timeframe, // Unused import
+  ChartComponentProps,
+} from "@/types/enhanced-data";
 
 const ChartComponents: React.FC<ChartComponentProps> = ({
   data,
@@ -12,9 +16,9 @@ const ChartComponents: React.FC<ChartComponentProps> = ({
   height = 300,
   showLegend = true,
   showGrid = true,
-  color = "#FF6A00",
-  yAxisFormatter,
-  tooltipFormatter
+  color = "#8C45FF",
+  // yAxisFormatter, // Unused parameter
+  tooltipFormatter,
 }) => {
   const formatValue = (value: number): string => {
     if (tooltipFormatter) {
@@ -29,32 +33,44 @@ const ChartComponents: React.FC<ChartComponentProps> = ({
     return `$${value.toFixed(2)}`;
   };
 
-  const formatAxisLabel = (value: number): string => {
-    if (yAxisFormatter) {
-      return yAxisFormatter(value);
-    }
+  // const formatAxisLabel = (value: number): string => {
+  //   if (yAxisFormatter) {
+  //     return yAxisFormatter(value);
+  //   }
 
-    if (value >= 1000000) {
-      return `${(value / 1000000).toFixed(0)}M`;
-    } else if (value >= 1000) {
-      return `${(value / 1000).toFixed(0)}K`;
-    }
-    return value.toString();
-  };
+  //   if (value >= 1000000) {
+  //     return `${(value / 1000000).toFixed(0)}M`;
+  //   } else if (value >= 1000) {
+  //     return `${(value / 1000).toFixed(0)}K`;
+  //   }
+  //   return value.toString();
+  // };
 
-  const formatDate = (timestamp: number): string => {
-    const date = new Date(timestamp * 1000);
-    const now = new Date();
-    const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+  // const formatDate = (timestamp: number): string => {
+  //   const date = new Date(timestamp * 1000);
+  //   const now = new Date();
+  //   // const diffInDays = Math.floor(
+  //   //   (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24),
+  //   ); // Unused variable
 
-    if (timeframe === '24H') {
-      return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    } else if (timeframe === '7D' || timeframe === '30D') {
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    } else {
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    }
-  };
+    //   if (timeframe === "24H") {
+  //     return date.toLocaleTimeString("en-US", {
+  //       hour: "2-digit",
+  //       minute: "2-digit",
+  //     });
+  //   } else if (timeframe === "7D" || timeframe === "30D") {
+  //     return date.toLocaleDateString("en-US", {
+  //       month: "short",
+  //       day: "numeric",
+  //     });
+  //   } else {
+  //     return date.toLocaleDateString("en-US", {
+  //       month: "short",
+  //       day: "numeric",
+  //       year: "numeric",
+  //     });
+  //   }
+  // };
 
   // Calculate statistics
   const calculateStats = (values: number[]) => {
@@ -63,7 +79,10 @@ const ChartComponents: React.FC<ChartComponentProps> = ({
     const min = Math.min(...values);
     const max = Math.max(...values);
     const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
-    const change = values.length > 1 ? ((values[values.length - 1] - values[0]) / values[0]) * 100 : 0;
+    const change =
+      values.length > 1
+        ? ((values[values.length - 1] - values[0]) / values[0]) * 100
+        : 0;
 
     return { min, max, avg, change };
   };
@@ -79,9 +98,9 @@ const ChartComponents: React.FC<ChartComponentProps> = ({
   };
 
   const getChangeColor = (change: number) => {
-    if (change > 0) return 'text-green-400';
-    if (change < 0) return 'text-red-400';
-    return 'text-gray-400';
+    if (change > 0) return "text-green-400";
+    if (change < 0) return "text-red-400";
+    return "text-gray-400";
   };
 
   return (
@@ -91,9 +110,7 @@ const ChartComponents: React.FC<ChartComponentProps> = ({
           <BarChart3 className="h-5 w-5 text-white/60" />
           <h3 className="text-lg font-semibold text-white">{title}</h3>
         </div>
-        <div className="text-sm text-white/50">
-          {timeframe}
-        </div>
+        <div className="text-sm text-white/50">{timeframe}</div>
       </div>
 
       {/* Statistics */}
@@ -114,15 +131,18 @@ const ChartComponents: React.FC<ChartComponentProps> = ({
           <div className="text-xs text-white/50 mb-1">Change</div>
           <div className="flex items-center justify-center gap-1">
             {getChangeIcon(tvlStats.change)}
-            <span className={`text-sm font-medium ${getChangeColor(tvlStats.change)}`}>
-              {tvlStats.change >= 0 ? '+' : ''}{tvlStats.change.toFixed(1)}%
+            <span
+              className={`text-sm font-medium ${getChangeColor(tvlStats.change)}`}
+            >
+              {tvlStats.change >= 0 ? "+" : ""}
+              {tvlStats.change.toFixed(1)}%
             </span>
           </div>
         </div>
         <div className="text-center">
           <div className="text-xs text-white/50 mb-1">Volatility</div>
           <div className="text-sm font-medium text-white">
-            {((tvlStats.max - tvlStats.min) / tvlStats.avg * 100).toFixed(1)}%
+            {(((tvlStats.max - tvlStats.min) / tvlStats.avg) * 100).toFixed(1)}%
           </div>
         </div>
       </div>
@@ -164,7 +184,10 @@ const ChartComponents: React.FC<ChartComponentProps> = ({
       {showLegend && (
         <div className="mt-4 flex flex-wrap gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }}></div>
+            <div
+              className="w-3 h-3 rounded-full"
+              style={{ backgroundColor: color }}
+            ></div>
             <span className="text-white/70">TVL</span>
           </div>
           {data.volume && (
@@ -202,9 +225,7 @@ const ChartComponents: React.FC<ChartComponentProps> = ({
         )}
         <div className="text-center">
           <div className="text-white/50 mb-1">Data Points</div>
-          <div className="text-white font-medium">
-            {data.timestamps.length}
-          </div>
+          <div className="text-white font-medium">{data.timestamps.length}</div>
         </div>
       </div>
     </div>
@@ -212,20 +233,20 @@ const ChartComponents: React.FC<ChartComponentProps> = ({
 };
 
 // Specialized chart components
-export const TVLChart: React.FC<Omit<ChartComponentProps, 'title'>> = (props) => (
-  <ChartComponents {...props} title="TVL Overview" color="#FF6A00" />
-);
+export const TVLChart: React.FC<Omit<ChartComponentProps, "title">> = (
+  props,
+) => <ChartComponents {...props} title="TVL Overview" color="#FF6A00" />;
 
-export const VolumeChart: React.FC<Omit<ChartComponentProps, 'title'>> = (props) => (
-  <ChartComponents {...props} title="Volume Analysis" color="#3B82F6" />
-);
+export const VolumeChart: React.FC<Omit<ChartComponentProps, "title">> = (
+  props,
+) => <ChartComponents {...props} title="Volume Analysis" color="#3B82F6" />;
 
-export const APRChart: React.FC<Omit<ChartComponentProps, 'title'>> = (props) => (
-  <ChartComponents {...props} title="APR Trends" color="#10B981" />
-);
+export const APRChart: React.FC<Omit<ChartComponentProps, "title">> = (
+  props,
+) => <ChartComponents {...props} title="APR Trends" color="#10B981" />;
 
-export const CombinedChart: React.FC<Omit<ChartComponentProps, 'title'>> = (props) => (
-  <ChartComponents {...props} title="Combined Metrics" color="#8B5CF6" />
-);
+export const CombinedChart: React.FC<Omit<ChartComponentProps, "title">> = (
+  props,
+) => <ChartComponents {...props} title="Combined Metrics" color="#8B5CF6" />;
 
 export default ChartComponents;

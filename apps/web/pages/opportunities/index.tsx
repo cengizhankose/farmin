@@ -32,17 +32,28 @@ type CardOpportunity = {
 
 export default function OpportunitiesPage() {
   const [query, setQuery] = React.useState("");
-  const [risk, setRisk] = React.useState<"all" | "Low" | "Medium" | "High">("all");
+  const [risk, setRisk] = React.useState<"all" | "Low" | "Medium" | "High">(
+    "all",
+  );
   // const [chain] = React.useState<"stacks">("stacks"); // Only Stacks for now - unused
-  const [sort, setSort] = React.useState<{ key: keyof CardOpportunity; dir: "asc" | "desc" }>({
+  const [sort, setSort] = React.useState<{
+    key: keyof CardOpportunity;
+    dir: "asc" | "desc";
+  }>({
     key: "apr",
     dir: "desc",
   });
-  const [timeframe, setTimeframe] = React.useState<"7D" | "30D" | "90D">("7D");
+  // const [timeframe, setTimeframe] = React.useState<"7D" | "30D" | "90D">("7D");
   const [loading, setLoading] = React.useState(true);
-  const [opportunities, setOpportunities] = React.useState<CardOpportunity[]>([]);
+  const [opportunities, setOpportunities] = React.useState<CardOpportunity[]>(
+    [],
+  );
   const [error, setError] = React.useState<string | null>(null);
-  const [, setStats] = React.useState({ avgApr7d: 0, totalTvlUsd: 0, results: 0 });
+  const [, setStats] = React.useState({
+    avgApr7d: 0,
+    totalTvlUsd: 0,
+    results: 0,
+  });
 
   // Load opportunities data from real APIs only
   React.useEffect(() => {
@@ -53,31 +64,46 @@ export default function OpportunitiesPage() {
         setLoading(true);
         setError(null);
 
-        Logger.info('🚀 Loading opportunities via API bridge (/api/opportunities)...');
+        Logger.info(
+          "🚀 Loading opportunities via API bridge (/api/opportunities)...",
+        );
 
-        const resp = await fetch('/api/opportunities');
+        const resp = await fetch("/api/opportunities");
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const json = await resp.json();
-        const realOpportunities: CardOpportunity[] = (json.items || []).map((it: CardOpportunity) => ({ ...it, source: 'live' }));
+        const realOpportunities: CardOpportunity[] = (json.items || []).map(
+          (it: CardOpportunity) => ({ ...it, source: "live" }),
+        );
 
         // Basic stats (client-side)
         const realStats = {
-          avgApr7d: realOpportunities.length ? realOpportunities.reduce((a, o) => a + o.apr, 0) / realOpportunities.length : 0,
+          avgApr7d: realOpportunities.length
+            ? realOpportunities.reduce((a, o) => a + o.apr, 0) /
+              realOpportunities.length
+            : 0,
           totalTvlUsd: realOpportunities.reduce((a, o) => a + o.tvlUsd, 0),
           results: realOpportunities.length,
         };
 
         if (!mounted) return;
 
-        Logger.info(`✅ Loaded ${realOpportunities.length} opportunities from REAL APIs`);
-        Logger.info(`📊 Stats: ${realStats.avgApr7d.toFixed(1)}% avg APR, $${(realStats.totalTvlUsd / 1_000_000).toFixed(1)}M TVL`);
+        Logger.info(
+          `✅ Loaded ${realOpportunities.length} opportunities from REAL APIs`,
+        );
+        Logger.info(
+          `📊 Stats: ${realStats.avgApr7d.toFixed(1)}% avg APR, $${(realStats.totalTvlUsd / 1_000_000).toFixed(1)}M TVL`,
+        );
 
         setOpportunities(realOpportunities);
         setStats(realStats);
-
       } catch (error) {
-        Logger.error('❌ FAILED to load real data - this should not happen in production!', error);
-        setError(`Real data loading failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        Logger.error(
+          "❌ FAILED to load real data - this should not happen in production!",
+          error,
+        );
+        setError(
+          `Real data loading failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+        );
         setOpportunities([]);
         setStats({ avgApr7d: 0, totalTvlUsd: 0, results: 0 });
       } finally {
@@ -95,7 +121,9 @@ export default function OpportunitiesPage() {
   }, [setLoading, setStats]);
 
   const filtered = React.useMemo(() => {
-    Logger.debug(`🔍 Filtering ${opportunities.length} opportunities with query='${query}', risk='${risk}'`);
+    Logger.debug(
+      `🔍 Filtering ${opportunities.length} opportunities with query='${query}', risk='${risk}'`,
+    );
 
     const result = opportunities.filter((o) => {
       // Only Stacks chain for now
@@ -140,7 +168,9 @@ export default function OpportunitiesPage() {
       return 0;
     });
 
-    Logger.debug(`📈 Sorted ${result.length} opportunities by ${sort.key} ${sort.dir}`);
+    Logger.debug(
+      `📈 Sorted ${result.length} opportunities by ${sort.key} ${sort.dir}`,
+    );
     return result;
   }, [filtered, sort]);
 
@@ -150,12 +180,14 @@ export default function OpportunitiesPage() {
     const avgAPR = count ? filtered.reduce((a, o) => a + o.apr, 0) / count : 0; // Already percent
     const sumTVL = filtered.reduce((a, o) => a + o.tvlUsd, 0);
 
-    Logger.debug(`📊 Display stats: count=${count}, avgAPR=${avgAPR.toFixed(1)}%, totalTVL=$${(sumTVL / 1_000_000).toFixed(1)}M`);
+    Logger.debug(
+      `📊 Display stats: count=${count}, avgAPR=${avgAPR.toFixed(1)}%, totalTVL=$${(sumTVL / 1_000_000).toFixed(1)}M`,
+    );
 
     return {
       avgApr7d: avgAPR,
       totalTvlUsd: sumTVL,
-      results: count
+      results: count,
     };
   }, [filtered]);
 
@@ -165,117 +197,149 @@ export default function OpportunitiesPage() {
   return (
     <>
       <Head>
-        <title>Yield Opportunities | Farmin</title>
-        <meta name="description" content="Explore the best yield farming opportunities on Stacks. Find highest APR/APY rates across DeFi protocols." />
-        <meta property="og:title" content="Yield Opportunities | Farmin" />
-        <meta property="og:description" content="Explore the best yield farming opportunities on Stacks. Find highest APR/APY rates across DeFi protocols." />
+        <title>Yield Opportunities | Farmer UI</title>
+        <meta
+          name="description"
+          content="Explore the best yield farming opportunities on Stacks. Find highest APR/APY rates across DeFi protocols."
+        />
+        <meta property="og:title" content="Yield Opportunities | Farmer UI" />
+        <meta
+          property="og:description"
+          content="Explore the best yield farming opportunities on Stacks. Find highest APR/APY rates across DeFi protocols."
+        />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Yield Opportunities | Farmin" />
-        <meta name="twitter:description" content="Explore the best yield farming opportunities on Stacks. Find highest APR/APY rates across DeFi protocols." />
+        <meta name="twitter:title" content="Yield Opportunities | Farmer UI" />
+        <meta
+          name="twitter:description"
+          content="Explore the best yield farming opportunities on Stacks. Find highest APR/APY rates across DeFi protocols."
+        />
       </Head>
       <main>
-      <HeroHeader
-        title="Explore Yield Opportunities"
-        subtitle="Find the best APR/APY on Stacks. Multichain coming soon."
-        size="standard"
-        // No chain pills needed - only Stacks for now
-        kpis={
-          <HeroKpiBar
-            kpis={displayStats}
-          />
-        }
-      />
-      <AnimatedFilterBar
-        defaultRisk={risk === "Medium" ? "medium" : (risk === "High" ? "high" : (risk === "Low" ? "low" : "all"))}
-        defaultSort={`${sort.key === "tvlUsd" ? "tvl" : sort.key}-${sort.dir}` as "apr-desc" | "apr-asc" | "apy-desc" | "apy-asc" | "tvl-desc" | "tvl-asc" | "risk-desc" | "risk-asc"}
-        query={query}
-        onQueryChange={(q) => {
-          Logger.debug(`🔍 Search query changed: '${q}'`);
-          setQuery(q);
-        }}
-        onRiskChange={(r) => {
-          Logger.debug(`🎯 Risk filter changed: '${r}'`);
-          const mapped = r === 'medium' ? 'Medium' : r === 'high' ? 'High' : r === 'low' ? 'Low' : 'all';
-          setRisk(mapped as typeof risk);
-        }}
-        onSortChange={(s) => {
-          const [sortKey, dir] = s.split("-") as [string, "asc" | "desc"];
-          const key = (sortKey === "tvl" ? "tvlUsd" : sortKey) as keyof CardOpportunity;
-          Logger.debug(`📈 Sort changed: ${key} ${dir}`);
-          setSort({ key, dir });
-        }}
-      />
+        <HeroHeader
+          title="Explore Yield Opportunities"
+          subtitle="Find the best APR/APY on Stacks. Multichain coming soon."
+          size="standard"
+          // No chain pills needed - only Stacks for now
+          kpis={<HeroKpiBar kpis={displayStats} />}
+        />
+        <AnimatedFilterBar
+          defaultRisk={
+            risk === "Medium"
+              ? "medium"
+              : risk === "High"
+                ? "high"
+                : risk === "Low"
+                  ? "low"
+                  : "all"
+          }
+          defaultSort={
+            `${sort.key === "tvlUsd" ? "tvl" : sort.key}-${sort.dir}` as
+              | "apr-desc"
+              | "apr-asc"
+              | "apy-desc"
+              | "apy-asc"
+              | "tvl-desc"
+              | "tvl-asc"
+              | "risk-desc"
+              | "risk-asc"
+          }
+          query={query}
+          onQueryChange={(q) => {
+            Logger.debug(`🔍 Search query changed: '${q}'`);
+            setQuery(q);
+          }}
+          onRiskChange={(r) => {
+            Logger.debug(`🎯 Risk filter changed: '${r}'`);
+            const mapped =
+              r === "medium"
+                ? "Medium"
+                : r === "high"
+                  ? "High"
+                  : r === "low"
+                    ? "Low"
+                    : "all";
+            setRisk(mapped as typeof risk);
+          }}
+          onSortChange={(s) => {
+            const [sortKey, dir] = s.split("-") as [string, "asc" | "desc"];
+            const key = (
+              sortKey === "tvl" ? "tvlUsd" : sortKey
+            ) as keyof CardOpportunity;
+            Logger.debug(`📈 Sort changed: ${key} ${dir}`);
+            setSort({ key, dir });
+          }}
+        />
 
-      <section className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
-
-        {/* Real Data Status Indicator */}
-        {!error && !loading && (
-          <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4">
-            <div className="flex items-center space-x-3">
-              <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
-              <div>
-                <p className="text-sm font-medium text-green-800">
-                  🚀 Live Data Active
-                </p>
-                <p className="text-sm text-green-700">
-                  Real-time data from DeFiLlama API and Arkadiko Protocol • Updated every 5 minutes
-                </p>
+        <section className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+          {/* Real Data Status Indicator */}
+          {!error && !loading && (
+            <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4">
+              <div className="flex items-center space-x-3">
+                <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+                <div>
+                  <p className="text-sm font-medium text-green-800">
+                    🚀 Live Data Active
+                  </p>
+                  <p className="text-sm text-green-700">
+                    Real-time data from DeFiLlama API and Arkadiko Protocol •
+                    Updated every 5 minutes
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Error Indicator */}
-        {error && (
-          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
-            <div className="flex items-center space-x-3">
-              <AlertTriangle className="h-5 w-5 text-red-600" />
-              <div>
-                <p className="text-sm font-medium text-red-800">
-                  ❌ Real Data Loading Failed
-                </p>
-                <p className="text-sm text-red-700">
-                  {error}
-                </p>
+          {/* Error Indicator */}
+          {error && (
+            <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
+              <div className="flex items-center space-x-3">
+                <AlertTriangle className="h-5 w-5 text-red-600" />
+                <div>
+                  <p className="text-sm font-medium text-red-800">
+                    ❌ Real Data Loading Failed
+                  </p>
+                  <p className="text-sm text-red-700">{error}</p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {loading ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <OpportunityCardPlaceholder key={i} />
-            ))}
-          </div>
-        ) : sorted.length === 0 ? (
-          <EmptyState
-            onReset={() => {
-              Logger.info("🔄 Resetting all filters to default values");
-              setQuery("");
-              setRisk("all");
-              setSort({ key: "apr", dir: "desc" });
-            }}
-          />
-        ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {sorted.map((o, index) => {
-              Logger.debug(`🃏 Rendering opportunity ${index + 1}/${sorted.length}: ${o.protocol} - ${o.pair}`);
-              return (
-                <OpportunityCard
-                  key={o.id}
-                  data={o}
-                  disabled={false} // All Stacks opportunities are enabled
-                />
-              );
-            })}
-          </div>
-        )}
+          {loading ? (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <OpportunityCardPlaceholder key={i} />
+              ))}
+            </div>
+          ) : sorted.length === 0 ? (
+            <EmptyState
+              onReset={() => {
+                Logger.info("🔄 Resetting all filters to default values");
+                setQuery("");
+                setRisk("all");
+                setSort({ key: "apr", dir: "desc" });
+              }}
+            />
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {sorted.map((o, index) => {
+                Logger.debug(
+                  `🃏 Rendering opportunity ${index + 1}/${sorted.length}: ${o.protocol} - ${o.pair}`,
+                );
+                return (
+                  <OpportunityCard
+                    key={o.id}
+                    data={o}
+                    disabled={false} // All Stacks opportunities are enabled
+                  />
+                );
+              })}
+            </div>
+          )}
 
-        {/* Bottom info/debug note removed per request */}
-      </section>
-    </main>
+          {/* Bottom info/debug note removed per request */}
+        </section>
+      </main>
     </>
   );
 }

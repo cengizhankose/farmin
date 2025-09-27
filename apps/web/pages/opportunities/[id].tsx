@@ -8,14 +8,13 @@ import { OpportunityOverviewCard } from "@/components/opportunity/OpportunityOve
 import { DepositCalculator } from "@/components/opportunity/DepositCalculator";
 import { RiskAnalysis } from "@/components/opportunity/RiskAnalysis";
 import { useCompare } from "@/components/opportunity/CompareBar";
-import { GitCompare, ArrowLeft, AlertTriangle, Loader2 } from "lucide-react";
+import { GitCompare, ArrowLeft, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   ArkadikoDetailError,
   ChartDataError,
   DataLoadingError,
-  NoChartDataAvailable
 } from "@/components/ui/ErrorNotification";
 
 type CardOpportunity = {
@@ -46,7 +45,9 @@ export default function OpportunityDetailPage() {
   const [data, setData] = React.useState<CardOpportunity | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
-  const [errorType, setErrorType] = React.useState<'arkadiko-detail' | 'chart-data' | 'general' | null>(null);
+  const [errorType, setErrorType] = React.useState<
+    "arkadiko-detail" | "chart-data" | "general" | null
+  >(null);
 
   // Retry function for data loading
   const handleRetry = React.useCallback(() => {
@@ -77,29 +78,40 @@ export default function OpportunityDetailPage() {
         if (!mounted) return;
 
         if (opportunity) {
-          Logger.info(`Loaded opportunity detail from REAL APIs`, { opportunityId });
-          Logger.debug(`Data loaded`, { opportunityId, protocol: opportunity.protocol });
+          Logger.info(`Loaded opportunity detail from REAL APIs`, {
+            opportunityId,
+          });
+          Logger.debug(`Data loaded`, {
+            opportunityId,
+            protocol: opportunity.protocol,
+          });
           setData(opportunity);
         } else {
           Logger.warn(`Opportunity not found in real data`, { opportunityId });
-          setError('Opportunity data is temporarily unavailable');
-          setErrorType('general');
+          setError("Opportunity data is temporarily unavailable");
+          setErrorType("general");
         }
-
       } catch (fetchError) {
         Logger.error(`Failed to load real data`, fetchError, { opportunityId });
-        const errorMessage = fetchError instanceof Error ? fetchError.message : 'Unknown error';
+        const errorMessage =
+          fetchError instanceof Error ? fetchError.message : "Unknown error";
 
         // Determine error type based on error message
-        if (errorMessage.includes('404') && opportunityId.toLowerCase().includes('arkadiko')) {
-          setError('Arkadiko protocol details are temporarily unavailable');
-          setErrorType('arkadiko-detail');
-        } else if (errorMessage.includes('400') && errorMessage.includes('chart')) {
-          setError('Chart data is temporarily unavailable');
-          setErrorType('chart-data');
+        if (
+          errorMessage.includes("404") &&
+          opportunityId.toLowerCase().includes("arkadiko")
+        ) {
+          setError("Arkadiko protocol details are temporarily unavailable");
+          setErrorType("arkadiko-detail");
+        } else if (
+          errorMessage.includes("400") &&
+          errorMessage.includes("chart")
+        ) {
+          setError("Chart data is temporarily unavailable");
+          setErrorType("chart-data");
         } else {
-          setError('Data loading failed. Please try again later.');
-          setErrorType('general');
+          setError("Data loading failed. Please try again later.");
+          setErrorType("general");
         }
 
         setData(null);
@@ -127,7 +139,9 @@ export default function OpportunityDetailPage() {
           className="text-center"
         >
           <Loader2 className="mx-auto h-8 w-8 animate-spin text-gray-400" />
-          <h2 className="mt-4 text-xl font-semibold text-gray-900">Loading opportunity...</h2>
+          <h2 className="mt-4 text-xl font-semibold text-gray-900">
+            Loading opportunity...
+          </h2>
           <p className="mt-2 text-gray-600">Fetching the latest data</p>
         </motion.div>
       </div>
@@ -143,13 +157,13 @@ export default function OpportunityDetailPage() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-2xl mx-auto"
         >
-          {errorType === 'arkadiko-detail' && (
+          {errorType === "arkadiko-detail" && (
             <ArkadikoDetailError onRetry={handleRetry} />
           )}
-          {errorType === 'chart-data' && (
+          {errorType === "chart-data" && (
             <ChartDataError onRetry={handleRetry} />
           )}
-          {errorType === 'general' && (
+          {errorType === "general" && (
             <DataLoadingError message={error} onRetry={handleRetry} />
           )}
           {!errorType && (
@@ -170,99 +184,141 @@ export default function OpportunityDetailPage() {
     );
   }
 
-
   return (
     <>
       <Head>
-        <title>{data ? `${data.protocol} ${data.pair} | Farmin` : "Opportunity Details | Farmin"}</title>
-        <meta name="description" content={data ? `Detailed information about ${data.protocol} ${data.pair} yield farming opportunity on Stacks.` : "View detailed information about yield farming opportunities on Farmin."} />
-        <meta property="og:title" content={data ? `${data.protocol} ${data.pair} | Farmin` : "Opportunity Details | Farmin"} />
-        <meta property="og:description" content={data ? `Detailed information about ${data.protocol} ${data.pair} yield farming opportunity on Stacks.` : "View detailed information about yield farming opportunities on Farmin."} />
+        <title>
+          {data
+            ? `${data.protocol} ${data.pair} | Farmer UI`
+            : "Opportunity Details | Farmer UI"}
+        </title>
+        <meta
+          name="description"
+          content={
+            data
+              ? `Detailed information about ${data.protocol} ${data.pair} yield farming opportunity on Stacks.`
+              : "View detailed information about yield farming opportunities on Farmer UI."
+          }
+        />
+        <meta
+          property="og:title"
+          content={
+            data
+              ? `${data.protocol} ${data.pair} | Farmer UI`
+              : "Opportunity Details | Farmer UI"
+          }
+        />
+        <meta
+          property="og:description"
+          content={
+            data
+              ? `Detailed information about ${data.protocol} ${data.pair} yield farming opportunity on Stacks.`
+              : "View detailed information about yield farming opportunities on Farmer UI."
+          }
+        />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={data ? `${data.protocol} ${data.pair} | Farmin` : "Opportunity Details | Farmin"} />
-        <meta name="twitter:description" content={data ? `Detailed information about ${data.protocol} ${data.pair} yield farming opportunity on Stacks.` : "View detailed information about yield farming opportunities on Farmin."} />
+        <meta
+          name="twitter:title"
+          content={
+            data
+              ? `${data.protocol} ${data.pair} | Farmer UI`
+              : "Opportunity Details | Farmer UI"
+          }
+        />
+        <meta
+          name="twitter:description"
+          content={
+            data
+              ? `Detailed information about ${data.protocol} ${data.pair} yield farming opportunity on Stacks.`
+              : "View detailed information about yield farming opportunities on Farmer UI."
+          }
+        />
       </Head>
       <main className="min-h-screen pb-20">
-      <div className="mx-auto max-w-7xl px-6 py-8">
-
-        {/* Real Data Status Indicator */}
-        {!error && !loading && data && (
-          <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4">
-            <div className="flex items-center space-x-3">
-              <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
-              <div>
-                <p className="text-sm font-medium text-green-800">
-                  🚀 Live Data Active
-                </p>
-                <p className="text-sm text-green-700">
-                  Real-time data from DeFiLlama API and Arkadiko Protocol • ID: {data.id}
-                </p>
+        <div className="mx-auto max-w-7xl px-6 py-8">
+          {/* Real Data Status Indicator */}
+          {!error && !loading && data && (
+            <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4">
+              <div className="flex items-center space-x-3">
+                <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+                <div>
+                  <p className="text-sm font-medium text-green-800">
+                    🚀 Live Data Active
+                  </p>
+                  <p className="text-sm text-green-700">
+                    Real-time data from DeFiLlama API and Arkadiko Protocol •
+                    ID: {data.id}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Error Indicator */}
-        {error && data && (
-          <div className="mb-6">
-            {errorType === 'arkadiko-detail' && (
-              <ArkadikoDetailError onRetry={handleRetry} />
-            )}
-            {errorType === 'chart-data' && (
-              <ChartDataError onRetry={handleRetry} />
-            )}
-            {errorType === 'general' && (
-              <DataLoadingError message={error} onRetry={handleRetry} />
-            )}
-            {!errorType && (
-              <DataLoadingError message={error} onRetry={handleRetry} />
-            )}
-          </div>
-        )}
+          {/* Error Indicator */}
+          {error && data && (
+            <div className="mb-6">
+              {errorType === "arkadiko-detail" && (
+                <ArkadikoDetailError onRetry={handleRetry} />
+              )}
+              {errorType === "chart-data" && (
+                <ChartDataError onRetry={handleRetry} />
+              )}
+              {errorType === "general" && (
+                <DataLoadingError message={error} onRetry={handleRetry} />
+              )}
+              {!errorType && (
+                <DataLoadingError message={error} onRetry={handleRetry} />
+              )}
+            </div>
+          )}
 
-        {/* Hero Section */}
-        {data && <OpportunityHero data={data} />}
+          {/* Hero Section */}
+          {data && <OpportunityHero data={data} />}
 
-        {/* Compare Button */}
-        {data && (
-          <div className="mt-6 flex justify-end">
-          <motion.button
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => {
-              Logger.info(`Adding opportunity to compare`, { opportunityId: data.id });
-              // CompareItem matches CardOpportunity structurally (logo? optional)
-              addItem(data as unknown as import("@/components/opportunity/CompareBar").CompareItem);
-            }}
-            className="typo-btn-sm-muted inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 ring-1 ring-zinc-200 hover:bg-zinc-50 transition-all hover:shadow-sm"
-          >
-            <GitCompare size={16} />
-            Add to Compare
-          </motion.button>
-          </div>
-        )}
+          {/* Compare Button */}
+          {data && (
+            <div className="mt-6 flex justify-end">
+              <motion.button
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  Logger.info(`Adding opportunity to compare`, {
+                    opportunityId: data.id,
+                  });
+                  // CompareItem matches CardOpportunity structurally (logo? optional)
+                  addItem(
+                    data as unknown as import("@/components/opportunity/CompareBar").CompareItem,
+                  );
+                }}
+                className="typo-btn-sm-muted inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 ring-1 ring-zinc-200 hover:bg-zinc-50 transition-all hover:shadow-sm"
+              >
+                <GitCompare size={16} />
+                Add to Compare
+              </motion.button>
+            </div>
+          )}
 
-        {/* Main Content Grid */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - 2/3 */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Performance Overview */}
-            {data && <OpportunityOverviewCard data={data} />}
+          {/* Main Content Grid */}
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column - 2/3 */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Performance Overview */}
+              {data && <OpportunityOverviewCard data={data} />}
 
-            {/* Risk Analysis */}
-            {data && <RiskAnalysis data={data} />}
-          </div>
+              {/* Risk Analysis */}
+              {data && <RiskAnalysis data={data} />}
+            </div>
 
-          {/* Right Column - 1/3 */}
-          <div className="lg:col-span-1">
-            {data && <DepositCalculator data={data} />}
+            {/* Right Column - 1/3 */}
+            <div className="lg:col-span-1">
+              {data && <DepositCalculator data={data} />}
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
     </>
   );
 }
