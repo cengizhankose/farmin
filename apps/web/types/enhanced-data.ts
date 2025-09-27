@@ -165,7 +165,7 @@ export interface MarketSentimentData {
   sentimentScore: number;
 }
 
-// Blockchain-specific metrics for Stacks
+// Blockchain-specific metrics for DeFi protocols
 export interface BlockchainMetrics {
   contractTransactions: number;
   contractVolume: number;

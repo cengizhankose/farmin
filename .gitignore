@@ -6,3 +6,6 @@ dist
 coverage
 CLAUDE.md
 .claude
+*.db
+*.sqlite
+*.sqlite3

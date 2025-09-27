@@ -3,7 +3,7 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-export type ChainKey = "stacks" | "ethereum" | "solana";
+export type ChainKey = "algorand" | "ethereum" | "solana";
 
 type Props = {
   defaultChain?: ChainKey;
@@ -13,13 +13,13 @@ type Props = {
 };
 
 const CHAINS: Array<{ key: ChainKey; label: string; disabled: boolean }> = [
-  { key: "stacks", label: "Stacks", disabled: false },
+  { key: "algorand", label: "Algorand", disabled: false },
   { key: "ethereum", label: "Ethereum", disabled: true },
   { key: "solana", label: "Solana", disabled: true },
 ];
 
 export function ChainFilterPills({
-  defaultChain = "stacks",
+  defaultChain = "algorand",
   onChange,
   sticky = true,
   className,

@@ -200,19 +200,19 @@ export default function OpportunitiesPage() {
         <title>Yield Opportunities | Farmer UI</title>
         <meta
           name="description"
-          content="Explore the best yield farming opportunities on Algorand. Find highest APR/APY rates across DeFi protocols."
+          content="Explore the best yield farming opportunities across multiple chains. Find highest APR/APY rates on Ethereum, Solana, and more."
         />
         <meta property="og:title" content="Yield Opportunities | Farmer UI" />
         <meta
           property="og:description"
-          content="Explore the best yield farming opportunities on Algorand. Find highest APR/APY rates across DeFi protocols."
+          content="Explore the best yield farming opportunities across multiple chains. Find highest APR/APY rates on Ethereum, Solana, and more."
         />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Yield Opportunities | Farmer UI" />
         <meta
           name="twitter:description"
-          content="Explore the best yield farming opportunities on Algorand. Find highest APR/APY rates across DeFi protocols."
+          content="Explore the best yield farming opportunities across multiple chains. Find highest APR/APY rates on Ethereum, Solana, and more."
         />
       </Head>
       <main>
@@ -220,7 +220,7 @@ export default function OpportunitiesPage() {
           title="Explore Yield Opportunities"
           subtitle="Find the best APR/APY on Algorand. Multichain coming soon."
           size="standard"
-          // No chain pills needed - only Stacks for now
+          // Multi-chain support enabled
           kpis={<HeroKpiBar kpis={displayStats} />}
         />
         <AnimatedFilterBar
@@ -272,9 +272,10 @@ export default function OpportunitiesPage() {
         />
 
         <section className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+
           {/* Real Data Status Indicator */}
           {!error && !loading && (
-            <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4">
+            <div className="mt-6 rounded-lg border border-green-200 bg-green-50 p-4">
               <div className="flex items-center space-x-3">
                 <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
                 <div>
@@ -282,7 +283,7 @@ export default function OpportunitiesPage() {
                     🚀 Live Data Active
                   </p>
                   <p className="text-sm text-green-700">
-                    Real-time data from DeFiLlama API and Arkadiko Protocol •
+                    Real-time data from DeFiLlama API and leading DeFi protocols •
                     Updated every 5 minutes
                   </p>
                 </div>

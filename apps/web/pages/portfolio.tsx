@@ -167,61 +167,6 @@ export default function PortfolioPage() {
         "Deposit",
       ),
 
-      // Arkadiko STX/WELSH
-      mk(
-        "arkadiko-stx-welsh",
-        "Arkadiko",
-        "STX/WELSH",
-        variant === "A" ? 27.5 : 31.2,
-        1500 + 200 * base,
-        25,
-        8,
-        "Deposit",
-      ),
-
-      // Arkadiko xBTC/USDA
-      mk(
-        "arkadiko-xbtc-usda",
-        "Arkadiko",
-        "xBTC/USDA",
-        variant === "A" ? 14.6 : 17.8,
-        5200 + 600 * base,
-        45,
-        10,
-        "Deposit",
-      ),
-      mk(
-        "arkadiko-xbtc-usda",
-        "Arkadiko",
-        "xBTC/USDA",
-        variant === "A" ? 14.6 : 17.8,
-        1200,
-        20,
-        3,
-        "Deposit",
-      ),
-      mk(
-        "arkadiko-xbtc-usda",
-        "Arkadiko",
-        "xBTC/USDA",
-        variant === "A" ? 14.6 : 17.8,
-        700,
-        10,
-        0,
-        "Withdraw",
-      ),
-
-      // Arkadiko STX/DIKO
-      mk(
-        "arkadiko-stx-diko",
-        "Arkadiko",
-        "STX/DIKO",
-        variant === "A" ? 23.9 : 28.7,
-        1000,
-        18,
-        5,
-        "Deposit",
-      ),
 
       // ZEST AEUSDC (stable-ish)
       mk(

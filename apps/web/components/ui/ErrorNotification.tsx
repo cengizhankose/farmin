@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 
 interface ErrorNotificationProps {
   type:
-    | "arkadiko-detail"
-    | "arkadiko-chart"
     | "defillama-chart"
     | "general"
     | "warning";
@@ -17,19 +15,6 @@ interface ErrorNotificationProps {
 }
 
 const errorConfig = {
-  "arkadiko-detail": {
-    color: "border-orange-200 bg-orange-50",
-    textColor: "text-orange-800",
-    iconColor: "text-orange-600",
-    description:
-      "Arkadiko protocol detailed information is temporarily unavailable",
-  },
-  "arkadiko-chart": {
-    color: "border-amber-200 bg-amber-50",
-    textColor: "text-amber-800",
-    iconColor: "text-amber-600",
-    description: "Chart data from Arkadiko is currently unavailable",
-  },
   "defillama-chart": {
     color: "border-yellow-200 bg-yellow-50",
     textColor: "text-yellow-800",
@@ -115,19 +100,6 @@ export function ErrorNotification({
   );
 }
 
-// Specific error types with default configurations
-export function ArkadikoDetailError({ onRetry }: { onRetry?: () => void }) {
-  return (
-    <ErrorNotification
-      type="arkadiko-detail"
-      title="Arkadiko Detail Unavailable"
-      message="Unable to fetch detailed information from Arkadiko protocol. Showing basic pool data instead."
-      onRetry={onRetry}
-      actionUrl="https://arkadiko.finance"
-      actionText="Visit Arkadiko"
-    />
-  );
-}
 
 export function ChartDataError({
   protocol = "Data Provider",
@@ -138,11 +110,7 @@ export function ChartDataError({
 }) {
   return (
     <ErrorNotification
-      type={
-        protocol.toLowerCase().includes("arkadiko")
-          ? "arkadiko-chart"
-          : "defillama-chart"
-      }
+      type="defillama-chart"
       title={`${protocol} Chart Data Unavailable`}
       message="Historical chart data is temporarily unavailable. This may be due to API rate limits or service maintenance."
       onRetry={onRetry}

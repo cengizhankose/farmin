@@ -26,6 +26,15 @@ export interface Opportunity {
   exposure?: string;       // Single asset, stablecoin, etc.
   ilRisk?: string;         // Impermanent loss risk level
   stablecoin?: boolean;    // Whether pool contains stablecoins
+
+  // Historical data from external APIs
+  volume7d?: number;       // 7-day trading volume
+  volume30d?: number;      // 30-day trading volume
+  uniqueUsers24h?: number; // Daily active users
+  uniqueUsers7d?: number;  // Weekly active users
+  uniqueUsers30d?: number; // Monthly active users
+  concentrationRisk?: number; // 0-100, concentration risk score
+  userRetention?: number;  // User retention rate percentage
 }
 
 // Type alias for backward compatibility during migration
@@ -88,3 +97,6 @@ export interface AdapterStats {
   avgApy: number;
   lastUpdate: number;
 }
+
+// Re-export detail page types
+export * from './types/detail';

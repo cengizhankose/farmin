@@ -88,36 +88,6 @@ function getOpportunityById(id: string): Opportunity | undefined {
       apy: scenario === "A" ? [11, 19] : [14, 22],
       tvl: [1_000_000, 6_000_000],
     },
-    "arkadiko-stx-welsh": {
-      protocol: "Arkadiko",
-      pair: "STX/WELSH",
-      chain: "stacks",
-      risk: "High",
-      rewardToken: "DIKO",
-      apr: scenario === "A" ? [22, 32] : [25, 35],
-      apy: scenario === "A" ? [26, 40] : [28, 45],
-      tvl: [600_000, 3_000_000],
-    },
-    "arkadiko-xbtc-usda": {
-      protocol: "Arkadiko",
-      pair: "xBTC/USDA",
-      chain: "stacks",
-      risk: "Medium",
-      rewardToken: "DIKO",
-      apr: scenario === "A" ? [11, 18] : [12, 20],
-      apy: scenario === "A" ? [13, 22] : [15, 25],
-      tvl: [1_000_000, 7_000_000],
-    },
-    "arkadiko-stx-diko": {
-      protocol: "Arkadiko",
-      pair: "STX/DIKO",
-      chain: "stacks",
-      risk: "High",
-      rewardToken: "DIKO",
-      apr: scenario === "A" ? [19, 28] : [22, 32],
-      apy: scenario === "A" ? [22, 36] : [24, 40],
-      tvl: [500_000, 2_500_000],
-    },
     "zest-aeusdc": {
       protocol: "ZEST",
       pair: "AEUSDC",
@@ -154,7 +124,7 @@ function getOpportunityById(id: string): Opportunity | undefined {
     rewardToken: meta.rewardToken,
     lastUpdated,
     originalUrl: "",
-    summary: `${meta.protocol} ${meta.pair} pool on Stacks with ${risk} risk`,
+    summary: `${meta.protocol} ${meta.pair} pool on Algorand with ${risk} risk`,
   };
 }
 import { protocolLogo } from "@/lib/logos";

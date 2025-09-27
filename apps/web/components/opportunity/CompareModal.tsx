@@ -173,15 +173,7 @@ function ComparePanel({
       {/* Header */}
       <div className="flex items-start gap-3 mb-6">
         <>
-          {item.protocol.toLowerCase() === "arkadiko" ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              className="h-12 w-12 rounded-xl grid place-items-center text-lg font-bold shadow-sm overflow-hidden"
-              src="/logos/arkadiko.svg"
-              alt="Arkadiko logo"
-              style={{ objectFit: "contain", padding: "4px" }}
-            />
-          ) : item.logoUrl ? (
+          {item.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               className="h-12 w-12 rounded-xl grid place-items-center text-lg font-bold shadow-sm overflow-hidden"
