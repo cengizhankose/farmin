@@ -129,6 +129,9 @@ export default function OpportunitiesPage() {
       // Only Algorand chain for now
       if (o.chain !== "algorand") return false;
 
+      // Hide opportunities with 0.00 APR and APY
+      if (o.apr === 0 && o.apy === 0) return false;
+
       // Risk filter
       if (risk !== "all" && o.risk !== risk) return false;
 

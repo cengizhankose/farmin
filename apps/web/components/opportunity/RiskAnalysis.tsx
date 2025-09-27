@@ -231,7 +231,7 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
     if (volVec.length < 5) return 55; // unknown → medium
     // Higher Herfindahl implies more concentrated volume flow
     const h = clamp01((volHerf - 0.1) / 0.9);
-    return pct(h);
+    return Number(pct(h).toFixed(2));
   })();
 
   const momentumRisk = (() => {
@@ -525,23 +525,7 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
             </div>
           )}
 
-          {/* Recommendations */}
-          {riskData.recommendations && riskData.recommendations.length > 0 && (
-            <div className="p-4 rounded-xl bg-amber-50">
-              <h4 className="text-sm font-medium text-amber-900 mb-2 flex items-center gap-1">
-                <AlertTriangle size={14} />
-                Recommendations
-              </h4>
-              <ul className="space-y-1">
-                {riskData.recommendations.slice(0, 3).map((rec, index) => (
-                  <li key={index} className="text-xs text-amber-800">
-                    • {rec}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </motion.div>
+          </motion.div>
       )}
 
       {/* Info Footer */}

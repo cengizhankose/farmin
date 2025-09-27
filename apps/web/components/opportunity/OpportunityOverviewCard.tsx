@@ -173,7 +173,7 @@ export function OpportunityOverviewCard({
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <MetricCard
           label="Current APR"
-          value={`${latestMetrics.apr.toFixed(1)}%`}
+          value={`${latestMetrics.apr.toFixed(2)}%`}
           trend={aprTrend}
           icon={<TrendingUp size={14} />}
         />

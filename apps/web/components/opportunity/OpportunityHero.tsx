@@ -150,8 +150,8 @@ export function OpportunityHero({ data }: OpportunityHeroProps) {
           transition={{ duration: 0.35, delay: 0.2 }}
           className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3"
         >
-          <KpiCard label="APR" value={`${apr.toFixed(1)}%`} trend="+2.3%" />
-          <KpiCard label="APY" value={`${apy.toFixed(1)}%`} />
+          <KpiCard label="APR" value={`${apr.toFixed(2)}%`} trend="+2.3%" />
+          <KpiCard label="APY" value={`${apy.toFixed(2)}%`} />
           <KpiCard label="TVL" value={formatTVL(tvlUsd)} trend="+$1.2M" />
         </motion.div>
       </div>
