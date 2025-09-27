@@ -72,15 +72,15 @@ export function HeroHeader({
       <div className="relative z-10 w-full">
         <div className="mx-auto max-w-3xl px-10 py-10 sm:py-4">
           <motion.h1
-            className="font-display text-white text-4xl sm:text-5xl md:text-6xl
-              tracking-tight"
+            className="font-display text-white text-3xl sm:text-4xl md:text-5xl
+              tracking-tight mt-20"
             {...titleAnim}
           >
             {title}
           </motion.h1>
           {subtitle ? (
             <motion.p
-              className="mt-1 text-neutral-200 text-base sm:text-lg"
+              className="mt-1 text-neutral-400 text-base sm:text-lg mt-5"
               {...subtitleAnim}
             >
               {subtitle}

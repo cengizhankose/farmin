@@ -9,6 +9,7 @@ import AnimatedFilterBar from "@/components/AnimatedFilterBar";
 import { EmptyState } from "@/components/opportunities/EmptyState";
 import HeroHeader from "@/components/HeroHeader";
 import HeroKpiBar from "@/components/HeroKpiBar";
+import LogoLoopWithCircles from "@/components/LogoLoopWithCircles";
 // Removed chain filter pills - only Stacks for now
 import OpportunityCardPlaceholder from "@/components/OpportunityCardPlaceholder";
 // Enhanced components temporarily removed due to TypeScript errors
@@ -223,6 +224,7 @@ export default function OpportunitiesPage() {
           // No chain pills needed - only Stacks for now
           kpis={<HeroKpiBar kpis={displayStats} />}
         />
+
         <AnimatedFilterBar
           defaultRisk={
             risk === "Medium"

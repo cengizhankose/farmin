@@ -6,12 +6,15 @@ import { logger, logWalletEvent } from "@/wallet";
 export default function NavigationButtons() {
   const [hideLinks, setHideLinks] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
+  const [connecting, setConnecting] = React.useState<WalletId | null>(null);
   React.useEffect(() => setMounted(true), []);
-  const { wallets } = useWallet();
+  const { wallets, activeAddress } = useWallet();
+  const clientActive = mounted ? activeAddress : null;
 
   const connectById = React.useCallback(
     async (id: WalletId) => {
       try {
+        if (connecting) return;
         logger.info("ui:wallet:open", { id });
         logWalletEvent({
           type: "WALLET_OPEN",
@@ -19,8 +22,11 @@ export default function NavigationButtons() {
         });
         const w = wallets?.find((x) => x.id === id);
         if (w) {
+          if (w.isActive) return;
+          setConnecting(id);
           await w.connect();
           logger.info("ui:wallet:connected", { id });
+          setConnecting(null);
           return;
         }
         logger.warn("ui:wallet:not_found", { id });
@@ -31,10 +37,25 @@ export default function NavigationButtons() {
           stage: "connect",
           message: (e as any)?.message ?? "connect fail",
         });
+        setConnecting(null);
       }
     },
-    [wallets],
+    [wallets, connecting],
   );
+
+  const handleDisconnect = React.useCallback(async () => {
+    try {
+      const active = wallets?.find((w) => w.isActive);
+      if (active) await active.disconnect();
+    } catch (e) {
+      logger.error("ui:wallet:disconnect:error", e);
+      logWalletEvent({
+        type: "ERROR",
+        stage: "disconnect",
+        message: (e as any)?.message ?? "disconnect fail",
+      });
+    }
+  }, [wallets]);
 
   React.useEffect(() => {
     const onScroll = () => {
@@ -84,7 +105,26 @@ export default function NavigationButtons() {
                     fillRule="evenodd"
                   ></path>
                 </svg>
-                <span className="text">Connect Wallet</span>
+                {clientActive ? (
+                  <span
+                    className="text inline-flex items-center gap-2"
+                    suppressHydrationWarning
+                  >
+                    <span
+                      className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold"
+                      style={{ background: "#ffffff22", color: "#ffffff" }}
+                    >
+                      {(
+                        wallets?.find((w) => w.isActive)?.id || "wallet"
+                      ).toString()}
+                    </span>
+                    Connected
+                  </span>
+                ) : (
+                  <span className="text" suppressHydrationWarning>
+                    {connecting ? `Connecting…` : `Connect Wallet`}
+                  </span>
+                )}
               </button>
 
               <div className="btn-bubbles">
@@ -111,6 +151,17 @@ export default function NavigationButtons() {
                   />
                 </button>
               </div>
+
+              {clientActive && (
+                <div className="mt-2 flex justify-end">
+                  <button
+                    onClick={handleDisconnect}
+                    className="rounded-md bg-white/20 px-3 py-1 text-xs text-white hover:bg-white/30"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           </li>
           <li
@@ -189,8 +240,8 @@ export default function NavigationButtons() {
         /* Wallet Connect Button Styles */
         .btn {
           border: none;
-          width: 11.9em;
-          height: 3.3em;
+          width: 12.2em;
+          height: 3.6em;
           border-radius: 1.38em;
           display: flex;
           justify-content: center;

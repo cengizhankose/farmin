@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
+import LogoLoopWithCircles from "./LogoLoopWithCircles";
 
 type RiskKey = "all" | "low" | "medium" | "high";
 type SortKey =
@@ -51,6 +52,39 @@ export default function AnimatedFilterBar({
             value={query}
             onChange={(e) => onQueryChange?.(e.target.value)}
             className="w-full rounded-full border border-black/5 bg-[var(--sand-50)] px-4 py-2 text-sm text-zinc-900 placeholder-zinc-500 shadow-sm transition-colors focus:border-[var(--brand-orange)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-orange)]/20"
+          />
+        </div>
+
+        {/* Logo loop in between */}
+        <div
+          className="mx-3 hidden sm:flex items-center justify-center overflow-hidden py-1"
+          style={{ width: "700px" }}
+        >
+          <LogoLoopWithCircles
+            logos={[
+              {
+                src: "/logos/pera.svg",
+                alt: "Pera Wallet",
+                title: "Pera Wallet",
+              },
+              {
+                src: "/logos/algorand.svg",
+                alt: "Algorand",
+                title: "Algorand",
+              },
+              {
+                src: "/logos/defly.svg",
+                alt: "Defly",
+                title: "Defly",
+              },
+            ]}
+            speed={30}
+            logoHeight={35}
+            gap={30}
+            direction="left"
+            pauseOnHover={true}
+            fadeOut={false}
+            scaleOnHover={true}
           />
         </div>
 

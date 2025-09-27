@@ -114,19 +114,16 @@ export const Header = () => {
   React.useEffect(() => {
     // const handleScroll = () => {
     //   const currentScrollY = window.scrollY;
-
     //   // Scroll down and past threshold
     //   if (currentScrollY > lastScrollY && currentScrollY > 100) {
-      //   setIsVisible(false);
-      // }
-      // // Scroll up or at top
-      // else if (currentScrollY < lastScrollY || currentScrollY <= 100) {
-      //   setIsVisible(true);
-      // }
-
-      //   setLastScrollY(currentScrollY);
-      // };
-
+    //   setIsVisible(false);
+    // }
+    // // Scroll up or at top
+    // else if (currentScrollY < lastScrollY || currentScrollY <= 100) {
+    //   setIsVisible(true);
+    // }
+    //   setLastScrollY(currentScrollY);
+    // };
     // window.addEventListener("scroll", handleScroll, { passive: true });
     // return () => window.removeEventListener("scroll", handleScroll);
   }, []); // lastScrollY removed as it's unused
@@ -140,7 +137,7 @@ export const Header = () => {
         background: colors.gradients.purpleToBlack,
       }}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/logo-full.png"
