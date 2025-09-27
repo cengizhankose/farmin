@@ -13,7 +13,7 @@
 }
 
 .typo-h1 {
-  @apply font-display text-3xl md:text-4xl font-semibold text-neutral-900;
+  @apply font-display text-3xl md:text-4xl font-semibold text-zinc-900;
   letter-spacing: -0.01em;
 }
 
@@ -23,25 +23,31 @@
 }
 
 .typo-h3 {
-  @apply text-lg md:text-xl font-semibold text-neutral-900;
+  @apply text-lg md:text-xl font-semibold text-zinc-900;
 }
 
 /* Paragraphs */
-.typo-subhead { @apply text-lg text-white/80 leading-relaxed; }
-.typo-body { @apply text-base text-white/80 leading-relaxed; }
-.typo-microcopy { @apply mt-4 text-xs text-white/70; }
+.typo-subhead {
+  @apply text-lg text-white/80 leading-relaxed;
+}
+.typo-body {
+  @apply text-base text-white/80 leading-relaxed;
+}
+.typo-microcopy {
+  @apply mt-4 text-xs text-white/70;
+}
 
 .typo-lead {
-  @apply text-lg md:text-xl text-neutral-700 leading-relaxed;
+  @apply text-lg md:text-xl text-zinc-700 leading-relaxed;
   letter-spacing: 0.01em;
 }
 
 .typo-p {
-  @apply text-base text-neutral-600 leading-relaxed;
+  @apply text-base text-zinc-600 leading-relaxed;
 }
 
 .typo-fine {
-  @apply text-sm text-neutral-500;
+  @apply text-sm text-zinc-500;
 }
 
 /* Buttons & Links */
@@ -49,20 +55,33 @@
   @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent text-white shadow-sm;
   background: var(--brand-orange);
 }
-.typo-btn-primary:hover { @apply -translate-y-[2px] shadow-md; background: var(--brand-orange-700); }
-.typo-btn-primary:active { transform: translateY(0); }
+.typo-btn-primary:hover {
+  @apply -translate-y-[2px] shadow-md;
+  background: var(--brand-orange-700);
+}
+.typo-btn-primary:active {
+  transform: translateY(0);
+}
 
 .typo-btn-secondary {
-  @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent text-neutral-700 bg-white border border-neutral-200 shadow-sm;
+  @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent text-zinc-700 bg-white border border-zinc-200 shadow-sm;
 }
-.typo-btn-secondary:hover { @apply -translate-y-[2px] shadow-md bg-neutral-50; }
-.typo-btn-secondary:active { transform: translateY(0); }
+.typo-btn-secondary:hover {
+  @apply -translate-y-[2px] shadow-md bg-zinc-50;
+}
+.typo-btn-secondary:active {
+  transform: translateY(0);
+}
 
 .typo-btn-ghost {
-  @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent text-neutral-600 hover:text-neutral-900 bg-transparent;
+  @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent text-zinc-600 hover:text-zinc-900 bg-transparent;
 }
-.typo-btn-ghost:hover { @apply -translate-y-[2px] shadow-sm bg-neutral-100; }
-.typo-btn-ghost:active { transform: translateY(0); }
+.typo-btn-ghost:hover {
+  @apply -translate-y-[2px] shadow-sm bg-zinc-100;
+}
+.typo-btn-ghost:active {
+  transform: translateY(0);
+}
 
 .typo-link {
   @apply text-orange-500 hover:text-orange-600 font-medium;
@@ -71,15 +90,19 @@
 }
 
 /* Eyebrow and bullets */
-.typo-eyebrow { @apply text-[11px] uppercase tracking-wide font-semibold text-white/70; }
-.typo-bullets { @apply flex items-start gap-2 text-white/85 text-base; }
+.typo-eyebrow {
+  @apply text-[11px] uppercase tracking-wide font-semibold text-white/70;
+}
+.typo-bullets {
+  @apply flex items-start gap-2 text-white/85 text-base;
+}
 
 /* Cards */
-.typo-card-h { 
+.typo-card-h {
   @apply font-display text-lg text-white mb-2;
 }
 
-.typo-card-p { 
+.typo-card-p {
   @apply text-sm text-white/85 leading-relaxed;
 }
 
@@ -88,53 +111,53 @@
 }
 
 /* Opportunities */
-.typo-note { 
+.typo-note {
   @apply font-medium text-sm text-zinc-700 bg-amber-50/50 px-3 py-2 rounded-lg border border-amber-200/50;
 }
 
-.typo-subtle-note { 
+.typo-subtle-note {
   @apply text-xs text-zinc-500 flex items-center gap-1.5;
 }
 
 /* Detail pages */
-.typo-404-h { 
+.typo-404-h {
   @apply text-3xl font-semibold text-zinc-900 mb-3;
 }
 
-.typo-404-p { 
+.typo-404-p {
   @apply text-base text-zinc-600;
 }
 
-.typo-link-emerald { 
+.typo-link-emerald {
   @apply text-emerald-600 hover:text-emerald-700 underline-offset-4 hover:underline transition-colors;
 }
 
-.typo-btn-sm-muted { 
+.typo-btn-sm-muted {
   @apply text-sm font-medium text-zinc-700 hover:text-zinc-900 transition-colors;
 }
 
 /* Portfolio */
-.typo-portfolio-h1 { 
-  @apply font-display text-4xl md:text-5xl font-semibold text-neutral-900 tracking-tight;
+.typo-portfolio-h1 {
+  @apply font-display text-4xl md:text-5xl font-semibold text-zinc-900 tracking-tight;
 }
 
-.typo-portfolio-sub { 
-  @apply text-lg text-neutral-600 mt-2;
+.typo-portfolio-sub {
+  @apply text-lg text-zinc-600 mt-2;
 }
 
-.typo-section-h { 
+.typo-section-h {
   @apply text-lg font-semibold text-zinc-900 flex items-center gap-2;
 }
 
-.typo-empty { 
+.typo-empty {
   @apply text-sm text-zinc-600;
 }
 
-.typo-link-primary { 
+.typo-link-primary {
   @apply font-medium text-emerald-600 hover:text-emerald-700 underline underline-offset-4 transition-colors;
 }
 
-.typo-toggle { 
+.typo-toggle {
   @apply text-sm font-medium px-3 py-1.5 rounded-lg transition-all;
 }
 
@@ -170,7 +193,7 @@
   .typo-h1-hero {
     letter-spacing: -0.01em;
   }
-  
+
   .typo-h2 {
     letter-spacing: 0;
   }

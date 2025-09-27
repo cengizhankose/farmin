@@ -87,10 +87,10 @@ export default function PortfolioOverviewChart({
     >
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h3 className="font-display text-lg md:text-xl text-neutral-900">
+          <h3 className="font-display text-lg md:text-xl text-zinc-900">
             Portfolio Overview
           </h3>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-zinc-600">
             Total Value, Net PnL ve 24h Change
           </p>
         </div>
@@ -172,7 +172,7 @@ export default function PortfolioOverviewChart({
               verticalAlign="top"
               height={24}
               formatter={(val) => (
-                <span className="text-xs text-neutral-600">{val}</span>
+                <span className="text-xs text-zinc-600">{val}</span>
               )}
             />
 
@@ -226,10 +226,10 @@ function Kpi({
 }) {
   return (
     <div className="rounded-2xl bg-white/60 px-4 py-3 ring-1 ring-black/5">
-      <div className="text-[11px] uppercase tracking-wide text-neutral-500">
+      <div className="text-[11px] uppercase tracking-wide text-zinc-500">
         {label}
       </div>
-      <div className="mt-0.5 font-sans text-base md:text-lg font-semibold text-neutral-900 tabular-nums">
+      <div className="mt-0.5 font-sans text-base md:text-lg font-semibold text-zinc-900 tabular-nums">
         {children}
       </div>
     </div>
@@ -251,10 +251,10 @@ function Toggle({
     <button
       onClick={() => onChange(!active)}
       className={clsx(
-        "rounded-full px-3.5 py-1.5 text-sm ring-1 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400",
+        "rounded-full px-3.5 py-1.5 text-sm ring-1 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-400",
         active
           ? "text-white"
-          : "bg-white text-neutral-700 ring-neutral-200 hover:bg-neutral-100",
+          : "bg-white text-zinc-700 ring-zinc-200 hover:bg-zinc-100",
       )}
       style={active ? { background: color, borderColor: color } : {}}
       aria-pressed={active}
@@ -278,7 +278,7 @@ function Tip({
   payload.forEach((p) => (row[p.dataKey] = p.value));
   return (
     <div className="rounded-xl bg-white px-3 py-2 shadow-lg ring-1 ring-black/5">
-      <div className="text-xs text-neutral-500">{label}</div>
+      <div className="text-xs text-zinc-500">{label}</div>
       <div className="mt-1 grid grid-cols-1 gap-1 text-sm">
         {"total" in row && (
           <div>

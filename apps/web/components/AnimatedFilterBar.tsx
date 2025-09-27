@@ -188,7 +188,7 @@ function Menu({
                   }[]
                 ).map((g) => (
                   <div key={g.group} className="mb-1 last:mb-0">
-                    <div className="px-2 py-1 text-[11px] uppercase tracking-wide text-neutral-500">
+                    <div className="px-2 py-1 text-[11px] uppercase tracking-wide text-zinc-500">
                       {g.group}
                     </div>
                     {g.options.map((opt) => (
@@ -245,13 +245,11 @@ function MenuItem({
       onClick={onClick}
       className={clsx(
         "flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm",
-        active
-          ? "bg-neutral-100 text-neutral-900"
-          : "text-neutral-700 hover:bg-neutral-50",
+        active ? "bg-zinc-100 text-zinc-900" : "text-zinc-700 hover:bg-zinc-50",
       )}
     >
       <span>{label}</span>
-      {active && <span className="text-xs text-neutral-500">✓</span>}
+      {active && <span className="text-xs text-zinc-500">✓</span>}
     </button>
   );
 }

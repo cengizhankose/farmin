@@ -1,8 +1,40 @@
 import React from "react";
 import Link from "next/link";
+import { useWallet, WalletId } from "@txnlab/use-wallet-react";
+import { logger, logWalletEvent } from "@/wallet";
 
 export default function NavigationButtons() {
   const [hideLinks, setHideLinks] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+  const { wallets } = useWallet();
+
+  const connectById = React.useCallback(
+    async (id: WalletId) => {
+      try {
+        logger.info("ui:wallet:open", { id });
+        logWalletEvent({
+          type: "WALLET_OPEN",
+          connector: String(id).toLowerCase(),
+        });
+        const w = wallets?.find((x) => x.id === id);
+        if (w) {
+          await w.connect();
+          logger.info("ui:wallet:connected", { id });
+          return;
+        }
+        logger.warn("ui:wallet:not_found", { id });
+      } catch (e) {
+        logger.error("ui:wallet:connect:error", e);
+        logWalletEvent({
+          type: "ERROR",
+          stage: "connect",
+          message: (e as any)?.message ?? "connect fail",
+        });
+      }
+    },
+    [wallets],
+  );
 
   React.useEffect(() => {
     const onScroll = () => {
@@ -37,8 +69,8 @@ export default function NavigationButtons() {
                 <svg
                   className="sparkle"
                   viewBox="0 0 24 24"
-                  width="17"
-                  height="17"
+                  width="18"
+                  height="18"
                   fill="#FFFFFF"
                 >
                   <path
@@ -56,18 +88,24 @@ export default function NavigationButtons() {
               </button>
 
               <div className="btn-bubbles">
-                <button className="bubble bubble--pera" type="button">
-                  <img src="/logos/pera.svg" alt="Connect Pera" />
-                </button>
-                <button className="bubble bubble--komodo" type="button">
-                  <img src="/logos/komodo.svg" alt="Connect Komodo" />
-                </button>
-                <button className="bubble bubble--exodus" type="button">
-                  <img src="/logos/Exodus.svg" alt="Connect Exodus" />
-                </button>
-                <button className="bubble bubble--defly" type="button">
+                <button
+                  className="bubble bubble--pera"
+                  type="button"
+                  onClick={() => mounted && connectById(WalletId.PERA)}
+                >
                   <img
-                    src="/logos/defly.png"
+                    src="/logos/pera.svg"
+                    alt="Connect Pera"
+                    style={{ width: "90%" }}
+                  />
+                </button>
+                <button
+                  className="bubble bubble--defly"
+                  type="button"
+                  onClick={() => mounted && connectById(WalletId.DEFLY)}
+                >
+                  <img
+                    src="/logos/defly.svg"
                     alt="Connect Defly"
                     style={{ width: "130%" }}
                   />
@@ -151,7 +189,7 @@ export default function NavigationButtons() {
         /* Wallet Connect Button Styles */
         .btn {
           border: none;
-          width: 10.9em;
+          width: 11.9em;
           height: 3.3em;
           border-radius: 1.38em;
           display: flex;
@@ -204,13 +242,13 @@ export default function NavigationButtons() {
         .btn-bubbles {
           pointer-events: auto;
           position: absolute;
-          left: 50%;
+          left: 58%;
           transform: translateX(-50%);
           top: calc(100% + 6px);
-          width: 280px;
+          width: 200px;
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 8px;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 4px;
           opacity: 0;
           transition: opacity 0.2s ease;
         }
@@ -223,7 +261,7 @@ export default function NavigationButtons() {
 
         /* Individual bubble */
         .bubble {
-          --size: 68.4px;
+          --size: 88.9px;
           width: var(--size);
           height: var(--size);
           border-radius: 999px;
@@ -239,40 +277,15 @@ export default function NavigationButtons() {
           transition: all 0.2s ease;
         }
 
-        .bubble img {
-          width: 75%;
-          height: 75%;
-          display: block;
-        }
-
         /* Color mappings */
         .bubble--pera {
           background: #ffee55;
           animation-delay: 40ms;
         }
 
-        .bubble--komodo {
-          background: #000000;
-          animation-delay: 120ms;
-        }
-
-        .bubble--exodus {
-          background: #ffffff;
-          animation-delay: 200ms;
-        }
-
         .bubble--defly {
           background: #8c45ff;
           animation-delay: 280ms;
-        }
-
-        /* Icon visibility based on background */
-        .bubble--komodo img {
-          filter: invert(1);
-        }
-
-        .bubble--exodus img {
-          filter: none;
         }
 
         /* Float down animation */
@@ -285,12 +298,11 @@ export default function NavigationButtons() {
             opacity: 1;
           }
           100% {
-            transform: translateY(22px) scale(1);
+            transform: translateY(12px) scale(1);
             opacity: 0.95;
           }
         }
 
-        /* Hover or balon üstünde iken animasyon aktif kalsın */
         .btn-wrap:hover .bubble,
         .btn-wrap:has(.btn-bubbles:hover) .bubble,
         .btn-wrap:focus-within .bubble {

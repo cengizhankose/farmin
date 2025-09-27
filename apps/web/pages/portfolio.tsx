@@ -430,7 +430,7 @@ export default function PortfolioPage() {
           <>
             {/* Period Toggle */}
             <div className="mt-6 flex justify-center">
-              <div className="inline-flex rounded-lg bg-neutral-100 p-1">
+              <div className="inline-flex rounded-lg bg-zinc-100 p-1">
                 {(["24H", "7D", "30D"] as const).map((p) => (
                   <button
                     key={p}
@@ -438,7 +438,7 @@ export default function PortfolioPage() {
                     className={`typo-toggle px-4 py-2 rounded-md transition-colors ${
                       period === p
                         ? "bg-[#8C45FF] text-white shadow-sm"
-                        : "text-neutral-700 hover:bg-neutral-200"
+                        : "text-zinc-700 hover:bg-zinc-200"
                     }`}
                   >
                     {p}

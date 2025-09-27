@@ -5,6 +5,7 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./contexts/**/*.{ts,tsx}",
     "./lib/**/*.{ts,tsx}",
+    "./wallet/**/*.{ts,tsx}",
   ],
   theme: {
     container: { center: true },
@@ -55,5 +56,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };

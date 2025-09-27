@@ -1,129 +1,45 @@
-<div class="btn-wrap">
-  <button class="btn">
-    <svg class="sparkle" viewBox="0 0 24 24" width="24" height="24" fill="#FFFFFF">
-      <path clip-rule="evenodd" d="M12 14a3 3 0 0 1 3-3h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a3 3 0 0 1-3-3Zm3-1a1 1 0 1 0 0 2h4v-2h-4Z" fill-rule="evenodd"></path>
-      <path clip-rule="evenodd" d="M12.293 3.293a1 1 0 0 1 1.414 0L16.414 6h-2.828l-1.293-1.293a1 1 0 0 1 0-1.414ZM12.414 6 9.707 3.293a1 1 0 0 0-1.414 0L5.586 6h6.828ZM4.586 7l-.056.055A2 2 0 0 0 3 9v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2h-4a5 5 0 0 1 0-10h4a2 2 0 0 0-1.53-1.945L17.414 7H4.586Z" fill-rule="evenodd"></path>
-    </svg>
-    <span class="text">Connect Wallet</span>
-  </button>
+You are a top‐tier Web3 engineer and architect. I need you to _research_, _analyze_, and _build_ a **complete modular wallet integration system** for an Algorand dApp that supports **Pera Wallet** and **Defly Wallet** (and optionally other wallets via WalletConnect). This must be the **fastest, simplest, most reliable** integration possible, with QR code fallback, error handling, logging, and correct modular architecture.
 
-  <!-- Bubbles (renkler SVG adına göre) -->
-  <div class="btn-bubbles">
-    <div class="bubble bubble--pera">
-      <!-- pera.svg -->
-      <img src="/public/logos/pera.svg" alt="pera" />
-    </div>
-    <div class="bubble bubble--komodo">
-      <!-- komodo.svg -->
-      <img src="/public/logos/komodo.svg" alt="komodo" />
-    </div>
-    <div class="bubble bubble--exodus">
-      <!-- Exodus.svg -->
-      <img src="/public/logos/Exodus.svg" alt="exodus" />
-    </div>
-    <div class="bubble bubble--defly">
-      <!-- defly.svg -->
-      <img src="/public/logos/defly.svg" alt="defly" />
-    </div>
-  </div>
-</div>
+**Step 1: Research & validate current SDKs / methods**
 
-/_ Mevcut stilin _/
-.btn {
-border: none;
-width: 15em;
-height: 5em;
-border-radius: 3em;
-display: flex;
-justify-content: center;
-align-items: center;
-gap: 12px;
-background: #1c1a1c;
-cursor: pointer;
-transition: all 450ms ease-in-out;
-}
-.sparkle { fill: #aaaaaa; transition: all 800ms ease; }
-.text { font-weight: 600; color: #aaaaaa; font-size: medium; }
+- Fetch and summarize the latest official Pera integration SDK (`@perawallet/connect`) and how it works (connect, sign, disconnect). [oai_citation:0‡Pera Docs](https://docs.perawallet.app/references/pera-connect?utm_source=chatgpt.com)
+- Fetch and summarize Defly’s recommended integration / SDK (Defly Connect) or how to integrate via WalletConnect. [oai_citation:1‡defly.gitbook.io](https://defly.gitbook.io/defly-manual/dev/walletconnect?utm_source=chatgpt.com)
+- Check if there’s community-backed libraries (e.g. `use-wallet` or `solid-algo-wallets`) that unify these wallets and how they operate. [oai_citation:2‡Algorand Developer Portal](https://developer.algorand.org/tutorials/build-a-solidjs-web-app-with-wallet-integration/?utm_source=chatgpt.com)
 
-.btn:hover {
-background: linear-gradient(0deg, #1c1a1c, white);
-box-shadow:
-inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
-inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
-0px 0px 0px 4px rgba(255, 255, 255, 0.2),
-0px 0px 180px 0px #9917ff;
-transform: translateY(-2px);
-}
-.btn:hover .text { color: white; }
-.btn:hover .sparkle { fill: white; transform: scale(1.2); }
+**Step 2: Architectural design & decision making**
 
-/_ Renk ve konum kapsayıcı _/
-.btn-wrap { position: relative; display: inline-block; }
+- Based on the research, decide **which integration paths** to support:
+    • Native Pera SDK  
+    • Native Defly SDK or through WC  
+    • Generic WalletConnect fallback for other wallets (Exodus, etc.)
+- Design a modular connector system: each wallet connector is its own module implementing a common interface (connect, signTxns, disconnect).
+- Include a **provider / context / hook layer** (React/NextJS) that picks the right connector based on availability or user choice.
+- Define **logging / analytics** layer: each event (connect start, success, error, sign request, sign result, disconnect) should be logged with wallet type, address, time, network.
+- Define **UI fallback logic**: QR modal opens for mobile wallets, extension popup for wallets installed, fallback to generic WC.
 
-/_ Mevcut buton stillerin _/
-.btn{
-border:none; width:15em; height:5em; border-radius:3em;
-display:flex; justify-content:center; align-items:center; gap:12px;
-background:#1c1a1c; cursor:pointer; transition:all 450ms ease-in-out;
-}
-.sparkle{ fill:#aaa; transition:all 800ms ease; }
-.text{ font-weight:600; color:#aaa; font-size:medium; }
+**Step 3: Code generation**  
+Produce modular, commented TypeScript / React code for Next.js (client side), including:
 
-.btn:hover{
-background:linear-gradient(0deg,#1c1a1c,white);
-box-shadow:
-inset 0 1px 0 rgba(255,255,255,.4),
-inset 0 -4px 0 rgba(0,0,0,.2),
-0 0 0 4px rgba(255,255,255,.2),
-0 0 180px 0 #9917ff;
-transform:translateY(-2px);
-}
-.btn:hover .text{ color:#fff; }
-.btn:hover .sparkle{ fill:#fff; transform:scale(1.2); }
+1. **Connector interface** (TypeScript interface)
+2. **PeraConnector module** using `@perawallet/connect`
+3. **DeflyConnector module** (either native or via WC / Defly Connect)
+4. **WalletConnect fallback connector**
+5. **WalletProvider / Context / Hook** that abstracts and switches between connectors
+6. **UI component**: `ConnectWalletButton` with logic to open modal / picker & handle connection
+7. **Transaction signing example**: sample send / payment / app call code using whichever connector is active
+8. **Logging wrapper** that all connectors call
+9. **Error handling & fallback logic**
 
-/_ Bubbles konteyner _/
-.btn-bubbles{
-pointer-events:none; position:absolute; left:50%; transform:translateX(-50%);
-top:calc(100% + 6px); width:220px;
-display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
-opacity:0; transition:opacity .2s ease;
-}
-.btn-wrap:hover .btn-bubbles{ opacity:1; }
+Ensure code is robust, handles user closing modal, connector not installed, network mismatch, and reconnection on page reload.
 
-/_ Her baloncuk _/
-.bubble{
---size:38px;
-width:var(--size); height:var(--size); border-radius:999px;
-display:grid; place-items:center;
-filter:drop-shadow(0 6px 16px rgba(0,0,0,.35));
-transform:translateY(-8px) scale(.9); opacity:0;
-animation:floatDown 1200ms cubic-bezier(.22,.61,.36,1) forwards;
-}
-.bubble img, .bubble svg{ width:60%; height:60%; display:block; }
+**Step 4: Instructions & testing plan**
 
-/_ Renk eşlemeleri (SVG ismine göre) _/
-.bubble--pera{ background:#FFEE55; animation-delay: 40ms; }
-.bubble--komodo{ background:#000000; animation-delay:120ms; }
-.bubble--exodus{ background:#ffffff; animation-delay:200ms; }
-.bubble--defly{ background:#8C45FF; animation-delay:280ms; }
+- Describe how to install dependencies & environment setup (algosdk, perawallet/connect, defly connect, walletconnect)
+- Instructions to test in TestNet: how to simulate connecting via mobile Pera, Defly, QR scanning, or extension (if available)
+- Logging inspection steps (browser console, localStorage or event dispatch)
+- Fallback scenarios checks: user declines, reconnect on reload, multiple wallets installed, mobile vs desktop
 
-/_ Arka plan açık/kapalıya göre ikon görünürlüğü _/
-.bubble--komodo img{ filter: invert(1); } /_ siyah zeminde beyaz ikon istersen kaldır _/
-.bubble--exodus img{ filter: none; } /_ beyaz zeminde siyah ikon istiyorsan: filter: invert(1); _/
+**Deliver**:
 
-/_ Aşağı süzülme animasyonu _/
-@keyframes floatDown{
-0%{ transform:translateY(-8px) scale(.9); opacity:0; }
-35%{ opacity:1; }
-100%{ transform:translateY(22px) scale(1); opacity:.95; }
-}
-
-/_ hover bittiğinde gizle _/
-.btn-wrap:not(:hover) .bubble{
-animation:none; opacity:0; transform:translateY(-8px) scale(.9);
-}
-
-Notlar
-• img yerine inline <svg> kullanıyorsan ikonların içini fill="currentColor" yapıp .bubble … { color:#fff; } gibi yönetebilirsin.
-• Exodus ikonunun koyu/siyah gelmesi durumunda filter: invert(1) ile tersleyebilirsin (zemin beyaz olduğu için).
-• Yayılma genişliğini btn-bubbles { width: 220px }, düşüş mesafesini @keyframes floatDown ile ayarlayabilirsin.
+- A clean, final prompt output that includes all above components (you write it once).
+- Use best practices, latest versions, minimal boilerplate, high readability.
