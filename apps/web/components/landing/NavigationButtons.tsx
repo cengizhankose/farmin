@@ -66,7 +66,11 @@ export default function NavigationButtons() {
                   <img src="/logos/Exodus.svg" alt="Connect Exodus" />
                 </button>
                 <button className="bubble bubble--defly" type="button">
-                  <img src="/logos/defly.svg" alt="Connect Defly" />
+                  <img
+                    src="/logos/defly.png"
+                    alt="Connect Defly"
+                    style={{ width: "130%" }}
+                  />
                 </button>
               </div>
             </div>
@@ -171,9 +175,9 @@ export default function NavigationButtons() {
         }
 
         .btn:hover {
-          background: linear-gradient(0deg, #1c1a1c, white);
+          background: linear-gradient(0deg, #1c1a1c, #e9e9e9);
           box-shadow:
-            inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
+            inset 0px 1px 0px 0px rgba(255, 255, 255, 0.3),
             inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
             0px 0px 0px 4px rgba(255, 255, 255, 0.2),
             0px 0px 180px 0px #9917ff;
