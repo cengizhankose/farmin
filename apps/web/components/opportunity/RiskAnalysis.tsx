@@ -38,38 +38,72 @@ interface RiskItem {
 }
 
 export function RiskAnalysis({ data }: RiskAnalysisProps) {
-  // Fetch optional backend-enhanced metrics first
-  const [enhanced, setEnhanced] = React.useState<{
-    liquidity: number;
-    stability: number;
-    yield: number;
-    concentration: number;
-    momentum: number;
-    total: number;
+  // Fetch comprehensive risk analysis from new API
+  const [riskData, setRiskData] = React.useState<{
+    overallRiskScore: number;
+    riskLevel: 'low' | 'medium' | 'high' | 'critical';
+    confidence: number;
+    factors: string[];
+    technicalRisk?: number;
+    financialRisk?: number;
+    operationalRisk?: number;
+    securityRisk?: number;
+    marketRegime?: string;
+    marketVolatility?: any;
+    yieldComponents?: any;
+    liquidityAnalysis?: any;
+    stressTests?: any[];
+    recommendations?: string[];
+    system: 'enhanced' | 'legacy';
   } | null>(null);
+
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     let mounted = true;
-    async function loadEnhanced() {
+    async function loadRiskAnalysis() {
       try {
-        const resp = await fetch(`/api/opportunities/${data.id}/enhanced`);
-        if (!resp.ok) return; // fallback silently
+        setLoading(true);
+        const resp = await fetch(`/api/opportunities/${data.id}/risk`);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const json = await resp.json();
-        const risk = json?.risk;
-        if (!mounted || !risk) return;
-        setEnhanced({
-          liquidity: Number(risk.liquidity ?? 0),
-          stability: Number(risk.stability ?? 0),
-          yield: Number(risk.yield ?? 0),
-          concentration: Number(risk.concentration ?? 0),
-          momentum: Number(risk.momentum ?? 0),
-          total: Number(risk.total ?? 0),
-        });
-      } catch {
-        // ignore; heuristics will be used
+
+        if (!mounted) return;
+
+        if (json.success && json.data) {
+          setRiskData({
+            overallRiskScore: json.riskScore || json.data.overallRiskScore,
+            riskLevel: json.riskLevel || json.data.riskLevel,
+            confidence: json.data.confidence || 0.8,
+            factors: json.data.factors || [],
+            technicalRisk: json.enhanced?.technicalRisk,
+            financialRisk: json.enhanced?.financialRisk,
+            operationalRisk: json.enhanced?.operationalRisk,
+            securityRisk: json.enhanced?.securityRisk,
+            marketRegime: json.enhanced?.marketRegime,
+            marketVolatility: json.enhanced?.marketVolatility,
+            yieldComponents: json.enhanced?.yieldComponents,
+            liquidityAnalysis: json.enhanced?.liquidityAnalysis,
+            stressTests: json.enhanced?.stressTests,
+            recommendations: json.enhanced?.recommendations,
+            system: json.system || 'legacy'
+          });
+        } else {
+          throw new Error(json.error || 'Failed to load risk analysis');
+        }
+      } catch (err) {
+        if (mounted) {
+          setError(err instanceof Error ? err.message : 'Failed to load risk analysis');
+          console.error('Risk analysis fetch error:', err);
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
       }
     }
-    loadEnhanced();
+    loadRiskAnalysis();
     return () => {
       mounted = false;
     };
@@ -197,7 +231,7 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
     if (volVec.length < 5) return 55; // unknown → medium
     // Higher Herfindahl implies more concentrated volume flow
     const h = clamp01((volHerf - 0.1) / 0.9);
-    return pct(h);
+    return Number(pct(h).toFixed(2));
   })();
 
   const momentumRisk = (() => {
@@ -212,8 +246,15 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
   const toStatus = (score: number): RiskItem["status"] =>
     score < 33 ? "Low" : score < 66 ? "Medium" : "High";
 
-  // Prefer backend-enhanced values when present
-  const scores = enhanced ?? {
+  // Use enhanced risk data if available, otherwise fallback to calculated values
+  const scores = riskData ? {
+    liquidity: riskData.operationalRisk ? riskData.operationalRisk * 100 : liquidityRisk,
+    stability: riskData.technicalRisk ? riskData.technicalRisk * 100 : stabilityRisk,
+    yield: riskData.financialRisk ? riskData.financialRisk * 100 : yieldRisk,
+    concentration: riskData.operationalRisk ? riskData.operationalRisk * 90 : concentrationRisk,
+    momentum: riskData.technicalRisk ? riskData.technicalRisk * 80 : momentumRisk,
+    total: riskData.overallRiskScore
+  } : {
     liquidity: liquidityRisk,
     stability: stabilityRisk,
     yield: yieldRisk,
@@ -296,16 +337,16 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
     },
   ];
 
-  const overallRiskScore =
-    scores.total ??
+  const overallRiskScore = riskData?.overallRiskScore || scores.total ||
     Math.round(
       risks.reduce((sum, r) => sum + r.level, 0) / (risks.length || 1),
     );
 
   const getRiskLabel = (score: number) => {
-    if (score < 33) return { label: "Low Risk", color: "text-emerald-600" };
-    if (score < 66) return { label: "Medium Risk", color: "text-amber-600" };
-    return { label: "High Risk", color: "text-rose-600" };
+    if (score < 25) return { label: "Low Risk", color: "text-emerald-600" };
+    if (score < 50) return { label: "Medium Risk", color: "text-amber-600" };
+    if (score < 75) return { label: "High Risk", color: "text-rose-600" };
+    return { label: "Critical Risk", color: "text-red-700" };
   };
 
   const overallLabel = getRiskLabel(overallRiskScore);
@@ -323,21 +364,45 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
           <h3 className="font-display text-lg md:text-xl text-zinc-900 flex items-center gap-2">
             <Shield size={20} className="text-zinc-400" />
             Risk Analysis
+            {riskData?.system === 'enhanced' && (
+              <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
+                Enhanced
+              </span>
+            )}
           </h3>
           <p className="mt-1 text-sm text-zinc-600">
-            Multi-factor risk assessment based on protocol metrics
+            {riskData?.system === 'enhanced'
+              ? 'Advanced risk assessment with AI-powered market analysis'
+              : 'Multi-factor risk assessment based on protocol metrics'
+            }
           </p>
         </div>
 
         {/* Overall Score */}
         <div className="text-right">
-          <div className="text-2xl font-bold text-zinc-900 tabular-nums">
-            {overallRiskScore}
-            <span className="text-sm font-normal text-zinc-500">/100</span>
-          </div>
-          <div className={`text-xs font-medium ${overallLabel.color}`}>
-            {overallLabel.label}
-          </div>
+          {loading ? (
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-200 rounded w-20 mb-1"></div>
+              <div className="h-4 bg-gray-200 rounded w-16"></div>
+            </div>
+          ) : error ? (
+            <div className="text-red-600 text-sm">Error</div>
+          ) : (
+            <>
+              <div className="text-2xl font-bold text-zinc-900 tabular-nums">
+                {overallRiskScore}
+                <span className="text-sm font-normal text-zinc-500">/100</span>
+              </div>
+              <div className={`text-xs font-medium ${overallLabel.color}`}>
+                {overallLabel.label}
+                {riskData?.confidence && (
+                  <span className="text-gray-500 ml-1">
+                    ({Math.round(riskData.confidence * 100)}% confidence)
+                  </span>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -389,14 +454,89 @@ export function RiskAnalysis({ data }: RiskAnalysisProps) {
         ))}
       </div>
 
+      {/* Enhanced Risk Insights */}
+      {riskData?.system === 'enhanced' && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.8 }}
+          className="mt-6 space-y-4"
+        >
+          {/* Market Conditions */}
+          {riskData.marketRegime && (
+            <div className="p-4 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50">
+              <h4 className="text-sm font-medium text-indigo-900 mb-2">
+                Market Conditions
+              </h4>
+              <div className="flex items-center gap-4">
+                <span className="px-3 py-1 text-xs font-medium bg-indigo-100 text-indigo-800 rounded-full">
+                  {riskData.marketRegime.replace('_', ' ').toUpperCase()}
+                </span>
+                {riskData.marketVolatility && (
+                  <span className="text-xs text-indigo-700">
+                    Volatility: {(riskData.marketVolatility.yearly * 100).toFixed(1)}%
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Risk Factors */}
+          {(riskData.technicalRisk !== undefined || riskData.financialRisk !== undefined ||
+            riskData.operationalRisk !== undefined || riskData.securityRisk !== undefined) && (
+            <div className="p-4 rounded-xl bg-gray-50">
+              <h4 className="text-sm font-medium text-gray-900 mb-3">
+                Advanced Risk Factors
+              </h4>
+              <div className="grid grid-cols-2 gap-3">
+                {riskData.technicalRisk !== undefined && (
+                  <div>
+                    <div className="text-xs text-gray-600">Technical Risk</div>
+                    <div className="text-sm font-medium text-gray-900">
+                      {(riskData.technicalRisk * 100).toFixed(0)}%
+                    </div>
+                  </div>
+                )}
+                {riskData.financialRisk !== undefined && (
+                  <div>
+                    <div className="text-xs text-gray-600">Financial Risk</div>
+                    <div className="text-sm font-medium text-gray-900">
+                      {(riskData.financialRisk * 100).toFixed(0)}%
+                    </div>
+                  </div>
+                )}
+                {riskData.operationalRisk !== undefined && (
+                  <div>
+                    <div className="text-xs text-gray-600">Operational Risk</div>
+                    <div className="text-sm font-medium text-gray-900">
+                      {(riskData.operationalRisk * 100).toFixed(0)}%
+                    </div>
+                  </div>
+                )}
+                {riskData.securityRisk !== undefined && (
+                  <div>
+                    <div className="text-xs text-gray-600">Security Risk</div>
+                    <div className="text-sm font-medium text-gray-900">
+                      {(riskData.securityRisk * 100).toFixed(0)}%
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          </motion.div>
+      )}
+
       {/* Info Footer */}
       <div className="mt-6 p-3 rounded-lg bg-blue-50 flex items-start gap-2">
         <Info size={14} className="text-blue-600 mt-0.5" />
         <div className="flex-1">
           <p className="text-xs text-blue-700">
-            Risk scores are derived from real series: TVL volatility/drawdown,
-            APR/APY volatility, liquidity turnover, volume concentration and
-            recent momentum. Lower scores indicate lower risk.
+            {riskData?.system === 'enhanced'
+              ? 'Enhanced risk analysis uses AI-powered market data, stress testing, and machine learning models to provide comprehensive risk assessment. Scores are updated in real-time based on market conditions.'
+              : 'Risk scores are derived from real series: TVL volatility/drawdown, APR/APY volatility, liquidity turnover, volume concentration and recent momentum. Lower scores indicate lower risk.'
+            }
           </p>
         </div>
       </div>

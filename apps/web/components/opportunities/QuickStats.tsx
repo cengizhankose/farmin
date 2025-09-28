@@ -16,7 +16,7 @@ export const QuickStats: React.FC<{
     </div>
     <div>
       Avg. APR:{" "}
-      <span className="font-medium text-zinc-900">{avgAPR.toFixed(1)}%</span>
+      <span className="font-medium text-zinc-900">{avgAPR.toFixed(2)}%</span>
     </div>
     <div>
       Total TVL:{" "}

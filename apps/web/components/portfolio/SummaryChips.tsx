@@ -37,7 +37,7 @@ export const SummaryChips: React.FC<{ rows: RedirectEntry[] }> = ({ rows }) => {
   return (
     <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
       <Chip label="Total Principal" value={formatUSD(total)} />
-      <Chip label="Avg. APR" value={`${avgAPR.toFixed(1)}%`} />
+      <Chip label="Avg. APR" value={`${avgAPR.toFixed(2)}%`} />
       <Chip label="Estimated Total Return" value={formatUSD(estTotal)} />
     </div>
   );

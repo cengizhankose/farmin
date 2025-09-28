@@ -17,7 +17,7 @@ export default function Landing() {
         <title>Farmer UI - Yield Farming Aggregator</title>
         <meta
           name="description"
-          content="Production-grade yield tooling on Stacks. Built with security, transparency and user control at the forefront."
+          content="Production-grade yield tooling across multiple chains. Built with security, transparency and user control at the forefront."
         />
         <meta
           property="og:title"
@@ -25,7 +25,7 @@ export default function Landing() {
         />
         <meta
           property="og:description"
-          content="Production-grade yield tooling on Stacks. Built with security, transparency and user control at the forefront."
+          content="Production-grade yield tooling across multiple chains. Built with security, transparency and user control at the forefront."
         />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -35,7 +35,7 @@ export default function Landing() {
         />
         <meta
           name="twitter:description"
-          content="Production-grade yield tooling on Stacks. Built with security, transparency and user control at the forefront."
+          content="Production-grade yield tooling across multiple chains. Built with security, transparency and user control at the forefront."
         />
       </Head>
       <div className="relative">

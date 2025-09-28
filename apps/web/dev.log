@@ -7,119 +7,277 @@
    - Network:      http://10.9.41.18:3000
 
  ✓ Starting...
- ✓ Ready in 1207ms
- ✓ Compiled /api/opportunities in 397ms (902 modules)
-[2025-09-27T15:41:12.433Z] [INFO] [RealDataBridge] RealDataAdapter initialized
-[2025-09-27T15:41:12.433Z] [INFO] [RealDataBridge] Real data bridge layer initialized
-[2025-09-27T15:41:12.444Z] [DEBUG] [RealDataBridge] Cache miss: opportunities_all
-[2025-09-27T15:41:12.444Z] [INFO] [RealDataBridge] Fetching opportunities from real data sources...
-[2025-09-27T15:41:12.444Z] [DEBUG] [RealDataBridge] Loading adapter manager...
-[2025-09-27T15:41:12.444Z] [INFO] [RealDataBridge] Loading real data adapter manager...
-[2025-09-27T15:41:12.445Z] [INFO] [RealDataBridge] 🚀 REAL DATA ADAPTER FULLY ACTIVATED! All API calls now live!
-[2025-09-27T15:41:12.445Z] [INFO] [RealDataBridge] ✨ Fetching data from ALEX, Arkadiko, and DefiLlama APIs...
-[2025-09-27T15:41:12.445Z] [INFO] [RealDataBridge] Adapter manager loaded successfully
-[2025-09-27T15:41:13.754Z] [INFO] [RealDataBridge] Fetched 17 opportunities from adapter
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-xalgo
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-xalgo -> defillama-folks-finance-lending-xalgo
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-algo
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-algo -> defillama-folks-finance-lending-algo
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gobtc
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gobtc -> defillama-folks-finance-lending-gobtc
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdc
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdc -> defillama-folks-finance-lending-usdc
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-silver
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-silver -> defillama-folks-finance-lending-silver
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gold
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gold -> defillama-folks-finance-lending-gold
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-goeth
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-goeth -> defillama-folks-finance-lending-goeth
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wbtc
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wbtc -> defillama-folks-finance-lending-wbtc
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-weth
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-weth -> defillama-folks-finance-lending-weth
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-talgo
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-talgo -> defillama-folks-finance-lending-talgo
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-algo
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-algo -> defillama-folks-finance-lending-isolated-algo
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wlink
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wlink -> defillama-folks-finance-lending-wlink
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-galgo
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-galgo -> defillama-folks-finance-lending-galgo
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdt
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdt -> defillama-folks-finance-lending-usdt
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wsol
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wsol -> defillama-folks-finance-lending-wsol
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-tiny
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-tiny -> defillama-folks-finance-lending-isolated-tiny
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wavax
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wavax -> defillama-folks-finance-lending-wavax
-[2025-09-27T15:41:13.754Z] [INFO] [RealDataBridge] Transformed and filtered to 17 opportunities
-[2025-09-27T15:41:13.754Z] [DEBUG] [RealDataBridge] Cache set: opportunities_all, TTL: 300000ms
- GET /api/opportunities 200 in 1751ms
- ○ Compiling /opportunities ...
- ✓ Compiled /opportunities in 1101ms (2179 modules)
- ✓ Compiled in 149ms (2179 modules)
-[2025-09-27T15:41:24.240Z] [INFO] [RealDataBridge] RealDataAdapter initialized
-[2025-09-27T15:41:24.240Z] [INFO] [RealDataBridge] Real data bridge layer initialized
-`legacyBehavior` is deprecated and will be removed in a future release. A codemod is available to upgrade your components:
-
-npx @next/codemod@latest new-link .
-
-Learn more: https://nextjs.org/docs/app/building-your-application/upgrading/codemods#remove-a-tags-from-link-components
-[2025-09-27T15:41:24.566Z] [DEBUG] [RealDataBridge] 🔍 Filtering 0 opportunities with query='', risk='all'
-[2025-09-27T15:41:24.566Z] [DEBUG] [RealDataBridge] ✅ Filtered to 0 opportunities
-[2025-09-27T15:41:24.566Z] [DEBUG] [RealDataBridge] 📈 Sorted 0 opportunities by apr desc
-[2025-09-27T15:41:24.566Z] [DEBUG] [RealDataBridge] 📊 Display stats: count=0, avgAPR=0.0%, totalTVL=$0.0M
- GET /opportunities 200 in 1789ms
-[2025-09-27T15:41:28.908Z] [DEBUG] [RealDataBridge] 🔍 Filtering 0 opportunities with query='', risk='all'
-[2025-09-27T15:41:28.908Z] [DEBUG] [RealDataBridge] ✅ Filtered to 0 opportunities
-[2025-09-27T15:41:28.908Z] [DEBUG] [RealDataBridge] 📈 Sorted 0 opportunities by apr desc
-[2025-09-27T15:41:28.908Z] [DEBUG] [RealDataBridge] 📊 Display stats: count=0, avgAPR=0.0%, totalTVL=$0.0M
- GET /opportunities 200 in 211ms
-[2025-09-27T15:41:41.714Z] [INFO] [RealDataBridge] RealDataAdapter initialized
-[2025-09-27T15:41:41.714Z] [INFO] [RealDataBridge] Real data bridge layer initialized
-[2025-09-27T15:41:41.716Z] [DEBUG] [RealDataBridge] Cache miss: opportunities_all
-[2025-09-27T15:41:41.716Z] [INFO] [RealDataBridge] Fetching opportunities from real data sources...
-[2025-09-27T15:41:41.716Z] [DEBUG] [RealDataBridge] Loading adapter manager...
-[2025-09-27T15:41:41.716Z] [INFO] [RealDataBridge] Loading real data adapter manager...
-[2025-09-27T15:41:41.717Z] [INFO] [RealDataBridge] 🚀 REAL DATA ADAPTER FULLY ACTIVATED! All API calls now live!
-[2025-09-27T15:41:41.717Z] [INFO] [RealDataBridge] ✨ Fetching data from ALEX, Arkadiko, and DefiLlama APIs...
-[2025-09-27T15:41:41.717Z] [INFO] [RealDataBridge] Adapter manager loaded successfully
-[2025-09-27T15:41:43.407Z] [INFO] [RealDataBridge] Fetched 17 opportunities from adapter
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-xalgo
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-xalgo -> defillama-folks-finance-lending-xalgo
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-algo
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-algo -> defillama-folks-finance-lending-algo
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gobtc
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gobtc -> defillama-folks-finance-lending-gobtc
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdc
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdc -> defillama-folks-finance-lending-usdc
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-silver
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-silver -> defillama-folks-finance-lending-silver
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gold
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gold -> defillama-folks-finance-lending-gold
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-goeth
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-goeth -> defillama-folks-finance-lending-goeth
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wbtc
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wbtc -> defillama-folks-finance-lending-wbtc
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-weth
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-weth -> defillama-folks-finance-lending-weth
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-talgo
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-talgo -> defillama-folks-finance-lending-talgo
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-algo
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-algo -> defillama-folks-finance-lending-isolated-algo
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wlink
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wlink -> defillama-folks-finance-lending-wlink
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-galgo
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-galgo -> defillama-folks-finance-lending-galgo
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdt
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdt -> defillama-folks-finance-lending-usdt
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wsol
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wsol -> defillama-folks-finance-lending-wsol
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-tiny
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-tiny -> defillama-folks-finance-lending-isolated-tiny
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wavax
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wavax -> defillama-folks-finance-lending-wavax
-[2025-09-27T15:41:43.408Z] [INFO] [RealDataBridge] Transformed and filtered to 17 opportunities
-[2025-09-27T15:41:43.408Z] [DEBUG] [RealDataBridge] Cache set: opportunities_all, TTL: 300000ms
- GET /api/opportunities 200 in 1702ms
+ ✓ Ready in 1287ms
+ ✓ Compiled /api/cache-status in 431ms (916 modules)
+🔍 Starting cache service initialization...
+📦 Testing better-sqlite3 import...
+✅ better-sqlite3 imported successfully
+📁 Database path: /Users/cengizhankose/dev/projects/farmin/apps/web/cache.db
+🗄️ Testing basic database creation...
+❌ Cache initialization error: TypeError: Cannot read properties of undefined (reading 'indexOf')
+    at handler (pages/api/cache-status.ts:39:22)
+  37 |       // Try to create a simple database first
+  38 |       console.log("🗄️ Testing basic database creation...");
+> 39 |       const testDb = new Database(dbPath);
+     |                      ^
+  40 |       testDb.exec('CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, name TEXT)');
+  41 |       testDb.exec('INSERT INTO test (name) VALUES ("test")');
+  42 |       const row = testDb.prepare('SELECT * FROM test').get();
+❌ Error stack: TypeError: Cannot read properties of undefined (reading 'indexOf')
+    at bindings.getFileName (webpack-internal:///(api-node)/../../node_modules/.pnpm/bindings@1.5.0/node_modules/bindings/bindings.js:178:16)
+    at bindings (webpack-internal:///(api-node)/../../node_modules/.pnpm/bindings@1.5.0/node_modules/bindings/bindings.js:82:48)
+    at new Database (webpack-internal:///(api-node)/../../node_modules/.pnpm/better-sqlite3@12.4.1/node_modules/better-sqlite3/lib/database.js:48:168)
+    at handler (webpack-internal:///(api-node)/./pages/api/cache-status.ts:35:28)
+    at apiResolver (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/pages-api.runtime.dev.js:2:4431)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PagesAPIRouteModule.render (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/pages-api.runtime.dev.js:2:5955)
+    at async Module.handler (webpack-internal:///(api-node)/../../node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js?kind=PAGES_API&page=%2Fapi%2Fcache-status&preferredRegion=&absolutePagePath=.%2Fpages%2Fapi%2Fcache-status.ts&middlewareConfigBase64=e30%3D!:115:13)
+    at async DevServer.runApi (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js:766:9)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js:390:37)
+    at async DevServer.handleRequestImpl (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:916:17)
+    at async /Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:399:20
+    at async Span.traceAsyncFn (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:395:24)
+    at async invokeRender (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:240:21)
+Background sync not available: Cannot read properties of undefined (reading 'indexOf')
+ GET /api/cache-status 200 in 513ms
+ ✓ Compiled in 66ms (916 modules)
+🔍 Starting cache service initialization...
+📦 Testing better-sqlite3 import...
+✅ better-sqlite3 imported successfully
+📁 Database path: /Users/cengizhankose/dev/projects/farmin/apps/web/cache.db
+🗄️ Testing basic database creation...
+❌ Cache initialization error: TypeError: Cannot read properties of undefined (reading 'indexOf')
+    at handler (pages/api/cache-status.ts:39:22)
+  37 |       // Try to create a simple database first
+  38 |       console.log("🗄️ Testing basic database creation...");
+> 39 |       const testDb = new Database(dbPath);
+     |                      ^
+  40 |       testDb.exec('CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, name TEXT)');
+  41 |       testDb.exec("INSERT INTO test (name) VALUES ('test')");
+  42 |       const row = testDb.prepare('SELECT * FROM test').get();
+❌ Error stack: TypeError: Cannot read properties of undefined (reading 'indexOf')
+    at bindings.getFileName (webpack-internal:///(api-node)/../../node_modules/.pnpm/bindings@1.5.0/node_modules/bindings/bindings.js:178:16)
+    at bindings (webpack-internal:///(api-node)/../../node_modules/.pnpm/bindings@1.5.0/node_modules/bindings/bindings.js:82:48)
+    at new Database (webpack-internal:///(api-node)/../../node_modules/.pnpm/better-sqlite3@12.4.1/node_modules/better-sqlite3/lib/database.js:48:168)
+    at handler (webpack-internal:///(api-node)/./pages/api/cache-status.ts:35:28)
+    at apiResolver (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/pages-api.runtime.dev.js:2:4431)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PagesAPIRouteModule.render (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/pages-api.runtime.dev.js:2:5955)
+    at async Module.handler (webpack-internal:///(api-node)/../../node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js?kind=PAGES_API&page=%2Fapi%2Fcache-status&preferredRegion=&absolutePagePath=.%2Fpages%2Fapi%2Fcache-status.ts&middlewareConfigBase64=e30%3D!:115:13)
+    at async DevServer.runApi (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js:766:9)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js:390:37)
+    at async DevServer.handleRequestImpl (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:916:17)
+    at async /Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:399:20
+    at async Span.traceAsyncFn (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:395:24)
+    at async invokeRender (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:240:21)
+Background sync not available: Cannot read properties of undefined (reading 'indexOf')
+ GET /api/cache-status 200 in 33ms
+ ✓ Compiled in 51ms (916 modules)
+🔍 Starting cache service initialization...
+📦 Testing better-sqlite3 import...
+✅ better-sqlite3 imported successfully
+📍 Current working directory: /Users/cengizhankose/dev/projects/farmin/apps/web
+📁 Database path: /Users/cengizhankose/dev/projects/farmin/apps/web/cache.db
+🗄️ Testing basic database creation...
+❌ Cache initialization error: TypeError: Cannot read properties of undefined (reading 'indexOf')
+    at handler (pages/api/cache-status.ts:40:22)
+  38 |       // Try to create a simple database first
+  39 |       console.log("🗄️ Testing basic database creation...");
+> 40 |       const testDb = new Database(dbPath);
+     |                      ^
+  41 |       testDb.exec('CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, name TEXT)');
+  42 |       testDb.exec("INSERT INTO test (name) VALUES ('test')");
+  43 |       const row = testDb.prepare('SELECT * FROM test').get();
+❌ Error stack: TypeError: Cannot read properties of undefined (reading 'indexOf')
+    at bindings.getFileName (webpack-internal:///(api-node)/../../node_modules/.pnpm/bindings@1.5.0/node_modules/bindings/bindings.js:178:16)
+    at bindings (webpack-internal:///(api-node)/../../node_modules/.pnpm/bindings@1.5.0/node_modules/bindings/bindings.js:82:48)
+    at new Database (webpack-internal:///(api-node)/../../node_modules/.pnpm/better-sqlite3@12.4.1/node_modules/better-sqlite3/lib/database.js:48:168)
+    at handler (webpack-internal:///(api-node)/./pages/api/cache-status.ts:36:28)
+    at apiResolver (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/pages-api.runtime.dev.js:2:4431)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PagesAPIRouteModule.render (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/pages-api.runtime.dev.js:2:5955)
+    at async Module.handler (webpack-internal:///(api-node)/../../node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js?kind=PAGES_API&page=%2Fapi%2Fcache-status&preferredRegion=&absolutePagePath=.%2Fpages%2Fapi%2Fcache-status.ts&middlewareConfigBase64=e30%3D!:115:13)
+    at async DevServer.runApi (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js:766:9)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js:390:37)
+    at async DevServer.handleRequestImpl (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:916:17)
+    at async /Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:399:20
+    at async Span.traceAsyncFn (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:395:24)
+    at async invokeRender (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:240:21)
+Background sync not available: Cannot read properties of undefined (reading 'indexOf')
+ GET /api/cache-status 200 in 22ms
+ ✓ Compiled in 110ms (869 modules)
+ ✓ Compiled /api/cache-status in 64ms (916 modules)
+🔍 Starting cache service initialization...
+📦 Testing better-sqlite3 import...
+✅ better-sqlite3 imported successfully
+📍 Current working directory: /Users/cengizhankose/dev/projects/farmin/apps/web
+📁 Database path: /Users/cengizhankose/dev/projects/farmin/apps/web/cache.db
+🗄️ Testing basic database creation...
+❌ Cache initialization error: TypeError: Cannot read properties of undefined (reading 'indexOf')
+    at handler (pages/api/cache-status.ts:40:22)
+  38 |       // Try to create a simple database first
+  39 |       console.log("🗄️ Testing basic database creation...");
+> 40 |       const testDb = new Database(dbPath);
+     |                      ^
+  41 |       testDb.exec('CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, name TEXT)');
+  42 |       testDb.exec("INSERT INTO test (name) VALUES ('test')");
+  43 |       const row = testDb.prepare('SELECT * FROM test').get();
+❌ Error stack: TypeError: Cannot read properties of undefined (reading 'indexOf')
+    at bindings.getFileName (webpack-internal:///(api-node)/../../node_modules/.pnpm/bindings@1.5.0/node_modules/bindings/bindings.js:178:16)
+    at bindings (webpack-internal:///(api-node)/../../node_modules/.pnpm/bindings@1.5.0/node_modules/bindings/bindings.js:82:48)
+    at new Database (webpack-internal:///(api-node)/../../node_modules/.pnpm/better-sqlite3@12.4.1/node_modules/better-sqlite3/lib/database.js:48:168)
+    at handler (webpack-internal:///(api-node)/./pages/api/cache-status.ts:36:28)
+    at apiResolver (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/pages-api.runtime.dev.js:2:4431)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PagesAPIRouteModule.render (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/pages-api.runtime.dev.js:2:5955)
+    at async Module.handler (webpack-internal:///(api-node)/../../node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js?kind=PAGES_API&page=%2Fapi%2Fcache-status&preferredRegion=&absolutePagePath=.%2Fpages%2Fapi%2Fcache-status.ts&middlewareConfigBase64=e30%3D!:115:13)
+    at async DevServer.runApi (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js:766:9)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js:390:37)
+    at async DevServer.handleRequestImpl (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:916:17)
+    at async /Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:399:20
+    at async Span.traceAsyncFn (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:395:24)
+    at async invokeRender (/Users/cengizhankose/dev/projects/farmin/node_modules/.pnpm/next@15.5.3_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:240:21)
+Background sync not available: Cannot read properties of undefined (reading 'indexOf')
+ GET /api/cache-status 200 in 126ms
+ ✓ Compiled /api/opportunities in 145ms (924 modules)
+[2025-09-27T19:14:27.985Z] [INFO] [RealDataBridge] RealDataAdapter initialized
+[2025-09-27T19:14:27.985Z] [INFO] [RealDataBridge] Real data bridge layer initialized
+[2025-09-27T19:14:27.989Z] [DEBUG] [RealDataBridge] Cache miss: opportunities_all
+[2025-09-27T19:14:27.989Z] [INFO] [RealDataBridge] Fetching opportunities from real data sources...
+[2025-09-27T19:14:27.989Z] [DEBUG] [RealDataBridge] Loading adapter manager...
+[2025-09-27T19:14:27.989Z] [INFO] [RealDataBridge] Loading real data adapter manager...
+[2025-09-27T19:14:27.991Z] [INFO] [RealDataBridge] 🚀 REAL DATA ADAPTER FULLY ACTIVATED! All API calls now live!
+[2025-09-27T19:14:27.991Z] [INFO] [RealDataBridge] ✨ Fetching data from ALEX, Arkadiko, and DefiLlama APIs...
+[2025-09-27T19:14:27.991Z] [INFO] [RealDataBridge] Adapter manager loaded successfully
+[2025-09-27T19:14:29.121Z] [INFO] [RealDataBridge] Fetched 17 opportunities from adapter
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-xalgo
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-xalgo -> defillama-folks-finance-lending-xalgo
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-algo
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-algo -> defillama-folks-finance-lending-algo
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gobtc
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gobtc -> defillama-folks-finance-lending-gobtc
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdc
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdc -> defillama-folks-finance-lending-usdc
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-silver
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-silver -> defillama-folks-finance-lending-silver
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gold
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gold -> defillama-folks-finance-lending-gold
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-goeth
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-goeth -> defillama-folks-finance-lending-goeth
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wbtc
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wbtc -> defillama-folks-finance-lending-wbtc
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-weth
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-weth -> defillama-folks-finance-lending-weth
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-talgo
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-talgo -> defillama-folks-finance-lending-talgo
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-algo
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-algo -> defillama-folks-finance-lending-isolated-algo
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wlink
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wlink -> defillama-folks-finance-lending-wlink
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-galgo
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-galgo -> defillama-folks-finance-lending-galgo
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdt
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdt -> defillama-folks-finance-lending-usdt
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wsol
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wsol -> defillama-folks-finance-lending-wsol
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-tiny
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-tiny -> defillama-folks-finance-lending-isolated-tiny
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wavax
+[2025-09-27T19:14:29.121Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wavax -> defillama-folks-finance-lending-wavax
+[2025-09-27T19:14:29.121Z] [INFO] [RealDataBridge] Transformed and filtered to 17 opportunities
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-xalgo with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-algo with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-gobtc with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-usdc with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-silver with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-gold with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-goeth with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-wbtc with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-weth with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-talgo with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-isolated-algo with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-wlink with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-galgo with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-usdt with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-wsol with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-isolated-tiny with historical data:
+[2025-09-27T19:14:29.130Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-wavax with historical data:
+[2025-09-27T19:14:29.130Z] [INFO] [RealDataBridge] Enriched 17 opportunities with historical data
+[2025-09-27T19:14:29.130Z] [DEBUG] [RealDataBridge] Cache set: opportunities_all, TTL: 300000ms
+ GET /api/opportunities 200 in 1300ms
+[2025-09-27T19:14:29.149Z] [DEBUG] [RealDataBridge] Cache hit: opportunities_all, age: 19ms
+[2025-09-27T19:14:29.149Z] [INFO] [RealDataBridge] Returning 17 opportunities from cache
+ GET /api/opportunities 200 in 8ms
+ ✓ Compiled in 65ms (922 modules)
+[2025-09-27T19:15:22.318Z] [INFO] [RealDataBridge] RealDataAdapter initialized
+[2025-09-27T19:15:22.318Z] [INFO] [RealDataBridge] Real data bridge layer initialized
+[2025-09-27T19:15:22.319Z] [DEBUG] [RealDataBridge] Cache miss: opportunities_all
+[2025-09-27T19:15:22.319Z] [INFO] [RealDataBridge] Fetching opportunities from real data sources...
+[2025-09-27T19:15:22.319Z] [DEBUG] [RealDataBridge] Loading adapter manager...
+[2025-09-27T19:15:22.319Z] [INFO] [RealDataBridge] Loading real data adapter manager...
+[2025-09-27T19:15:22.320Z] [INFO] [RealDataBridge] 🚀 REAL DATA ADAPTER FULLY ACTIVATED! All API calls now live!
+[2025-09-27T19:15:22.320Z] [INFO] [RealDataBridge] ✨ Fetching data from ALEX, Arkadiko, and DefiLlama APIs...
+[2025-09-27T19:15:22.320Z] [INFO] [RealDataBridge] Adapter manager loaded successfully
+[2025-09-27T19:15:23.320Z] [INFO] [RealDataBridge] Fetched 17 opportunities from adapter
+[2025-09-27T19:15:23.320Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-xalgo
+[2025-09-27T19:15:23.320Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-xalgo -> defillama-folks-finance-lending-xalgo
+[2025-09-27T19:15:23.320Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-algo
+[2025-09-27T19:15:23.320Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-algo -> defillama-folks-finance-lending-algo
+[2025-09-27T19:15:23.320Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gobtc
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gobtc -> defillama-folks-finance-lending-gobtc
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdc
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdc -> defillama-folks-finance-lending-usdc
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-silver
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-silver -> defillama-folks-finance-lending-silver
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-gold
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-gold -> defillama-folks-finance-lending-gold
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-goeth
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-goeth -> defillama-folks-finance-lending-goeth
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wbtc
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wbtc -> defillama-folks-finance-lending-wbtc
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-weth
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-weth -> defillama-folks-finance-lending-weth
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-talgo
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-talgo -> defillama-folks-finance-lending-talgo
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-algo
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-algo -> defillama-folks-finance-lending-isolated-algo
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wlink
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wlink -> defillama-folks-finance-lending-wlink
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-galgo
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-galgo -> defillama-folks-finance-lending-galgo
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-usdt
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-usdt -> defillama-folks-finance-lending-usdt
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wsol
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wsol -> defillama-folks-finance-lending-wsol
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-isolated-tiny
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-isolated-tiny -> defillama-folks-finance-lending-isolated-tiny
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Transforming opportunity: defillama-folks-finance-lending-wavax
+[2025-09-27T19:15:23.321Z] [DEBUG] [RealDataBridge] Successfully transformed opportunity: defillama-folks-finance-lending-wavax -> defillama-folks-finance-lending-wavax
+[2025-09-27T19:15:23.321Z] [INFO] [RealDataBridge] Transformed and filtered to 17 opportunities
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-xalgo with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-algo with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-gobtc with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-usdc with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-silver with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-gold with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-goeth with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-wbtc with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-weth with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-talgo with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-isolated-algo with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-wlink with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-galgo with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-usdt with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-wsol with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-isolated-tiny with historical data:
+[2025-09-27T19:15:23.327Z] [WARN] [RealDataBridge] Failed to enrich opportunity defillama-folks-finance-lending-wavax with historical data:
+[2025-09-27T19:15:23.327Z] [INFO] [RealDataBridge] Enriched 17 opportunities with historical data
+[2025-09-27T19:15:23.327Z] [DEBUG] [RealDataBridge] Cache set: opportunities_all, TTL: 300000ms
+ GET /api/opportunities 200 in 1013ms
+[2025-09-27T19:15:55.670Z] [DEBUG] [RealDataBridge] Cache hit: opportunities_all, age: 32343ms
+[2025-09-27T19:15:55.670Z] [INFO] [RealDataBridge] Returning 17 opportunities from cache
+ GET /api/opportunities 200 in 2ms

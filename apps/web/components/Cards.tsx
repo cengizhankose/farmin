@@ -69,7 +69,7 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({
 
         // Prefer top by TVL, then APR
         const top = ops
-          .filter((o) => o.chain === "stacks")
+          .filter((o) => o.chain === "algorand")
           .sort((a, b) => {
             const tvlDiff = b.tvlUsd - a.tvlUsd;
             if (tvlDiff !== 0) return tvlDiff;
@@ -87,11 +87,7 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({
             risk: o.risk,
             color: logo.fg,
             letter: logo.letter,
-            // Always use local Arkadiko logo to avoid broken/blank logos
-            logoUrl:
-              o.protocol.toLowerCase() === "arkadiko"
-                ? "/logos/arkadiko.svg"
-                : (o as unknown as { logoUrl?: string }).logoUrl,
+            logoUrl: (o as unknown as { logoUrl?: string }).logoUrl,
             apr: Number(o.apr),
             apy: Number(o.apy),
             tvl: Math.round((o.tvlUsd / 1_000_000) * 10) / 10,
@@ -162,19 +158,7 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({
                   title={it.protocol}
                   aria-hidden
                 >
-                  {it.protocol.toLowerCase() === "arkadiko" ? (
-                    // Force local Arkadiko logo (no letter fallback)
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src="/logos/arkadiko.svg"
-                      alt="Arkadiko logo"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain",
-                      }}
-                    />
-                  ) : it.logoUrl ? (
+                  {it.logoUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={it.logoUrl}
@@ -287,7 +271,7 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({
                     )}
                   </div>
                   <div className="rounded-full bg-zinc-100 px-2 py-0.5 text-zinc-700">
-                    Stacks
+                    Algorand
                   </div>
                 </div>
 

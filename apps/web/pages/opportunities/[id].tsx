@@ -12,7 +12,6 @@ import { GitCompare, ArrowLeft, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
-  ArkadikoDetailError,
   ChartDataError,
   DataLoadingError,
 } from "@/components/ui/ErrorNotification";
@@ -46,7 +45,7 @@ export default function OpportunityDetailPage() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [errorType, setErrorType] = React.useState<
-    "arkadiko-detail" | "chart-data" | "general" | null
+    "chart-data" | "general" | null
   >(null);
 
   // Retry function for data loading
@@ -98,11 +97,10 @@ export default function OpportunityDetailPage() {
 
         // Determine error type based on error message
         if (
-          errorMessage.includes("404") &&
-          opportunityId.toLowerCase().includes("arkadiko")
+          errorMessage.includes("404")
         ) {
-          setError("Arkadiko protocol details are temporarily unavailable");
-          setErrorType("arkadiko-detail");
+          setError("Protocol details are temporarily unavailable");
+          setErrorType("general");
         } else if (
           errorMessage.includes("400") &&
           errorMessage.includes("chart")
@@ -157,9 +155,6 @@ export default function OpportunityDetailPage() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-2xl mx-auto"
         >
-          {errorType === "arkadiko-detail" && (
-            <ArkadikoDetailError onRetry={handleRetry} />
-          )}
           {errorType === "chart-data" && (
             <ChartDataError onRetry={handleRetry} />
           )}
@@ -247,7 +242,7 @@ export default function OpportunityDetailPage() {
                     🚀 Live Data Active
                   </p>
                   <p className="text-sm text-green-700">
-                    Real-time data from DeFiLlama API and Arkadiko Protocol •
+                    Real-time data from DeFiLlama API and leading DeFi protocols •
                     ID: {data.id}
                   </p>
                 </div>
@@ -258,9 +253,6 @@ export default function OpportunityDetailPage() {
           {/* Error Indicator */}
           {error && data && (
             <div className="mb-6">
-              {errorType === "arkadiko-detail" && (
-                <ArkadikoDetailError onRetry={handleRetry} />
-              )}
               {errorType === "chart-data" && (
                 <ChartDataError onRetry={handleRetry} />
               )}

@@ -42,7 +42,7 @@ export function Market({ progress = 0 }: { progress?: number }) {
           </div>
           <div className="mt-12">
             <h3 className="typo-h3 text-white mb-4">
-              First insurance-integrated yield aggregator on Stacks
+              First insurance-integrated yield aggregator on Algorand
             </h3>
             <p className="text-white/70 text-sm">
               Not just yield — audited safety layer.

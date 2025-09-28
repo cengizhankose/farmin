@@ -10,7 +10,23 @@ import React from "react";
 import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Logger } from "@/lib/adapters/real";
+// Client-side logger (avoiding server-side imports)
+const clientLogger = {
+  debug: (message: string, ...args: any[]) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[ErrorBoundary] ${message}`, ...args);
+    }
+  },
+  info: (message: string, ...args: any[]) => {
+    console.log(`[ErrorBoundary] ${message}`, ...args);
+  },
+  warn: (message: string, ...args: any[]) => {
+    console.warn(`[ErrorBoundary] ${message}`, ...args);
+  },
+  error: (message: string, error?: any, ...args: any[]) => {
+    console.error(`[ErrorBoundary] ${message}`, error, ...args);
+  }
+};
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -50,7 +66,7 @@ export class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    Logger.error("ErrorBoundary caught an error", error, {
+    console.error("ErrorBoundary caught an error", error, {
       component: "ErrorBoundary",
     });
 
@@ -73,11 +89,11 @@ export class ErrorBoundary extends React.Component<
     const { retryCount } = this.state;
 
     if (retryCount >= maxRetries) {
-      Logger.warn(`Max retries (${maxRetries}) reached for ErrorBoundary`);
+      clientLogger.warn(`Max retries (${maxRetries}) reached for ErrorBoundary`);
       return;
     }
 
-    Logger.info(`Retrying... attempt ${retryCount + 1}/${maxRetries}`);
+    clientLogger.info(`Retrying... attempt ${retryCount + 1}/${maxRetries}`);
 
     this.setState((prevState) => ({
       hasError: false,
@@ -240,7 +256,7 @@ export function useErrorHandler() {
   const [error, setError] = React.useState<Error | null>(null);
 
   const handleError = React.useCallback((error: Error) => {
-    Logger.error("useErrorHandler caught error", error);
+    clientLogger.error("useErrorHandler caught error", error);
     setError(error);
   }, []);
 

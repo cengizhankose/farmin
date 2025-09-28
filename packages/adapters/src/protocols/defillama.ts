@@ -160,8 +160,6 @@ export class DefiLlamaAdapter extends BaseAdapter {
 
   private getDefaultLogo(project: string): string {
     const logoMap: Record<string, string> = {
-      'alex': '/logos/alex.png',
-      'arkadiko': '/logos/arkadiko.png',
       'bitflow': '/logos/bitflow.png',
       'stackswap': '/logos/stackswap.png',
     };

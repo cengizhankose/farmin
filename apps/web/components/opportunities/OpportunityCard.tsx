@@ -3,9 +3,7 @@ import React from "react";
 import { useRouter } from "next/router";
 // Wallet integration removed - chains configuration disabled
 // import { CHAINS } from "@/lib/chains";
-// Temporarily removed risk components due to TypeScript errors
-// import { RiskTooltip } from "@/components/risk/RiskTooltip";
-// import { RiskScore } from "@shared/core";
+import RiskTooltip from "@/components/risk/RiskTooltip";
 
 // Type definition for component props (supports both real and legacy data)
 type Opportunity = {
@@ -23,6 +21,14 @@ type Opportunity = {
   summary: string;
   source?: "live" | "demo";
   logoUrl?: string;
+
+  // Historical data fields
+  volume24h?: number;
+  volume7d?: number;
+  uniqueUsers24h?: number;
+  uniqueUsers7d?: number;
+  concentrationRisk?: number;
+  userRetention?: number;
 };
 import {
   Card,
@@ -36,13 +42,28 @@ import {
 import { formatPct, formatTVL } from "@/lib/format";
 import { protocolLogo } from "@/lib/logos";
 
+// Helper function to format volume data
+const formatVolume = (volume?: number): string => {
+  if (!volume) return "N/A";
+  if (volume >= 1_000_000) return `$${(volume / 1_000_000).toFixed(1)}M`;
+  if (volume >= 1_000) return `$${(volume / 1_000).toFixed(0)}K`;
+  return `$${volume.toFixed(0)}`;
+};
+
+// Helper function to format user count
+const formatUsers = (users?: number): string => {
+  if (!users) return "N/A";
+  if (users >= 1_000_000) return `${(users / 1_000_000).toFixed(1)}M`;
+  if (users >= 1_000) return `${(users / 1_000).toFixed(0)}K`;
+  return users.toString();
+};
+
 export const OpportunityCard: React.FC<
   { data: Opportunity } & { disabled?: boolean } & { onClick?: () => void }
 > = ({ data, disabled, onClick }) => {
   const router = useRouter();
   const chainLabel = data.chain; // Wallet integration removed - simplified chain display
   const [imgOk, setImgOk] = React.useState(Boolean(data.logoUrl));
-  const isArkadiko = data.protocol.toLowerCase() === "arkadiko";
 
   // Risk components temporarily removed due to TypeScript errors
   // const getMockRiskScore = (): RiskScore => {
@@ -115,22 +136,7 @@ export const OpportunityCard: React.FC<
             title={data.protocol}
             aria-hidden
           >
-            {isArkadiko ? (
-              // Always show local Arkadiko logo (no letter fallback)
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src="/logos/arkadiko.svg"
-                alt="Arkadiko logo"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                  objectPosition: "center",
-                  display: "block",
-                  borderRadius: "inherit",
-                }}
-              />
-            ) : imgOk && data.logoUrl ? (
+            {imgOk && data.logoUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={data.logoUrl}
@@ -166,12 +172,27 @@ export const OpportunityCard: React.FC<
             {data.pair}
           </div>
         </div>
-        {/* RiskTooltip temporarily removed due to TypeScript errors */}
-        <Badge
-          className={`${riskColors[data.risk]} border-0 text-xs font-medium`}
+        <RiskTooltip
+          opportunityId={data.id}
+          riskScore={{
+            total: data.risk === 'Low' ? 25 : data.risk === 'Medium' ? 50 : 75,
+            confidence: 'high',
+            components: {
+              liquidity: 30,
+              stability: 40,
+              yield: 35,
+              concentration: 25,
+              momentum: 30
+            },
+            system: 'enhanced'
+          }}
         >
-          {data.risk}
-        </Badge>
+          <Badge
+            className={`${riskColors[data.risk]} border-0 text-xs font-medium cursor-help`}
+          >
+            {data.risk}
+          </Badge>
+        </RiskTooltip>
       </div>
 
       {/* Metrics */}
@@ -201,6 +222,34 @@ export const OpportunityCard: React.FC<
           </div>
         </div>
       </div>
+
+      {/* Historical Metrics */}
+      {(data.volume24h || data.uniqueUsers24h) && (
+        <div className="mt-3 pt-3 border-t border-zinc-100">
+          <div className="grid grid-cols-2 gap-3">
+            {data.volume24h && (
+              <div>
+                <div className="text-[10px] uppercase font-medium text-zinc-500 tracking-wide">
+                  Volume 24h
+                </div>
+                <div className="text-xs font-semibold leading-tight text-zinc-700 tabular-nums">
+                  {formatVolume(data.volume24h)}
+                </div>
+              </div>
+            )}
+            {data.uniqueUsers24h && (
+              <div>
+                <div className="text-[10px] uppercase font-medium text-zinc-500 tracking-wide">
+                  Active Users 24h
+                </div>
+                <div className="text-xs font-semibold leading-tight text-zinc-700 tabular-nums">
+                  {formatUsers(data.uniqueUsers24h)}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Footer info removed per request */}
 

@@ -175,19 +175,7 @@ function CompareItemSlot({
         className="h-7 w-7 rounded-lg grid place-items-center text-xs font-bold overflow-hidden"
         style={{ backgroundColor: "var(--badge-lilac)", color: logo.fg }}
       >
-        {item.protocol.toLowerCase() === "arkadiko" ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src="/logos/arkadiko.svg"
-            alt="Arkadiko logo"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              padding: "2px",
-            }}
-          />
-        ) : item.logoUrl ? (
+        {item.logoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={item.logoUrl}

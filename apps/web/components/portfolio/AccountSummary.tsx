@@ -30,7 +30,7 @@ export const AccountSummary: React.FC<{ rows: RedirectEntry[] }> = ({
   return (
     <section className="mt-4 rounded-2xl bg-white/60 ring-1 ring-black/5 p-4 grid grid-cols-3 gap-3 max-md:grid-cols-1">
       <KPI label="Total Principal">{formatUSD(total)}</KPI>
-      <KPI label="Weighted Avg. APR">{avgAPR.toFixed(1)}%</KPI>
+      <KPI label="Weighted Avg. APR">{avgAPR.toFixed(2)}%</KPI>
       <KPI label="Estimated Total Return (30D)">{formatUSD(estTotal)}</KPI>
     </section>
   );
