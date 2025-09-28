@@ -277,8 +277,8 @@ export const CardsGrid: React.FC<{ progress?: number }> = ({
 
                 <div className="mt-5">
                   <button
-                    className="w-full text-white hover:bg-[var(--brand-orange-700)] transition-colors rounded-md py-2 px-4 text-sm font-medium"
-                    style={{ backgroundColor: "var(--brand-orange)" }}
+                    className="w-full text-white hover:bg-[#6D2EE6] transition-colors rounded-md py-2 px-4 text-sm font-medium"
+                    style={{ backgroundColor: "#8C45FF" }}
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
