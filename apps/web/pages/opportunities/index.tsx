@@ -184,6 +184,8 @@ export default function OpportunitiesPage() {
     const avgAPR = count ? filtered.reduce((a, o) => a + o.apr, 0) / count : 0; // Already percent
     const sumTVL = filtered.reduce((a, o) => a + o.tvlUsd, 0);
 
+    console.log('📊 Display stats:', { count, avgAPR, sumTVL });
+
     Logger.debug(
       `📊 Display stats: count=${count}, avgAPR=${avgAPR.toFixed(1)}%, totalTVL=$${(sumTVL / 1_000_000).toFixed(1)}M`,
     );
@@ -201,19 +203,19 @@ export default function OpportunitiesPage() {
   return (
     <>
       <Head>
-        <title>Yield Opportunities | Farmer UI</title>
+        <title>Yield Opportunities | Farmin UI</title>
         <meta
           name="description"
           content="Explore the best yield farming opportunities across multiple chains. Find highest APR/APY rates on Ethereum, Solana, and more."
         />
-        <meta property="og:title" content="Yield Opportunities | Farmer UI" />
+        <meta property="og:title" content="Yield Opportunities | Farmin UI" />
         <meta
           property="og:description"
           content="Explore the best yield farming opportunities across multiple chains. Find highest APR/APY rates on Ethereum, Solana, and more."
         />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Yield Opportunities | Farmer UI" />
+        <meta name="twitter:title" content="Yield Opportunities | Farmin UI" />
         <meta
           name="twitter:description"
           content="Explore the best yield farming opportunities across multiple chains. Find highest APR/APY rates on Ethereum, Solana, and more."
@@ -280,7 +282,7 @@ export default function OpportunitiesPage() {
 
           {/* Real Data Status Indicator */}
           {!error && !loading && (
-            <div className="mt-6 rounded-lg border border-green-200 bg-green-50 p-4">
+            <div className="mb-10 rounded-lg border border-green-200 bg-green-50 p-4">
               <div className="flex items-center space-x-3">
                 <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
                 <div>

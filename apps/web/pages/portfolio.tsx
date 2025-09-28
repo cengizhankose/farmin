@@ -283,22 +283,22 @@ export default function PortfolioPage() {
   return (
     <>
       <Head>
-        <title>Portfolio | Farmer UI</title>
+        <title>Portfolio | Farmin UI</title>
         <meta
           name="description"
-          content="Track your yield farming portfolio, view positions, and monitor your returns on Farmer UI."
+          content="Track your yield farming portfolio, view positions, and monitor your returns on Farmin UI."
         />
-        <meta property="og:title" content="Portfolio | Farmer UI" />
+        <meta property="og:title" content="Portfolio | Farmin UI" />
         <meta
           property="og:description"
-          content="Track your yield farming portfolio, view positions, and monitor your returns on Farmer UI."
+          content="Track your yield farming portfolio, view positions, and monitor your returns on Farmin UI."
         />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Portfolio | Farmer UI" />
+        <meta name="twitter:title" content="Portfolio | Farmin UI" />
         <meta
           name="twitter:description"
-          content="Track your yield farming portfolio, view positions, and monitor your returns on Farmer UI."
+          content="Track your yield farming portfolio, view positions, and monitor your returns on Farmin UI."
         />
       </Head>
       <div className="mx-auto max-w-6xl px-4 py-12">

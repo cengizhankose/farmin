@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import Head from "next/head";
 import { ScrollOrchestrator } from "@/components/ScrollOrchestrator";
 import Hero from "@/components/landing/Hero";
+import NavigationButtons from "@/components/landing/NavigationButtons";
 import { WhoWhy } from "@/components/landing/WhoWhy";
 import WhyUsInset from "@/components/sections/WhyUsInset";
 import { Market } from "@/components/landing/Market";
@@ -14,14 +17,14 @@ export default function Landing() {
   return (
     <>
       <Head>
-        <title>Farmer UI - Yield Farming Aggregator</title>
+        <title>Farmin UI - Yield Farming Aggregator</title>
         <meta
           name="description"
           content="Production-grade yield tooling across multiple chains. Built with security, transparency and user control at the forefront."
         />
         <meta
           property="og:title"
-          content="Farmer UI - Yield Farming Aggregator"
+          content="Farmin UI - Yield Farming Aggregator"
         />
         <meta
           property="og:description"
@@ -31,7 +34,7 @@ export default function Landing() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="Farmer UI - Yield Farming Aggregator"
+          content="Farmin UI - Yield Farming Aggregator"
         />
         <meta
           name="twitter:description"
@@ -39,6 +42,8 @@ export default function Landing() {
         />
       </Head>
       <div className="relative">
+        {/* Navigation buttons overlay */}
+        <NavigationButtons />
         <div
           style={{
             background: "var(--scene-bg, var(--grad-hero))",

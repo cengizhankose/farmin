@@ -130,9 +130,20 @@ const useAnimationLoop = (
     const track = trackRef.current;
     if (!track) return;
 
+    console.log('LogoLoop animation hook:', { seqWidth, targetVelocity, isHovered, pauseOnHover });
+
+    // Check if reduced motion is preferred
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      console.log('LogoLoop: Reduced motion detected, applying static position');
+      track.style.transform = 'translate3d(0, 0, 0)';
+      return;
+    }
+
     if (seqWidth > 0) {
       offsetRef.current = ((offsetRef.current % seqWidth) + seqWidth) % seqWidth;
       track.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
+      console.log('LogoLoop: Initial position set');
     }
 
     const animate = (timestamp: number) => {
@@ -207,6 +218,8 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     const updateDimensions = useCallback(() => {
       const containerWidth = containerRef.current?.clientWidth ?? 0;
       const sequenceWidth = seqRef.current?.getBoundingClientRect?.()?.width ?? 0;
+
+      console.log('LogoLoop updateDimensions:', { containerWidth, sequenceWidth });
 
       if (sequenceWidth > 0) {
         setSeqWidth(Math.ceil(sequenceWidth));

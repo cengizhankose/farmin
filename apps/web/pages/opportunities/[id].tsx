@@ -16,6 +16,7 @@ import {
   ChartDataError,
   DataLoadingError,
 } from "@/components/ui/ErrorNotification";
+import { getTestNetOpportunities } from "@/lib/mock/testnet-opportunities";
 
 type CardOpportunity = {
   id: string;
@@ -68,6 +69,36 @@ export default function OpportunityDetailPage() {
       try {
         setLoading(true);
         setError(null);
+
+        // Check if this is a TestNet opportunity first
+        if (opportunityId === 'testnet-mock-yield-algo') {
+          const testNetOpps = getTestNetOpportunities();
+          const testNetOpp = testNetOpps.find(opp => opp.id === opportunityId);
+
+          if (testNetOpp && mounted) {
+            Logger.info(`Loaded TestNet opportunity detail`, { opportunityId });
+
+            // Transform to CardOpportunity format
+            const cardOpportunity: CardOpportunity = {
+              id: testNetOpp.id,
+              protocol: testNetOpp.protocol,
+              pair: testNetOpp.pool || `${testNetOpp.tokens[0]} Yield`,
+              chain: testNetOpp.chain,
+              apr: testNetOpp.apr,
+              apy: testNetOpp.apy,
+              risk: testNetOpp.risk.charAt(0).toUpperCase() + testNetOpp.risk.slice(1) as "Low" | "Medium" | "High",
+              tvlUsd: testNetOpp.tvlUsd,
+              rewardToken: testNetOpp.rewardToken,
+              lastUpdated: new Date(testNetOpp.lastUpdated).toLocaleDateString(),
+              originalUrl: `#`, // No external URL for TestNet
+              summary: `TestNet Mock Yield Protocol - ${testNetOpp.apr}% APR on ALGO`,
+            };
+
+            setData(cardOpportunity);
+            setLoading(false);
+            return;
+          }
+        }
 
         Logger.info(`Loading opportunity detail via API`, { opportunityId });
         const resp = await fetch(`/api/opportunities/${opportunityId}`);
@@ -183,23 +214,23 @@ export default function OpportunityDetailPage() {
       <Head>
         <title>
           {data
-            ? `${data.protocol} ${data.pair} | Farmer UI`
-            : "Opportunity Details | Farmer UI"}
+            ? `${data.protocol} ${data.pair} | Farmin UI`
+            : "Opportunity Details | Farmin UI"}
         </title>
         <meta
           name="description"
           content={
             data
               ? `Detailed information about ${data.protocol} ${data.pair} yield farming opportunity on Stacks.`
-              : "View detailed information about yield farming opportunities on Farmer UI."
+              : "View detailed information about yield farming opportunities on Farmin UI."
           }
         />
         <meta
           property="og:title"
           content={
             data
-              ? `${data.protocol} ${data.pair} | Farmer UI`
-              : "Opportunity Details | Farmer UI"
+              ? `${data.protocol} ${data.pair} | Farmin UI`
+              : "Opportunity Details | Farmin UI"
           }
         />
         <meta
@@ -207,7 +238,7 @@ export default function OpportunityDetailPage() {
           content={
             data
               ? `Detailed information about ${data.protocol} ${data.pair} yield farming opportunity on Stacks.`
-              : "View detailed information about yield farming opportunities on Farmer UI."
+              : "View detailed information about yield farming opportunities on Farmin UI."
           }
         />
         <meta property="og:type" content="website" />
@@ -216,8 +247,8 @@ export default function OpportunityDetailPage() {
           name="twitter:title"
           content={
             data
-              ? `${data.protocol} ${data.pair} | Farmer UI`
-              : "Opportunity Details | Farmer UI"
+              ? `${data.protocol} ${data.pair} | Farmin UI`
+              : "Opportunity Details | Farmin UI"
           }
         />
         <meta
@@ -225,7 +256,7 @@ export default function OpportunityDetailPage() {
           content={
             data
               ? `Detailed information about ${data.protocol} ${data.pair} yield farming opportunity on Stacks.`
-              : "View detailed information about yield farming opportunities on Farmer UI."
+              : "View detailed information about yield farming opportunities on Farmin UI."
           }
         />
       </Head>
