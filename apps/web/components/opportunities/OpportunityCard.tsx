@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/primitives";
 import { formatPct, formatTVL } from "@/lib/format";
 import { protocolLogo } from "@/lib/logos";
+import { colors } from "@/lib/colors";
 
 // Helper function to format volume data
 const formatVolume = (volume?: number): string => {
@@ -93,7 +94,7 @@ export const OpportunityCard: React.FC<
   const Action = (
     <Button
       className="w-full text-white hover:bg-[var(--brand-purple-700)] transition-colors"
-      style={{ backgroundColor: "var(--brand-purple)" }}
+      style={{ backgroundColor: colors.purple[600] }}
       onClick={() =>
         onClick ? onClick() : router.push(`/opportunities/${data.id}`)
       }
