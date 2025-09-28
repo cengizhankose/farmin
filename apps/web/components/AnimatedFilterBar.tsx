@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
+import LogoLoopWithCircles from "./LogoLoopWithCircles";
 
 type RiskKey = "all" | "low" | "medium" | "high";
 type SortKey =
@@ -51,6 +52,39 @@ export default function AnimatedFilterBar({
             value={query}
             onChange={(e) => onQueryChange?.(e.target.value)}
             className="w-full rounded-full border border-black/5 bg-[var(--sand-50)] px-4 py-2 text-sm text-zinc-900 placeholder-zinc-500 shadow-sm transition-colors focus:border-[var(--brand-orange)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-orange)]/20"
+          />
+        </div>
+
+        {/* Logo loop in between */}
+        <div
+          className="mx-3 hidden sm:flex items-center justify-center overflow-hidden py-1"
+          style={{ width: "700px" }}
+        >
+          <LogoLoopWithCircles
+            logos={[
+              {
+                src: "/logos/pera.svg",
+                alt: "Pera Wallet",
+                title: "Pera Wallet",
+              },
+              {
+                src: "/logos/algorand.svg",
+                alt: "Algorand",
+                title: "Algorand",
+              },
+              {
+                src: "/logos/defly.svg",
+                alt: "Defly",
+                title: "Defly",
+              },
+            ]}
+            speed={30}
+            logoHeight={35}
+            gap={30}
+            direction="left"
+            pauseOnHover={true}
+            fadeOut={false}
+            scaleOnHover={true}
           />
         </div>
 
@@ -188,7 +222,7 @@ function Menu({
                   }[]
                 ).map((g) => (
                   <div key={g.group} className="mb-1 last:mb-0">
-                    <div className="px-2 py-1 text-[11px] uppercase tracking-wide text-neutral-500">
+                    <div className="px-2 py-1 text-[11px] uppercase tracking-wide text-zinc-500">
                       {g.group}
                     </div>
                     {g.options.map((opt) => (
@@ -245,13 +279,11 @@ function MenuItem({
       onClick={onClick}
       className={clsx(
         "flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm",
-        active
-          ? "bg-neutral-100 text-neutral-900"
-          : "text-neutral-700 hover:bg-neutral-50",
+        active ? "bg-zinc-100 text-zinc-900" : "text-zinc-700 hover:bg-zinc-50",
       )}
     >
       <span>{label}</span>
-      {active && <span className="text-xs text-neutral-500">✓</span>}
+      {active && <span className="text-xs text-zinc-500">✓</span>}
     </button>
   );
 }

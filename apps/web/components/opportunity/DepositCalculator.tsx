@@ -2,15 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CountUp from "react-countup";
-import {
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-} from "recharts";
+// Recharts components removed - Value Projection chart removed
 import {
   Calculator,
   ArrowUpRight,
@@ -18,7 +10,6 @@ import {
   DollarSign,
   Calendar,
   Percent,
-  TrendingUp,
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
@@ -57,9 +48,6 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
     useState<CompoundFrequency>("Daily");
   const [isRouterMode, setIsRouterMode] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [projectionData, setProjectionData] = useState<
-    Array<{ day: number; value: number; label: string }>
-  >([]);
 
   // Calculate returns
   const calculateReturns = () => {
@@ -87,31 +75,6 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
       effectiveAPY: (((compoundedAmount / amount - 1) * 365) / days) * 100,
     };
   };
-
-  // Generate projection data for chart
-  useEffect(() => {
-    const generateProjection = () => {
-      const projData: Array<{ day: number; value: number; label: string }> = [];
-      const intervals = Math.min(days, 30); // Max 30 points for performance
-      const dayStep = Math.floor(days / intervals);
-
-      for (let i = 0; i <= intervals; i++) {
-        const currentDay = i * dayStep;
-        const dailyRate = data.apr / 365 / 100;
-        const value = amount * (1 + dailyRate * currentDay);
-
-        projData.push({
-          day: currentDay,
-          value: Math.round(value * 100) / 100,
-          label: `Day ${currentDay}`,
-        });
-      }
-
-      return projData;
-    };
-
-    setProjectionData(generateProjection());
-  }, [amount, days, data.apr]);
 
   const returns = calculateReturns();
 
@@ -246,12 +209,16 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
               type="range"
               value={days}
               onChange={(e) => setDays(Number(e.target.value))}
-              className="w-full accent-[var(--brand-orange)] range-orange"
+              className="w-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:bg-white"
               min={1}
               max={365}
               step={1}
               style={{
-                background: `linear-gradient(to right, var(--brand-orange) 0%, var(--brand-orange) ${(days / 365) * 100}%, #e5e7eb ${(days / 365) * 100}%, #e5e7eb 100%)`,
+                background: `linear-gradient(to right, #F6F4EF 0%, #F6F4EF ${(days / 365) * 100}%, ${colors.purple[600]} ${(days / 365) * 100}%, ${colors.purple[600]} 100%)`,
+                height: '6px',
+                borderRadius: '3px',
+                outline: 'none',
+                WebkitAppearance: 'none',
               }}
             />
             <div className="mt-2 flex justify-between text-xs text-zinc-500">
@@ -279,7 +246,7 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                   onClick={() => setCompoundFrequency(freq)}
                   className={`rounded-lg px-3 py-2 text-xs font-medium transition-all ${
                     compoundFrequency === freq
-                      ? "bg-[var(--brand-orange)] text-white"
+                      ? "bg-[var(--brand-purple)] text-white"
                       : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
                   }`}
                 >
@@ -374,7 +341,7 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                 className={`w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
                   isRouterMode
                     ? "bg-zinc-100 text-zinc-400 cursor-not-allowed"
-                    : "bg-[var(--brand-orange)] text-white hover:bg-[var(--brand-orange-700)] shadow-sm"
+                    : "bg-[var(--brand-purple)] text-white hover:bg-[var(--brand-purple-700)] shadow-sm"
                 }`}
               >
                 {isRouterMode ? (
@@ -398,90 +365,6 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
               ? "One-click routing will handle the deposit for you"
               : `You'll be redirected to ${data.protocol}. Non-custodial.`}
           </p>
-        </div>
-      </div>
-
-      {/* Projection Chart Card */}
-      <div className="rounded-3xl border border-black/5 bg-white p-5 shadow-sm">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="text-zinc-400" size={16} />
-          <h5 className="text-sm font-medium text-zinc-700">
-            Value Projection
-          </h5>
-        </div>
-
-        <div className="h-[160px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={projectionData}
-              margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
-            >
-              <defs>
-                <linearGradient
-                  id="projectionGradient"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop
-                    offset="0%"
-                    stopColor={colors.emerald[600]}
-                    stopOpacity={0.6}
-                  />
-                  <stop
-                    offset="100%"
-                    stopColor={colors.emerald[600]}
-                    stopOpacity={0.1}
-                  />
-                </linearGradient>
-              </defs>
-
-              <CartesianGrid
-                stroke="rgba(0,0,0,.04)"
-                strokeDasharray="0"
-                vertical={false}
-              />
-
-              <XAxis
-                dataKey="day"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fontSize: 10, fill: "rgba(0,0,0,.5)" }}
-                tickFormatter={(value) => `${value}d`}
-              />
-
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                tick={{ fontSize: 10, fill: "rgba(0,0,0,.5)" }}
-                tickFormatter={(value) => `$${(value / 1000).toFixed(1)}k`}
-              />
-
-              <Tooltip
-                content={({ active, payload }) =>
-                  active && payload ? (
-                    <div className="rounded-lg bg-white px-2 py-1 shadow-lg ring-1 ring-black/5">
-                      <div className="text-xs text-zinc-600">
-                        {payload[0]?.payload?.label}
-                      </div>
-                      <div className="text-xs font-semibold">
-                        ${payload[0]?.value?.toLocaleString()}
-                      </div>
-                    </div>
-                  ) : null
-                }
-              />
-
-              <Area
-                type="monotone"
-                dataKey="value"
-                stroke={colors.emerald[600]}
-                strokeWidth={2}
-                fill="url(#projectionGradient)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
         </div>
       </div>
     </motion.div>

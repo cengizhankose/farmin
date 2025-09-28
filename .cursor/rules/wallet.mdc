@@ -1,0 +1,11 @@
+# Wallet Integration Rules (Algorand / use-wallet v4)
+
+- Provider wrapper: use `apps/web/wallet/WalletAppProvider` to initialize `@txnlab/use-wallet-react` with env-based networks.
+- Modal control: open/close via `useWalletUi` store; navbar bubbles must call `open()`.
+- Env names (Next.js): `NEXT_PUBLIC_ALGOD_SERVER|PORT|TOKEN|ALGOD_NETWORK`, optional Indexer, and LocalNet KMD keys.
+- Never include KMD on public networks; only if `ALGOD_NETWORK === localnet` and KMD env present.
+- Logging: use `apps/web/wallet/logger.ts` for all wallet/tx logs; no bare console.\* elsewhere.
+- Transactions: use hooks in `apps/web/wallet/transactions.ts`. Always guard `activeAddress` and bubble errors.
+- UI: `WalletModal` is SSR-safe and must not render when `open === false`.
+- Linting: fix `@next/next/no-img-element` by suppressing only where required.
+- Icons: use `/apps/web/public/logos/*` assets; avoid remote `http` icons.

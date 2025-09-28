@@ -8,6 +8,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import { WalletAppProvider } from "@/wallet";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -57,15 +58,18 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ErrorBoundary>
-      <div className={`${inter.variable} min-h-full`}>
-        <CompareProvider>
-          <Layout>
-            <Component {...pageProps} />
-            <Toaster position="top-center" />
-          </Layout>
-        </CompareProvider>
-        <LoadingOverlay show={loading} label="Loading" />
-      </div>
+      {/* Wallet provider only on client via internal gating */}
+      <WalletAppProvider>
+        <div className={`${inter.variable} min-h-full`}>
+          <CompareProvider>
+            <Layout>
+              <Component {...pageProps} />
+              <Toaster position="top-center" />
+            </Layout>
+          </CompareProvider>
+          <LoadingOverlay show={loading} label="Loading" />
+        </div>
+      </WalletAppProvider>
     </ErrorBoundary>
   );
 }

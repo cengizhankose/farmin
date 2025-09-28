@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { colors } from "../lib/colors";
 import { AccountSummary } from "@/components/portfolio/AccountSummary";
 import { PositionsList } from "@/components/portfolio/PositionsList";
-import RewardsChart from "@/components/RewardsChart";
 import PortfolioOverviewChart from "@/components/PortfolioOverviewChart";
 import { ActivityFeed } from "@/components/portfolio/ActivityFeed";
 import { toCSV, downloadCSV } from "@/lib/csv";
@@ -375,7 +374,7 @@ export default function PortfolioPage() {
           <>
             {/* Period Toggle */}
             <div className="mt-6 flex justify-center">
-              <div className="inline-flex rounded-lg bg-neutral-100 p-1">
+              <div className="inline-flex rounded-lg bg-zinc-100 p-1">
                 {(["24H", "7D", "30D"] as const).map((p) => (
                   <button
                     key={p}
@@ -383,7 +382,7 @@ export default function PortfolioPage() {
                     className={`typo-toggle px-4 py-2 rounded-md transition-colors ${
                       period === p
                         ? "bg-[#8C45FF] text-white shadow-sm"
-                        : "text-neutral-700 hover:bg-neutral-200"
+                        : "text-zinc-700 hover:bg-zinc-200"
                     }`}
                   >
                     {p}
@@ -402,13 +401,6 @@ export default function PortfolioPage() {
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <PositionsList rows={rows as any} />
-            <div className="mt-8">
-              <RewardsChart
-                className="mt-0"
-                dataWeekly={rewardsWeekly}
-                dataMonthly={rewardsMonthly}
-              />
-            </div>
             <Card className="mt-6 border-white/40 bg-white/60 p-4 backdrop-blur-2xl">
               <div className="flex items-center justify-between px-2">
                 <h3 className="typo-section-h">Recent activity</h3>

@@ -5,40 +5,8 @@ import Image from "next/image";
 import { useSlowScroll } from "@/hooks/useSlowScroll";
 import { colors, buttonColors } from "../lib/colors";
 import NavigationButtons from "@/components/landing/NavigationButtons";
+import { YieldBanner } from "@/components/YieldBanner";
 
-function Button(
-  props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    variant?: "outline" | "secondary" | "default";
-  },
-) {
-  const { className = "", variant = "default", ...rest } = props;
-  const base =
-    "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2";
-  const variants: Record<string, string> = {
-    default: `bg-[${buttonColors.default.bg}] text-[${buttonColors.default.text}] hover:bg-[${buttonColors.default.hover}]`,
-    outline: `border border-[${buttonColors.outline.border}] bg-[${buttonColors.outline.bg}] hover:bg-[${buttonColors.outline.hover}]`,
-    secondary: `bg-[${buttonColors.secondary.bg}] text-[${buttonColors.secondary.text}] hover:bg-[${buttonColors.secondary.hover}]`,
-  };
-  return (
-    <button className={`${base} ${variants[variant]} ${className}`} {...rest} />
-  );
-}
-
-function Badge(
-  props: React.HTMLAttributes<HTMLSpanElement> & {
-    variant?: "outline" | "default";
-  },
-) {
-  const { className = "", variant = "default", ...rest } = props;
-  const base = "inline-flex items-center rounded-md px-2 py-0.5 text-xs";
-  const variants: Record<string, string> = {
-    default: `bg-[${colors.zinc[900]}] text-[${colors.white.DEFAULT}]`,
-    outline: `border border-[${colors.zinc[300]}] text-[${colors.zinc[700]}]`,
-  };
-  return (
-    <span className={`${base} ${variants[variant]} ${className}`} {...rest} />
-  );
-}
 
 // Wallet integration removed - ChainGuardBanner disabled
 // export const ChainGuardBanner = () => {
@@ -114,19 +82,16 @@ export const Header = () => {
   React.useEffect(() => {
     // const handleScroll = () => {
     //   const currentScrollY = window.scrollY;
-
     //   // Scroll down and past threshold
     //   if (currentScrollY > lastScrollY && currentScrollY > 100) {
-      //   setIsVisible(false);
-      // }
-      // // Scroll up or at top
-      // else if (currentScrollY < lastScrollY || currentScrollY <= 100) {
-      //   setIsVisible(true);
-      // }
-
-      //   setLastScrollY(currentScrollY);
-      // };
-
+    //   setIsVisible(false);
+    // }
+    // // Scroll up or at top
+    // else if (currentScrollY < lastScrollY || currentScrollY <= 100) {
+    //   setIsVisible(true);
+    // }
+    //   setLastScrollY(currentScrollY);
+    // };
     // window.addEventListener("scroll", handleScroll, { passive: true });
     // return () => window.removeEventListener("scroll", handleScroll);
   }, []); // lastScrollY removed as it's unused
@@ -140,7 +105,7 @@ export const Header = () => {
         background: colors.gradients.purpleToBlack,
       }}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/logo-full.png"
@@ -167,6 +132,7 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <div className="min-h-full flex flex-col bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
       <Header />
+      <YieldBanner />
       {/* Fixed overlay navigation buttons (old project behavior) */}
       <NavigationButtons />
       <main className="flex-1">{children}</main>
