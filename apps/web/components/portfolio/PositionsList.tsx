@@ -78,25 +78,35 @@ function getOpportunityById(id: string): Opportunity | undefined {
       tvl: [number, number]; // USD
     }
   > = {
-    "zest-stx": {
-      protocol: "ZEST",
-      pair: "STX",
-      chain: "stacks",
-      risk: "Medium",
-      rewardToken: "ZEST",
-      apr: scenario === "A" ? [9, 16] : [12, 20],
-      apy: scenario === "A" ? [11, 19] : [14, 22],
-      tvl: [1_000_000, 6_000_000],
-    },
-    "zest-aeusdc": {
-      protocol: "ZEST",
-      pair: "AEUSDC",
-      chain: "stacks",
+    "testnet-mock-yield-algo": {
+      protocol: "Mock Yield Protocol",
+      pair: "ALGO",
+      chain: "algorand",
       risk: "Low",
-      rewardToken: "ZEST",
-      apr: scenario === "A" ? [5, 8] : [6, 10],
-      apy: scenario === "A" ? [6, 10] : [7, 12],
-      tvl: [2_000_000, 8_000_000],
+      rewardToken: "ALGO",
+      apr: scenario === "A" ? [5, 15] : [8, 20],
+      apy: scenario === "A" ? [6, 18] : [10, 25],
+      tvl: [500_000, 2_000_000],
+    },
+    "algo-usdc": {
+      protocol: "AlgoFi",
+      pair: "ALGO/USDC",
+      chain: "algorand",
+      risk: "Medium",
+      rewardToken: "ALGO",
+      apr: scenario === "A" ? [8, 12] : [10, 15],
+      apy: scenario === "A" ? [10, 15] : [12, 18],
+      tvl: [1_000_000, 5_000_000],
+    },
+    "algo-gobtc": {
+      protocol: "Pact",
+      pair: "ALGO/goBTC",
+      chain: "algorand",
+      risk: "High",
+      rewardToken: "ALGO",
+      apr: scenario === "A" ? [15, 25] : [18, 30],
+      apy: scenario === "A" ? [18, 30] : [22, 35],
+      tvl: [300_000, 1_000_000],
     },
   };
 
@@ -124,7 +134,7 @@ function getOpportunityById(id: string): Opportunity | undefined {
     rewardToken: meta.rewardToken,
     lastUpdated,
     originalUrl: "",
-    summary: `${meta.protocol} ${meta.pair} pool on Algorand with ${risk} risk`,
+    summary: `${meta.protocol} ${meta.pair} pool on ${meta.chain} with ${risk} risk`,
   };
 }
 import { protocolLogo } from "@/lib/logos";
@@ -341,7 +351,7 @@ export const PositionsList: React.FC<{ rows: RedirectEntry[] }> = ({
                               {t.txid && (
                                 <a
                                   className={`text-[${colors.emerald[700]}] hover:underline`}
-                                  href={`https://explorer.hiro.so/txid/${t.txid}?chain=testnet`}
+                                  href={`https://testnet.explorer.algorand.com/tx/${t.txid}`}
                                   target="_blank"
                                   rel="noreferrer"
                                 >

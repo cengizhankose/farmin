@@ -3,7 +3,6 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-// import { UserPosition } from "../../../../packages/shared/src/types"; // TODO: Use when wallet integration ready
 import { Logger } from "@/lib/adapters/real";
 import { Card, Button } from "@/components/ui/primitives";
 import { toast } from "sonner";
@@ -13,29 +12,43 @@ import { PositionsList } from "@/components/portfolio/PositionsList";
 import PortfolioOverviewChart from "@/components/PortfolioOverviewChart";
 import { ActivityFeed } from "@/components/portfolio/ActivityFeed";
 import { toCSV, downloadCSV } from "@/lib/csv";
-
-// Removed unused calc function - was used for MiniSummary that was removed
+import { usePortfolioStoreSSR } from "@/hooks/usePortfolioStore";
+import { debugStorage } from "@/lib/storage-debug";
 
 // Type for compatibility with existing components
-type RedirectEntry = {
+interface PortfolioTransaction {
   id: string;
   protocol: string;
   pair: string;
+  chain: string;
   apr: number;
+  apy: number;
   amount: number;
   days: number;
   ts: number;
-  chain: string;
   txid?: string;
+  type: 'deposit' | 'withdrawal';
+  rewardToken?: string;
+  risk: 'Low' | 'Medium' | 'High';
+}
+
+type RedirectEntry = PortfolioTransaction & {
   action?: "Deposit" | "Withdraw";
 };
 
 export default function PortfolioPage() {
-  // const [positions, setPositions] = React.useState<UserPosition[]>([]); // TODO: Use when wallet integration ready
-  const [rows, setRows] = React.useState<RedirectEntry[]>([]);
+  const {
+    transactions,
+    addTransaction,
+    removeTransaction,
+    clearTransactions,
+    getTotalValue,
+    getTotalEstimatedReturn,
+    hasHydrated,
+  } = usePortfolioStoreSSR();
+
   const [period, setPeriod] = React.useState<"24H" | "7D" | "30D">("30D");
-  const [loading, setLoading] = React.useState(true);
-  const [error] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(!hasHydrated);
 
   // Overview chart row type for explicit shape
   type OverviewRow = { t: string; total: number; pnl: number; chg24h: number };
@@ -46,18 +59,8 @@ export default function PortfolioPage() {
     "7D": [],
     "30D": [],
   });
-  // Rewards chart data
-  type RewardPoint = {
-    date: string;
-    ALEX: number;
-    DIKO: number;
-    OTHER?: number;
-  };
-  const [rewardsWeekly, setRewardsWeekly] = React.useState<RewardPoint[]>([]);
-  const [rewardsMonthly, setRewardsMonthly] = React.useState<RewardPoint[]>([]);
-  // const [scenario, setScenario] = React.useState<"A" | "B">("A");
 
-  // Deterministic pseudo-random for stable, scenario-specific mock data
+  // Deterministic pseudo-random for stable mock data
   const seeded = (seed: number) => {
     let s = seed;
     return () => {
@@ -93,188 +96,73 @@ export default function PortfolioPage() {
     return out;
   };
 
-  const genRewards = (days: number, seed: number): RewardPoint[] => {
-    const rnd = seeded(seed);
-    const out: RewardPoint[] = [];
-    // Start levels vary per scenario; small random walk per day
-    let a = 35 + rnd() * 20; // ALEX
-    let d = 15 + rnd() * 10; // DIKO
-    let o = 6 + rnd() * 8; // OTHER
-    const baseDate = new Date(Math.floor(Date.now() / 86400000) * 86400000);
-    for (let i = days - 1; i >= 0; i--) {
-      a = Math.max(0, a + (rnd() - 0.48) * 6);
-      d = Math.max(0, d + (rnd() - 0.5) * 3);
-      o = Math.max(0, o + (rnd() - 0.52) * 4);
-      const dt = new Date(baseDate.getTime() - i * 24 * 3600 * 1000);
-      out.push({
-        date: dt.toISOString().slice(0, 10),
-        ALEX: +a.toFixed(2),
-        DIKO: +d.toFixed(2),
-        OTHER: +o.toFixed(2),
-      });
-    }
-    return out;
-  };
+  React.useEffect(() => {
+    if (!hasHydrated) return;
 
-  const buildRowsScenario = (variant: "A" | "B"): RedirectEntry[] => {
-    const now = Date.now();
-    const base = variant === "A" ? 1 : 2; // simple branch for deterministic diffs
-    const mk = (
-      id: string,
-      protocol: string,
-      pair: string,
-      apr: number,
-      amount: number,
-      days: number,
-      offsetDays: number,
-      action: "Deposit" | "Withdraw" = "Deposit",
-      txid?: string,
-    ): RedirectEntry => ({
-      id,
-      protocol,
-      pair,
-      apr,
-      amount: Math.round(amount * 100) / 100,
-      days,
-      ts: now - offsetDays * 24 * 3600 * 1000 + base * 7777, // stable shift between scenarios
-      chain: "stacks",
-      action,
-      txid,
+    // Debug storage state
+    if (process.env.NODE_ENV === 'development') {
+      debugStorage.logStorageState();
+    }
+
+    // Initialize with mock data based on current portfolio value
+    const totalValue = getTotalValue();
+    const seed = 1337;
+    const baseTotal = totalValue || 10_000;
+
+    setOverviewByPeriod({
+      "24H": genOverview(24, seed + 1, Math.round(baseTotal * 0.98)),
+      "7D": genOverview(7, seed + 2, baseTotal),
+      "30D": genOverview(30, seed + 3, Math.round(baseTotal * 0.92)),
     });
 
-    // Compose a realistic activity feed across multiple pools
-    const rows: RedirectEntry[] = [
-      // ZEST STX
-      mk(
-        "zest-stx",
-        "ZEST",
-        "STX",
-        variant === "A" ? 13.4 : 16.1,
-        2400 + 300 * base,
-        30,
-        2,
-        "Deposit",
-      ),
-      mk(
-        "zest-stx",
-        "ZEST",
-        "STX",
-        variant === "A" ? 13.4 : 16.1,
-        900 + 120 * base,
-        14,
-        1,
-        "Deposit",
-      ),
+    setLoading(false);
+  }, [getTotalValue, hasHydrated]);
 
-
-      // ZEST AEUSDC (stable-ish)
-      mk(
-        "zest-aeusdc",
-        "ZEST",
-        "AEUSDC",
-        variant === "A" ? 6.8 : 9.1,
-        2600,
-        16,
-        6,
-        "Deposit",
-      ),
-      mk(
-        "zest-aeusdc",
-        "ZEST",
-        "AEUSDC",
-        variant === "A" ? 6.8 : 9.1,
-        900,
-        6,
-        1,
-        "Deposit",
-      ),
-    ];
-
-    // Sort by time desc for highlighting in ActivityFeed
-    return rows.sort((a, b) => b.ts - a.ts);
-  };
-
-  React.useEffect(() => {
-    // Alternate between two scenarios on every reload
-    try {
-      const last = localStorage.getItem("portfolio_mock_scenario");
-      const next: "A" | "B" = last === "A" ? "B" : "A";
-      localStorage.setItem("portfolio_mock_scenario", next);
-      // setScenario(next); // Commented out as scenario is unused
-
-      // Prepare scenario-specific datasets
-      const isA = next === "A";
-      const seed = isA ? 1337 : 4242;
-      const baseTotal = isA ? 112_000 : 86_500;
-      const overview24 = genOverview(
-        24,
-        seed + 1,
-        Math.round(baseTotal * 0.98),
-      );
-      const overview7 = genOverview(7, seed + 2, baseTotal);
-      const overview30 = genOverview(
-        30,
-        seed + 3,
-        Math.round(baseTotal * 0.92),
-      );
-      setOverviewByPeriod({
-        "24H": overview24,
-        "7D": overview7,
-        "30D": overview30,
-      });
-
-      setRewardsWeekly(genRewards(7, seed + 10));
-      setRewardsMonthly(genRewards(30, seed + 20));
-
-      setRows(buildRowsScenario(next));
-      setLoading(false);
-    } catch {
-      // Fallback: still set something
-      Logger.warn("Mock scenario init failed, falling back to A");
-      // setScenario("A"); // Commented out as scenario is unused
-      setOverviewByPeriod({
-        "24H": genOverview(24, 1, 100_000),
-        "7D": genOverview(7, 2, 100_000),
-        "30D": genOverview(30, 3, 95_000),
-      });
-      setRewardsWeekly(genRewards(7, 11));
-      setRewardsMonthly(genRewards(30, 21));
-      setRows(buildRowsScenario("A"));
-      setLoading(false);
-    }
-  }, [genOverview, genRewards]);
-
-  // Removed unused variables - MiniSummary was removed per user request
+  // Convert transactions to RedirectEntry format for compatibility
+  const redirectEntries: RedirectEntry[] = React.useMemo(() => {
+    return transactions.map(tx => ({
+      ...tx,
+      action: tx.type === 'deposit' ? 'Deposit' : 'Withdraw',
+    }));
+  }, [transactions]);
 
   const clear = () => {
     Logger.info("🧽 Clearing portfolio data...");
-    localStorage.removeItem("stacks_portfolio_mock");
-    setRows([]);
+    clearTransactions();
     toast("Cleared", { description: "Portfolio history cleared." });
   };
 
   const exportCSV = () => {
     Logger.info("📄 Exporting portfolio to CSV...");
-    const withEst = rows.map((r) => ({
-      When: new Date(r.ts).toISOString(),
+    const withEst = transactions.map((r) => ({
+      Date: new Date(r.ts).toLocaleString(),
+      Type: r.type,
       Protocol: r.protocol,
       Pair: r.pair,
       Amount: r.amount,
       APR: r.apr,
+      APY: r.apy,
       Days: r.days,
-      EstReturn: (r.amount * (r.apr / 100) * (r.days / 365)).toFixed(2),
+      Chain: r.chain,
+      Risk: r.risk,
+      EstimatedReturn: (r.amount * (r.apr / 100) * (r.days / 365)).toFixed(2),
     }));
+
     const csv = toCSV(withEst, [
-      "When",
+      "Date",
+      "Type",
       "Protocol",
       "Pair",
       "Amount",
       "APR",
+      "APY",
       "Days",
-      "EstReturn",
+      "Chain",
+      "Risk",
+      "EstimatedReturn",
     ]);
     downloadCSV("portfolio.csv", csv);
-    Logger.info(`✅ Exported ${rows.length} portfolio entries to CSV`);
+    Logger.info(`✅ Exported ${transactions.length} portfolio entries to CSV`);
   };
 
   const emptyIllustration =
@@ -304,40 +192,23 @@ export default function PortfolioPage() {
       <div className="mx-auto max-w-6xl px-4 py-12">
         <h1 className="typo-portfolio-h1">Portfolio</h1>
         <p className="typo-portfolio-sub max-w-2xl">
-          💼 Real portfolio tracking (wallet integration pending). Recent
-          redirects and estimated returns shown below.
+          💼 Track your yield farming portfolio across multiple protocols on Algorand
         </p>
 
         {/* Portfolio Status Indicator */}
-        {error && (
-          <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-4">
-            <div className="flex items-center space-x-3">
-              <div className="h-5 w-5 text-red-600">❌</div>
-              <div>
-                <p className="text-sm font-medium text-red-800">
-                  Portfolio Loading Failed
-                </p>
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
+        <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <div className="flex items-center space-x-3">
+            <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></div>
+            <div>
+              <p className="text-sm font-medium text-blue-800">
+                🚀 Portfolio System Ready
+              </p>
+              <p className="text-sm text-blue-700">
+                Connected to Algorand network - Tracking your DeFi positions
+              </p>
             </div>
           </div>
-        )}
-
-        {!error && !loading && (
-          <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
-            <div className="flex items-center space-x-3">
-              <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></div>
-              <div>
-                <p className="text-sm font-medium text-blue-800">
-                  🚀 Portfolio System Ready
-                </p>
-                <p className="text-sm text-blue-700">
-                  Wallet integration required to show real transactions
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
 
         {loading ? (
           <div className="mt-8 text-center">
@@ -346,7 +217,7 @@ export default function PortfolioPage() {
               Loading portfolio data...
             </div>
           </div>
-        ) : rows.length === 0 ? (
+        ) : transactions.length === 0 ? (
           <Card className="mt-8 overflow-hidden border-white/40 bg-white/60 backdrop-blur-2xl">
             <div className="relative h-48 w-full">
               <Image
@@ -397,10 +268,10 @@ export default function PortfolioPage() {
                 data={overviewByPeriod[period]}
               />
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <AccountSummary rows={rows as any} />
+              <AccountSummary rows={redirectEntries as any} />
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            <PositionsList rows={rows as any} />
+            <PositionsList rows={redirectEntries as any} />
             <Card className="mt-6 border-white/40 bg-white/60 p-4 backdrop-blur-2xl">
               <div className="flex items-center justify-between px-2">
                 <h3 className="typo-section-h">Recent activity</h3>
@@ -419,10 +290,19 @@ export default function PortfolioPage() {
                   >
                     Clear
                   </Button>
+                  {process.env.NODE_ENV === 'development' && (
+                    <Button
+                      variant="outline"
+                      onClick={() => debugStorage.rehydrateStore()}
+                      className={`border-[${colors.zinc[300]}]`}
+                    >
+                      Rehydrate
+                    </Button>
+                  )}
                 </div>
               </div>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <ActivityFeed rows={rows as any} />
+              <ActivityFeed rows={redirectEntries as any} />
             </Card>
           </>
         )}
