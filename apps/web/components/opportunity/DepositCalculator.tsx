@@ -32,6 +32,8 @@ import { colors } from "@/lib/colors";
 
 interface DepositCalculatorProps {
   data: Opportunity;
+  onAmountChange?: (amount: number) => void;
+  onDaysChange?: (days: number) => void;
 }
 
 type CompoundFrequency =
@@ -41,13 +43,26 @@ type CompoundFrequency =
   | "Quarterly"
   | "Annually";
 
-export function DepositCalculator({ data }: DepositCalculatorProps) {
+export function DepositCalculator({
+  data,
+  onAmountChange,
+  onDaysChange,
+}: DepositCalculatorProps) {
   const [amount, setAmount] = useState(1000);
   const [days, setDays] = useState(90);
   const [compoundFrequency, setCompoundFrequency] =
     useState<CompoundFrequency>("Daily");
   const [isRouterMode, setIsRouterMode] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // Notify parent of changes
+  React.useEffect(() => {
+    onAmountChange?.(amount);
+  }, [amount, onAmountChange]);
+
+  React.useEffect(() => {
+    onDaysChange?.(days);
+  }, [days, onDaysChange]);
 
   // Calculate returns
   const calculateReturns = () => {
@@ -115,10 +130,10 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: 0.15 }}
-      className="sticky top-24 space-y-4"
+      className="space-y-4"
     >
       {/* Main Calculator Card */}
-      <div className="rounded-3xl border border-black/5 bg-white p-5 md:p-6 shadow-sm">
+      <div className="sticky top-24 rounded-3xl border border-black/5 bg-white p-5 md:p-6 shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
@@ -215,10 +230,10 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
               step={1}
               style={{
                 background: `linear-gradient(to right, #F6F4EF 0%, #F6F4EF ${(days / 365) * 100}%, ${colors.purple[600]} ${(days / 365) * 100}%, ${colors.purple[600]} 100%)`,
-                height: '6px',
-                borderRadius: '3px',
-                outline: 'none',
-                WebkitAppearance: 'none',
+                height: "6px",
+                borderRadius: "3px",
+                outline: "none",
+                WebkitAppearance: "none",
               }}
             />
             <div className="mt-2 flex justify-between text-xs text-zinc-500">
