@@ -1,8 +1,61 @@
 import React from "react";
 import Link from "next/link";
+import { useWallet, WalletId } from "@txnlab/use-wallet-react";
+import { logger, logWalletEvent } from "@/wallet";
 
 export default function NavigationButtons() {
   const [hideLinks, setHideLinks] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+  const [connecting, setConnecting] = React.useState<WalletId | null>(null);
+  React.useEffect(() => setMounted(true), []);
+  const { wallets, activeAddress } = useWallet();
+  const clientActive = mounted ? activeAddress : null;
+
+  const connectById = React.useCallback(
+    async (id: WalletId) => {
+      try {
+        if (connecting) return;
+        logger.info("ui:wallet:open", { id });
+        logWalletEvent({
+          type: "WALLET_OPEN",
+          connector: String(id).toLowerCase(),
+        });
+        const w = wallets?.find((x) => x.id === id);
+        if (w) {
+          if (w.isActive) return;
+          setConnecting(id);
+          await w.connect();
+          logger.info("ui:wallet:connected", { id });
+          setConnecting(null);
+          return;
+        }
+        logger.warn("ui:wallet:not_found", { id });
+      } catch (e) {
+        logger.error("ui:wallet:connect:error", e);
+        logWalletEvent({
+          type: "ERROR",
+          stage: "connect",
+          message: (e as any)?.message ?? "connect fail",
+        });
+        setConnecting(null);
+      }
+    },
+    [wallets, connecting],
+  );
+
+  const handleDisconnect = React.useCallback(async () => {
+    try {
+      const active = wallets?.find((w) => w.isActive);
+      if (active) await active.disconnect();
+    } catch (e) {
+      logger.error("ui:wallet:disconnect:error", e);
+      logWalletEvent({
+        type: "ERROR",
+        stage: "disconnect",
+        message: (e as any)?.message ?? "disconnect fail",
+      });
+    }
+  }, [wallets]);
 
   React.useEffect(() => {
     const onScroll = () => {
@@ -37,8 +90,8 @@ export default function NavigationButtons() {
                 <svg
                   className="sparkle"
                   viewBox="0 0 24 24"
-                  width="17"
-                  height="17"
+                  width="18"
+                  height="18"
                   fill="#FFFFFF"
                 >
                   <path
@@ -52,23 +105,63 @@ export default function NavigationButtons() {
                     fillRule="evenodd"
                   ></path>
                 </svg>
-                <span className="text">Connect Wallet</span>
+                {clientActive ? (
+                  <span
+                    className="text inline-flex items-center gap-2"
+                    suppressHydrationWarning
+                  >
+                    <span
+                      className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold"
+                      style={{ background: "#ffffff22", color: "#ffffff" }}
+                    >
+                      {(
+                        wallets?.find((w) => w.isActive)?.id || "wallet"
+                      ).toString()}
+                    </span>
+                    Connected
+                  </span>
+                ) : (
+                  <span className="text" suppressHydrationWarning>
+                    {connecting ? `Connecting…` : `Connect Wallet`}
+                  </span>
+                )}
               </button>
 
               <div className="btn-bubbles">
-                <button className="bubble bubble--pera" type="button">
-                  <img src="/logos/pera.svg" alt="Connect Pera" />
+                <button
+                  className="bubble bubble--pera"
+                  type="button"
+                  onClick={() => mounted && connectById(WalletId.PERA)}
+                >
+                  <img
+                    src="/logos/pera.svg"
+                    alt="Connect Pera"
+                    style={{ width: "90%" }}
+                  />
                 </button>
-                <button className="bubble bubble--komodo" type="button">
-                  <img src="/logos/komodo.svg" alt="Connect Komodo" />
-                </button>
-                <button className="bubble bubble--exodus" type="button">
-                  <img src="/logos/Exodus.svg" alt="Connect Exodus" />
-                </button>
-                <button className="bubble bubble--defly" type="button">
-                  <img src="/logos/defly.svg" alt="Connect Defly" />
+                <button
+                  className="bubble bubble--defly"
+                  type="button"
+                  onClick={() => mounted && connectById(WalletId.DEFLY)}
+                >
+                  <img
+                    src="/logos/defly.svg"
+                    alt="Connect Defly"
+                    style={{ width: "130%" }}
+                  />
                 </button>
               </div>
+
+              {clientActive && (
+                <div className="mt-2 flex justify-end">
+                  <button
+                    onClick={handleDisconnect}
+                    className="rounded-md bg-white/20 px-3 py-1 text-xs text-white hover:bg-white/30"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           </li>
           <li
@@ -147,8 +240,8 @@ export default function NavigationButtons() {
         /* Wallet Connect Button Styles */
         .btn {
           border: none;
-          width: 10.9em;
-          height: 3.3em;
+          width: 12.2em;
+          height: 3.6em;
           border-radius: 1.38em;
           display: flex;
           justify-content: center;
@@ -171,9 +264,9 @@ export default function NavigationButtons() {
         }
 
         .btn:hover {
-          background: linear-gradient(0deg, #1c1a1c, white);
+          background: linear-gradient(0deg, #1c1a1c, #e9e9e9);
           box-shadow:
-            inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
+            inset 0px 1px 0px 0px rgba(255, 255, 255, 0.3),
             inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
             0px 0px 0px 4px rgba(255, 255, 255, 0.2),
             0px 0px 180px 0px #9917ff;
@@ -200,13 +293,13 @@ export default function NavigationButtons() {
         .btn-bubbles {
           pointer-events: auto;
           position: absolute;
-          left: 50%;
+          left: 58%;
           transform: translateX(-50%);
           top: calc(100% + 6px);
-          width: 280px;
+          width: 200px;
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 8px;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 4px;
           opacity: 0;
           transition: opacity 0.2s ease;
         }
@@ -219,7 +312,7 @@ export default function NavigationButtons() {
 
         /* Individual bubble */
         .bubble {
-          --size: 68.4px;
+          --size: 88.9px;
           width: var(--size);
           height: var(--size);
           border-radius: 999px;
@@ -235,40 +328,15 @@ export default function NavigationButtons() {
           transition: all 0.2s ease;
         }
 
-        .bubble img {
-          width: 75%;
-          height: 75%;
-          display: block;
-        }
-
         /* Color mappings */
         .bubble--pera {
           background: #ffee55;
           animation-delay: 40ms;
         }
 
-        .bubble--komodo {
-          background: #000000;
-          animation-delay: 120ms;
-        }
-
-        .bubble--exodus {
-          background: #ffffff;
-          animation-delay: 200ms;
-        }
-
         .bubble--defly {
           background: #8c45ff;
           animation-delay: 280ms;
-        }
-
-        /* Icon visibility based on background */
-        .bubble--komodo img {
-          filter: invert(1);
-        }
-
-        .bubble--exodus img {
-          filter: none;
         }
 
         /* Float down animation */
@@ -281,12 +349,11 @@ export default function NavigationButtons() {
             opacity: 1;
           }
           100% {
-            transform: translateY(22px) scale(1);
+            transform: translateY(12px) scale(1);
             opacity: 0.95;
           }
         }
 
-        /* Hover or balon üstünde iken animasyon aktif kalsın */
         .btn-wrap:hover .bubble,
         .btn-wrap:has(.btn-bubbles:hover) .bubble,
         .btn-wrap:focus-within .bubble {

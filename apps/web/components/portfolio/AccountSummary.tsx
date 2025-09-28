@@ -45,12 +45,10 @@ function KPI({
 }) {
   return (
     <div>
-      <div className="text-[11px] uppercase tracking-wide text-neutral-500">
+      <div className="text-[11px] uppercase tracking-wide text-zinc-500">
         {label}
       </div>
-      <div className="tabular-nums font-semibold text-neutral-900">
-        {children}
-      </div>
+      <div className="tabular-nums font-semibold text-zinc-900">{children}</div>
     </div>
   );
 }

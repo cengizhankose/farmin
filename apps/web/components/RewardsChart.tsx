@@ -115,10 +115,10 @@ export default function RewardsChart({
       {/* Header */}
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h3 className="font-display text-lg md:text-xl text-neutral-900">
+          <h3 className="font-display text-lg md:text-xl text-zinc-900">
             Rewards Hub
           </h3>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-zinc-600">
             Token distribution and total accumulation
           </p>
         </div>
@@ -201,7 +201,7 @@ export default function RewardsChart({
                 verticalAlign="top"
                 height={24}
                 formatter={(v) => (
-                  <span className="text-xs text-neutral-600">{v}</span>
+                  <span className="text-xs text-zinc-600">{v}</span>
                 )}
               />
 
@@ -261,10 +261,10 @@ function TimeBtn({
     <button
       onClick={onClick}
       className={clsx(
-        "rounded-full px-3.5 py-1.5 text-sm ring-1 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400",
+        "rounded-full px-3.5 py-1.5 text-sm ring-1 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-400",
         active
           ? "bg-[var(--brand-orange)] text-white ring-[var(--brand-orange)]"
-          : "bg-white text-neutral-700 ring-neutral-200 hover:bg-neutral-100",
+          : "bg-white text-zinc-700 ring-zinc-200 hover:bg-zinc-100",
       )}
       aria-pressed={!!active}
     >
@@ -289,10 +289,10 @@ function Kpi({
         className,
       )}
     >
-      <div className="text-[11px] uppercase tracking-wide text-neutral-500">
+      <div className="text-[11px] uppercase tracking-wide text-zinc-500">
         {label}
       </div>
-      <div className="mt-0.5 font-sans text-base md:text-lg font-semibold text-neutral-900 tabular-nums">
+      <div className="mt-0.5 font-sans text-base md:text-lg font-semibold text-zinc-900 tabular-nums">
         {children}
       </div>
     </div>
@@ -322,9 +322,9 @@ function RewardsTooltip({
 
   return (
     <div className="rounded-xl bg-white px-3 py-2 shadow-lg ring-1 ring-black/5">
-      <div className="text-xs text-neutral-500">{label}</div>
+      <div className="text-xs text-zinc-500">{label}</div>
       <div className="mt-1 text-sm font-semibold tabular-nums">
-        {usd(total)} <span className="text-neutral-500 font-normal">total</span>
+        {usd(total)} <span className="text-zinc-500 font-normal">total</span>
       </div>
       <div className="mt-1 grid grid-cols-3 gap-2">
         {chips
@@ -335,7 +335,7 @@ function RewardsTooltip({
                 className="inline-block h-2.5 w-2.5 rounded-full"
                 style={{ background: c }}
               />
-              <span className="text-neutral-600">{t}</span>
+              <span className="text-zinc-600">{t}</span>
               <span className="ml-auto font-semibold tabular-nums">
                 {usd(row[t as keyof typeof row] ?? 0)}
               </span>
