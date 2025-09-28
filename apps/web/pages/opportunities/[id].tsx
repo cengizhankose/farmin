@@ -6,6 +6,7 @@ import { Logger } from "@/lib/adapters/real";
 import { OpportunityHero } from "@/components/opportunity/OpportunityHero";
 import { OpportunityOverviewCard } from "@/components/opportunity/OpportunityOverviewCard";
 import { DepositCalculator } from "@/components/opportunity/DepositCalculator";
+import { InsuranceCard } from "@/components/opportunity/InsuranceCard";
 import { RiskAnalysis } from "@/components/opportunity/RiskAnalysis";
 import { useCompare } from "@/components/opportunity/CompareBar";
 import { GitCompare, ArrowLeft, Loader2 } from "lucide-react";
@@ -127,9 +128,7 @@ export default function OpportunityDetailPage() {
           fetchError instanceof Error ? fetchError.message : "Unknown error";
 
         // Determine error type based on error message
-        if (
-          errorMessage.includes("404")
-        ) {
+        if (errorMessage.includes("404")) {
           setError("Protocol details are temporarily unavailable");
           setErrorType("general");
         } else if (
@@ -273,8 +272,8 @@ export default function OpportunityDetailPage() {
                     🚀 Live Data Active
                   </p>
                   <p className="text-sm text-green-700">
-                    Real-time data from DeFiLlama API and leading DeFi protocols •
-                    ID: {data.id}
+                    Real-time data from DeFiLlama API and leading DeFi protocols
+                    • ID: {data.id}
                   </p>
                 </div>
               </div>
@@ -334,10 +333,21 @@ export default function OpportunityDetailPage() {
               {/* Risk Analysis */}
               {data && <RiskAnalysis data={data} />}
             </div>
-
             {/* Right Column - 1/3 */}
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 space-y-6">
               {data && <DepositCalculator data={data} />}
+
+              {data && (
+                <InsuranceCard
+                  amount={1000}
+                  days={90}
+                  premiumRate30d={0.0018}
+                  coverageByTier={{ basic: 0.6, standard: 0.8, plus: 0.9 }}
+                  deductiblePct={0.1}
+                  coverageCapUSD={100000}
+                  riskScore={27}
+                />
+              )}
             </div>
           </div>
         </div>

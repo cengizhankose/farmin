@@ -35,6 +35,8 @@ import { colors } from "@/lib/colors";
 
 interface DepositCalculatorProps {
   data: Opportunity;
+  onAmountChange?: (amount: number) => void;
+  onDaysChange?: (days: number) => void;
 }
 
 type CompoundFrequency =
@@ -44,36 +46,58 @@ type CompoundFrequency =
   | "Quarterly"
   | "Annually";
 
-export function DepositCalculator({ data }: DepositCalculatorProps) {
+export function DepositCalculator({
+  data,
+  onAmountChange,
+  onDaysChange,
+}: DepositCalculatorProps) {
   const [amount, setAmount] = useState(1000);
   const [days, setDays] = useState(90);
   const [compoundFrequency, setCompoundFrequency] =
     useState<CompoundFrequency>("Daily");
   const [isRouterMode, setIsRouterMode] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>('deposit');
+  const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
   const [balance, setBalance] = useState<number>(0);
 
-  const { routeDeposit, routeWithdraw, isLoading: isTxLoading, isWalletReady, walletError } = useMockYield();
+  // Notify parent of changes
+  React.useEffect(() => {
+    onAmountChange?.(amount);
+  }, [amount, onAmountChange]);
+
+  React.useEffect(() => {
+    onDaysChange?.(days);
+  }, [days, onDaysChange]);
+
+  const {
+    routeDeposit,
+    routeWithdraw,
+    isLoading: isTxLoading,
+    isWalletReady,
+    walletError,
+  } = useMockYield();
 
   // Check if this is the TestNet Mock-Yield opportunity
-  const isTestNetMockYield = data.id === 'testnet-mock-yield-algo' &&
-                           data.protocol === 'Mock Yield Protocol';
+  const isTestNetMockYield =
+    data.id === "testnet-mock-yield-algo" &&
+    data.protocol === "Mock Yield Protocol";
 
   // Check wallet status
-  const [walletStatus, setWalletStatus] = useState<'checking' | 'ready' | 'error'>('checking');
+  const [walletStatus, setWalletStatus] = useState<
+    "checking" | "ready" | "error"
+  >("checking");
 
   useEffect(() => {
     let isMounted = true;
 
     const checkWalletStatus = async () => {
       if (isWalletReady) {
-        if (isMounted) setWalletStatus('ready');
+        if (isMounted) setWalletStatus("ready");
       } else if (walletError) {
-        if (isMounted) setWalletStatus('error');
+        if (isMounted) setWalletStatus("error");
       } else {
         // If wallet is not ready but no error, it means wallet is not connected
-        if (isMounted) setWalletStatus('ready');
+        if (isMounted) setWalletStatus("ready");
       }
     };
 
@@ -84,7 +108,6 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
     };
   }, [isWalletReady, walletError]);
 
-  
   // Always use Router mode for TestNet Mock-Yield
   useEffect(() => {
     if (isTestNetMockYield) {
@@ -92,7 +115,6 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
     }
   }, [isTestNetMockYield]);
 
-  
   // Calculate returns
   const calculateReturns = () => {
     const dailyRate = data.apr / 365 / 100;
@@ -187,7 +209,7 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
           days,
           ts: Date.now(),
           chain: data.chain,
-          type: 'withdrawal'
+          type: "withdrawal",
         });
 
         setShowSuccess(true);
@@ -209,10 +231,10 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: 0.15 }}
-      className="sticky top-24 space-y-4"
+      className="space-y-4"
     >
       {/* Main Calculator Card */}
-      <div className="rounded-3xl border border-black/5 bg-white p-5 md:p-6 shadow-sm">
+      <div className="sticky top-24 rounded-3xl border border-black/5 bg-white p-5 md:p-6 shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
@@ -257,42 +279,47 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
         <div className="space-y-4">
           {/* Wallet Status for Demo */}
           {isTestNetMockYield && (
-            <div className={`rounded-lg border p-3 ${
-              walletStatus === 'ready'
-                ? 'bg-green-50 border-green-200'
-                : walletStatus === 'error'
-                ? 'bg-red-50 border-red-200'
-                : 'bg-yellow-50 border-yellow-200'
-            }`}>
+            <div
+              className={`rounded-lg border p-3 ${
+                walletStatus === "ready"
+                  ? "bg-green-50 border-green-200"
+                  : walletStatus === "error"
+                    ? "bg-red-50 border-red-200"
+                    : "bg-yellow-50 border-yellow-200"
+              }`}
+            >
               <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${
-                  walletStatus === 'ready'
-                    ? 'bg-green-500'
-                    : walletStatus === 'error'
-                    ? 'bg-red-500'
-                    : 'bg-yellow-500'
-                }`}></div>
-                <span className={`text-sm font-medium ${
-                  walletStatus === 'ready'
-                    ? 'text-green-800'
-                    : walletStatus === 'error'
-                    ? 'text-red-800'
-                    : 'text-yellow-800'
-                }`}>
-                  {walletStatus === 'ready'
-                    ? 'Wallet System Ready'
-                    : walletStatus === 'error'
-                    ? 'Wallet System Error'
-                    : 'Checking Wallet System...'
-                  }
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    walletStatus === "ready"
+                      ? "bg-green-500"
+                      : walletStatus === "error"
+                        ? "bg-red-500"
+                        : "bg-yellow-500"
+                  }`}
+                ></div>
+                <span
+                  className={`text-sm font-medium ${
+                    walletStatus === "ready"
+                      ? "text-green-800"
+                      : walletStatus === "error"
+                        ? "text-red-800"
+                        : "text-yellow-800"
+                  }`}
+                >
+                  {walletStatus === "ready"
+                    ? "Wallet System Ready"
+                    : walletStatus === "error"
+                      ? "Wallet System Error"
+                      : "Checking Wallet System..."}
                 </span>
               </div>
               <div className="mt-2 text-xs text-yellow-700">
-                Please make sure your TestNet wallet is connected using the wallet button in the top-right corner before making deposits or withdrawals.
+                Please make sure your TestNet wallet is connected using the
+                wallet button in the top-right corner before making deposits or
+                withdrawals.
                 {walletError && (
-                  <div className="mt-1 text-red-600">
-                    Error: {walletError}
-                  </div>
+                  <div className="mt-1 text-red-600">Error: {walletError}</div>
                 )}
               </div>
             </div>
@@ -329,13 +356,18 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
 
             {/* Quick Amount Buttons */}
             <div className="mt-2 flex gap-2">
-              {(isTestNetMockYield ? [0.1, 0.5, 1, 5] : [100, 500, 1000, 5000]).map((val) => (
+              {(isTestNetMockYield
+                ? [0.1, 0.5, 1, 5]
+                : [100, 500, 1000, 5000]
+              ).map((val) => (
                 <button
                   key={val}
                   onClick={() => setAmount(val)}
                   className="flex-1 rounded-lg bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-200 transition-colors"
                 >
-                  {isTestNetMockYield ? `${val} ALGO` : `$${val.toLocaleString()}`}
+                  {isTestNetMockYield
+                    ? `${val} ALGO`
+                    : `$${val.toLocaleString()}`}
                 </button>
               ))}
             </div>
@@ -363,10 +395,10 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                 step={1}
                 style={{
                   background: `linear-gradient(to right, #F6F4EF 0%, #F6F4EF ${(days / 365) * 100}%, ${colors.purple[600]} ${(days / 365) * 100}%, ${colors.purple[600]} 100%)`,
-                  height: '6px',
-                  borderRadius: '3px',
-                  outline: 'none',
-                  WebkitAppearance: 'none',
+                  height: "6px",
+                  borderRadius: "3px",
+                  outline: "none",
+                  WebkitAppearance: "none",
                 }}
               />
               <div className="mt-2 flex justify-between text-xs text-zinc-500">
@@ -389,7 +421,13 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {(
-                  ["Daily", "Weekly", "Monthly", "Quarterly", "Annually"] as const
+                  [
+                    "Daily",
+                    "Weekly",
+                    "Monthly",
+                    "Quarterly",
+                    "Annually",
+                  ] as const
                 ).map((freq) => (
                   <button
                     key={freq}
@@ -475,9 +513,9 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
           {isTestNetMockYield && (
             <div className="inline-flex rounded-lg bg-zinc-100 p-0.5 w-full">
               <button
-                onClick={() => setActiveTab('deposit')}
+                onClick={() => setActiveTab("deposit")}
                 className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                  activeTab === 'deposit'
+                  activeTab === "deposit"
                     ? "bg-white text-zinc-900 shadow-sm"
                     : "text-zinc-600"
                 }`}
@@ -485,9 +523,9 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                 Deposit
               </button>
               <button
-                onClick={() => setActiveTab('withdraw')}
+                onClick={() => setActiveTab("withdraw")}
                 className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                  activeTab === 'withdraw'
+                  activeTab === "withdraw"
                     ? "bg-white text-zinc-900 shadow-sm"
                     : "text-zinc-600"
                 }`}
@@ -516,13 +554,13 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={() => {
-                  if (activeTab === 'deposit') {
+                  if (activeTab === "deposit") {
                     handleDeposit();
                   } else {
                     handleWithdraw();
                   }
                 }}
-                disabled={isTxLoading || walletStatus !== 'ready'}
+                disabled={isTxLoading || walletStatus !== "ready"}
                 className={`w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
                   isTxLoading
                     ? "bg-zinc-100 text-zinc-400 cursor-not-allowed"
@@ -536,7 +574,7 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
                   </>
                 ) : isTestNetMockYield ? (
                   <>
-                    {activeTab === 'deposit' ? (
+                    {activeTab === "deposit" ? (
                       <>
                         Deposit {amount} ALGO
                         <ArrowDownRight size={16} />
@@ -566,10 +604,10 @@ export function DepositCalculator({ data }: DepositCalculatorProps) {
           {/* Info Text */}
           <p className="text-xs text-zinc-500 text-center">
             {isTestNetMockYield
-              ? `Demo Mode - ${activeTab === 'deposit' ? 'Deposit' : 'Withdraw'} ALGO to TestNet Mock Yield Protocol`
+              ? `Demo Mode - ${activeTab === "deposit" ? "Deposit" : "Withdraw"} ALGO to TestNet Mock Yield Protocol`
               : isRouterMode
-              ? "One-click routing will handle the deposit for you"
-              : `You'll be redirected to ${data.protocol}. Non-custodial.`}
+                ? "One-click routing will handle the deposit for you"
+                : `You'll be redirected to ${data.protocol}. Non-custodial.`}
           </p>
         </div>
       </div>

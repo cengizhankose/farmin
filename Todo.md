@@ -1,605 +1,365 @@
-Logo Loop
+Nereye koymalıyız? (Bilgi mimarisi)
+Opportunity detail sayfasında akış şu şekilde:
 
-Customize
-Speed 50px/s
-Logo Height 60px
-Gap 80px
-Direction false
-Pause on Hover true
-Fade Out true
-Scale on Hover true
+Hero stats (APR/TVL/Vol/Participants) → Performance Overview (grafik) → Deposit Calculator (sağ sütun, sticky) → Insurance (bizim kart) → Risk Analysis → diğer alt içerikler.
 
-Props
-Property Type Default Description
-logos
-LogoItem[]
+Karar: Sigorta kartını sağ sütunda, Deposit Calculator’ın hemen altında “sticky stack” olarak konumlandır.
+• Kullanıcı önce yatıracağı miktarı/dönemi seçer (Calculator),
+• Hemen altında “Protect with Insurance” anahtarı ile sigortayı ekler,
+• Tutar ve gün seçimi sigorta primini ve beklenen ödemeyi canlı hesaplar.
+• Mobilde bu iki kart (Calculator + Insurance) üst üste, sayfa içinde sticky olmadan akmalı.
 
-required
-Array of logo items to display. Each item can be either a React node or an image src.
+⸻
 
-speed
-number
+Aşama 2 — UI/UX hedefleri (kısa)
+• One-tap: Tek switch ile aç/kapa; default off (collapsed).
+• Tier seçimi: Basic / Standard / Plus (ör. %60 / %80 / %90 coverage).
+• Canlı hesap: Premium, Covered Amount, Deductible, Est. Payout anında değişsin.
+• Kapsam/Kapsam Dışı: İki sütun madde işaretleri; “i” tooltip’leri.
+• Animasyon: Kart açılırken height + opacity animasyonu; sayılar count-up.
+• Şeffaflık: Formül ipuçları alt barda (tiny microcopy).
 
-120
-Animation speed in pixels per second. Positive values move based on direction, negative values reverse direction.
+⸻
 
-direction
-'left' | 'right'
+Aşama 3 — Bileşen (React + TypeScript + Tailwind + Framer Motion)
 
-'left'
-Direction of the logo animation loop.
+Bu kart, Calculator ile context/prop paylaşabilir. Calculator yoksa kendi “amount & days” state’i ile de çalışır. Aşağıda bağımsız kullanılabilir versiyonu var.
 
-width
-number | string
+// components/InsuranceCard.tsx
+"use client";
 
-'100%'
-Width of the logo loop container.
+import \* as React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { InformationCircleIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
 
-logoHeight
-number
+type Tier = "basic" | "standard" | "plus";
 
-28
-Height of the logos in pixels.
+type Props = {
+amount?: number; // principal (USD)
+days?: number; // duration in days
+premiumRate30d?: number; // e.g., 0.18% per 30d => 0.0018
+coverageByTier?: Record<Tier, number>; // % of principal covered (0.6, 0.8, 0.9)
+deductiblePct?: number; // e.g., 0.10 (10%)
+coverageCapUSD?: number; // max payout cap in USD
+riskScore?: number; // 0-100
+className?: string;
+onChange?: (s: {
+enabled: boolean;
+tier: Tier;
+premiumUSD: number;
+estimatedPayoutUSD: number;
+}) => void;
+};
 
-gap
-number
+const defaultCoverageByTier: Record<Tier, number> = {
+basic: 0.6,
+standard: 0.8,
+plus: 0.9,
+};
 
-32
-Gap between logos in pixels.
+export function InsuranceCard({
+amount = 1000,
+days = 90,
+premiumRate30d = 0.0018, // %0.18 / 30gün
+coverageByTier = defaultCoverageByTier,
+deductiblePct = 0.1, // %10
+coverageCapUSD = 100000, // üst sınır
+riskScore = 27,
+className,
+onChange,
+}: Props) {
+const [enabled, setEnabled] = React.useState(false);
+const [tier, setTier] = React.useState<Tier>("standard");
 
-pauseOnHover
-boolean
+// hesaplar
+const months = Math.max(1, Math.ceil(days / 30)); // basit: 1 ay taban
+const premiumUSD = enabled
+? round(amount _ premiumRate30d _ months, 2)
+: 0;
 
-true
-Whether to pause the animation when hovering over the component.
+const coveredAmount = enabled ? amount _ coverageByTier[tier] : 0;
+const deductibleUSD = enabled ? coveredAmount _ deductiblePct : 0;
 
-fadeOut
-boolean
+const estimatedPayoutRaw = Math.max(0, coveredAmount - deductibleUSD);
+const estimatedPayoutUSD = enabled
+? Math.min(estimatedPayoutRaw, coverageCapUSD)
+: 0;
 
-false
-Whether to apply fade-out effect at the edges of the container.
+React.useEffect(() => {
+onChange?.({ enabled, tier, premiumUSD, estimatedPayoutUSD });
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [enabled, tier, premiumUSD, estimatedPayoutUSD]);
 
-fadeOutColor
-string
-
-undefined
-Color used for the fade-out effect. Only applies when fadeOut is true.
-
-scaleOnHover
-boolean
-
-false
-Whether to scale logos on hover.
-
-ariaLabel
-string
-
-'Partner logos'
-Accessibility label for the logo loop component.
-
-className
-string
-
-undefined
-Additional CSS class names to apply to the root element.
-
-style
-React.CSSProperties
-
-undefined
-Inline styles to apply to the root element.
-
-CODE USAGE:
-
-npx shadcn@latest add https://reactbits.dev/r/LogoLoop-TS-CSS
-usage
-import LogoLoop from './LogoLoop';
-import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss } from 'react-icons/si';
-
-const techLogos = [
-{ node: <SiReact />, title: "React", href: "https://react.dev" },
-{ node: <SiNextdotjs />, title: "Next.js", href: "https://nextjs.org" },
-{ node: <SiTypescript />, title: "TypeScript", href: "https://www.typescriptlang.org" },
-{ node: <SiTailwindcss />, title: "Tailwind CSS", href: "https://tailwindcss.com" },
-];
-
-// Alternative with image sources
-const imageLogos = [
-{ src: "/logos/company1.png", alt: "Company 1", href: "https://company1.com" },
-{ src: "/logos/company2.png", alt: "Company 2", href: "https://company2.com" },
-{ src: "/logos/company3.png", alt: "Company 3", href: "https://company3.com" },
-];
-
-function App() {
 return (
 
-<div style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
-<LogoLoop
-        logos={techLogos}
-        speed={120}
-        direction="left"
-        logoHeight={48}
-        gap={40}
-        pauseOnHover
-        scaleOnHover
-        fadeOut
-        fadeOutColor="#ffffff"
-        ariaLabel="Technology partners"
-      />
+<section
+className={[
+"rounded-2xl p-5 sm:p-6",
+"bg-white/60 dark:bg-neutral-900/50",
+"backdrop-blur-sm ring-1 ring-black/5 dark:ring-white/10",
+"shadow-sm",
+className ?? "",
+].join(" ")} >
+{/_ Header _/}
+<div className="flex items-center justify-between">
+<div className="flex items-center gap-2">
+<div className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500/15 ring-1 ring-emerald-500/40">
+<ShieldCheckIcon className="h-5 w-5 text-emerald-400" />
+</div>
+<div>
+<div className="font-display text-lg text-neutral-900 dark:text-white">
+Yield Insurance
+</div>
+<div className="text-xs text-neutral-500 dark:text-neutral-400">
+Protect your principal with transparent terms
+</div>
+</div>
+</div>
+
+        {/* Enable Switch */}
+        <button
+          type="button"
+          onClick={() => setEnabled((v) => !v)}
+          className={[
+            "relative inline-flex h-8 w-14 flex-shrink-0 cursor-pointer rounded-full",
+            enabled ? "bg-emerald-500" : "bg-neutral-300 dark:bg-neutral-700",
+            "transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-400/50",
+          ].join(" ")}
+          aria-pressed={enabled}
+          aria-label="Protect with insurance"
+        >
+          <span
+            className={[
+              "pointer-events-none absolute left-1 top-1 inline-block h-6 w-6 transform rounded-full bg-white dark:bg-neutral-100 shadow transition",
+              enabled ? "translate-x-6" : "translate-x-0",
+            ].join(" ")}
+          />
+        </button>
+      </div>
+
+      {/* Collapsible content */}
+      <AnimatePresence initial={false}>
+        {enabled && (
+          <motion.div
+            key="ins-content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="overflow-hidden"
+          >
+            {/* Tier selector */}
+            <div className="mt-5 grid grid-cols-3 gap-2">
+              {(["basic", "standard", "plus"] as Tier[]).map((t) => {
+                const active = tier === t;
+                const label =
+                  t === "basic" ? "Basic" : t === "standard" ? "Standard" : "Plus";
+                const covPct = coverageByTier[t] * 100;
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setTier(t)}
+                    className={[
+                      "rounded-xl px-3 py-2.5 text-sm font-medium",
+                      "ring-1 transition",
+                      active
+                        ? "bg-emerald-500 text-white ring-emerald-500"
+                        : "bg-white/50 dark:bg-neutral-800/60 text-neutral-800 dark:text-neutral-200 ring-black/10 dark:ring-white/10 hover:bg-white/80 dark:hover:bg-neutral-800",
+                    ].join(" ")}
+                  >
+                    {label} <span className="opacity-80">({covPct.toFixed(0)}%)</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Summary grid */}
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              <Stat
+                label="Premium"
+                valueUSD={premiumUSD}
+                accent="purple"
+                hint={`≈ ${(premiumRate30d * 100).toFixed(2)}% / 30d × ${months} mo`}
+              />
+              <Stat
+                label="Covered Amount"
+                valueUSD={coveredAmount}
+                accent="blue"
+                hint={`${(coverageByTier[tier] * 100).toFixed(0)}% of principal`}
+              />
+              <Stat
+                label="Deductible"
+                valueUSD={deductibleUSD}
+                accent="amber"
+                hint={`${(deductiblePct * 100).toFixed(0)}% of covered`}
+              />
+              <Stat
+                label="Est. Payout (max)"
+                valueUSD={estimatedPayoutUSD}
+                accent="emerald"
+                hint={`Cap: $${abbr(coverageCapUSD)}`}
+              />
+            </div>
+
+            {/* Coverage in / out */}
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <ListCard
+                title="Covered"
+                items={[
+                  "Protocol bankruptcy / exploit†",
+                  "Smart-contract critical bug",
+                  "LP insolvency due to depeg",
+                ]}
+                accent="emerald"
+              />
+              <ListCard
+                title="Not Covered"
+                items={[
+                  "Self-custody loss (seed/ledger)",
+                  "Market price drop / IL",
+                  "Sanctions or KYC failure",
+                ]}
+                accent="rose"
+              />
+            </div>
+
+            {/* Risk strip */}
+            <div className="mt-6 flex items-center justify-between rounded-xl bg-gradient-to-r from-emerald-500/10 to-emerald-400/5 px-3 py-2 ring-1 ring-emerald-400/20">
+              <div className="text-xs text-neutral-600 dark:text-neutral-300">
+                Market condition: <b>Low Volatility</b> • Your risk score:{" "}
+                <b>{riskScore}/100</b>
+              </div>
+              <div className="text-[10px] text-neutral-500 dark:text-neutral-400">
+                †Requires post-mortem & oracle verification
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+
+);
+}
+
+/\*_ ——— Helpers ——— _/
+
+function round(n: number, p = 2) {
+return Math.round(n \* 10 ** p) / 10 ** p;
+}
+
+function abbr(v: number) {
+if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M`;
+if (v >= 1_000) return `${(v / 1_000).toFixed(1)}K`;
+return v.toFixed(0);
+}
+
+function Stat({
+label,
+valueUSD,
+hint,
+accent = "emerald",
+}: {
+label: string;
+valueUSD: number;
+hint?: string;
+accent?: "emerald" | "purple" | "blue" | "amber";
+}) {
+const ring =
+accent === "emerald"
+? "ring-emerald-400/40"
+: accent === "purple"
+? "ring-purple-400/40"
+: accent === "blue"
+? "ring-sky-400/40"
+: "ring-amber-400/40";
+
+return (
+
+<div
+className={[
+"rounded-xl p-3 sm:p-4 bg-white/60 dark:bg-neutral-800/60 backdrop-blur",
+"ring-1",
+ring,
+].join(" ")} >
+<div className="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+{label}
+</div>
+<motion.div
+initial={{ opacity: 0, y: 6 }}
+animate={{ opacity: 1, y: 0 }}
+transition={{ duration: 0.25 }}
+className="mt-0.5 font-display text-lg text-neutral-900 dark:text-white tabular-nums" >
+${valueUSD.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+</motion.div>
+{hint ? (
+<div className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">
+{hint}
+</div>
+) : null}
 </div>
 );
 }
-code
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import './LogoLoop.css';
-
-export type LogoItem =
-| {
-node: React.ReactNode;
-href?: string;
-title?: string;
-ariaLabel?: string;
-}
-| {
-src: string;
-alt?: string;
-href?: string;
-title?: string;
-srcSet?: string;
-sizes?: string;
-width?: number;
-height?: number;
-};
-
-export interface LogoLoopProps {
-logos: LogoItem[];
-speed?: number;
-direction?: 'left' | 'right';
-width?: number | string;
-logoHeight?: number;
-gap?: number;
-pauseOnHover?: boolean;
-fadeOut?: boolean;
-fadeOutColor?: string;
-scaleOnHover?: boolean;
-ariaLabel?: string;
-className?: string;
-style?: React.CSSProperties;
-}
-
-const ANIMATION_CONFIG = {
-SMOOTH_TAU: 0.25,
-MIN_COPIES: 2,
-COPY_HEADROOM: 2
-} as const;
-
-const toCssLength = (value?: number | string): string | undefined =>
-typeof value === 'number' ? `${value}px` : (value ?? undefined);
-
-const useResizeObserver = (
-callback: () => void,
-elements: Array<React.RefObject<Element | null>>,
-dependencies: React.DependencyList
-) => {
-useEffect(() => {
-if (!window.ResizeObserver) {
-const handleResize = () => callback();
-window.addEventListener('resize', handleResize);
-callback();
-return () => window.removeEventListener('resize', handleResize);
-}
-
-    const observers = elements.map(ref => {
-      if (!ref.current) return null;
-      const observer = new ResizeObserver(callback);
-      observer.observe(ref.current);
-      return observer;
-    });
-
-    callback();
-
-    return () => {
-      observers.forEach(observer => observer?.disconnect());
-    };
-
-}, dependencies);
-};
-
-const useImageLoader = (
-seqRef: React.RefObject<HTMLUListElement | null>,
-onLoad: () => void,
-dependencies: React.DependencyList
-) => {
-useEffect(() => {
-const images = seqRef.current?.querySelectorAll('img') ?? [];
-
-    if (images.length === 0) {
-      onLoad();
-      return;
-    }
-
-    let remainingImages = images.length;
-    const handleImageLoad = () => {
-      remainingImages -= 1;
-      if (remainingImages === 0) {
-        onLoad();
-      }
-    };
-
-    images.forEach(img => {
-      const htmlImg = img as HTMLImageElement;
-      if (htmlImg.complete) {
-        handleImageLoad();
-      } else {
-        htmlImg.addEventListener('load', handleImageLoad, { once: true });
-        htmlImg.addEventListener('error', handleImageLoad, { once: true });
-      }
-    });
-
-    return () => {
-      images.forEach(img => {
-        img.removeEventListener('load', handleImageLoad);
-        img.removeEventListener('error', handleImageLoad);
-      });
-    };
-
-}, dependencies);
-};
-
-const useAnimationLoop = (
-trackRef: React.RefObject<HTMLDivElement | null>,
-targetVelocity: number,
-seqWidth: number,
-isHovered: boolean,
-pauseOnHover: boolean
-) => {
-const rafRef = useRef<number | null>(null);
-const lastTimestampRef = useRef<number | null>(null);
-const offsetRef = useRef(0);
-const velocityRef = useRef(0);
-
-useEffect(() => {
-const track = trackRef.current;
-if (!track) return;
-
-    if (seqWidth > 0) {
-      offsetRef.current = ((offsetRef.current % seqWidth) + seqWidth) % seqWidth;
-      track.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
-    }
-
-    const animate = (timestamp: number) => {
-      if (lastTimestampRef.current === null) {
-        lastTimestampRef.current = timestamp;
-      }
-
-      const deltaTime = Math.max(0, timestamp - lastTimestampRef.current) / 1000;
-      lastTimestampRef.current = timestamp;
-
-      const target = pauseOnHover && isHovered ? 0 : targetVelocity;
-
-      const easingFactor = 1 - Math.exp(-deltaTime / ANIMATION_CONFIG.SMOOTH_TAU);
-      velocityRef.current += (target - velocityRef.current) * easingFactor;
-
-      if (seqWidth > 0) {
-        let nextOffset = offsetRef.current + velocityRef.current * deltaTime;
-        nextOffset = ((nextOffset % seqWidth) + seqWidth) % seqWidth;
-        offsetRef.current = nextOffset;
-
-        const translateX = -offsetRef.current;
-        track.style.transform = `translate3d(${translateX}px, 0, 0)`;
-      }
-
-      rafRef.current = requestAnimationFrame(animate);
-    };
-
-    rafRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-      lastTimestampRef.current = null;
-    };
-
-}, [targetVelocity, seqWidth, isHovered, pauseOnHover]);
-};
-
-export const LogoLoop = React.memo<LogoLoopProps>(
-({
-logos,
-speed = 120,
-direction = 'left',
-width = '100%',
-logoHeight = 28,
-gap = 32,
-pauseOnHover = true,
-fadeOut = false,
-fadeOutColor,
-scaleOnHover = false,
-ariaLabel = 'Partner logos',
-className,
-style
-}) => {
-const containerRef = useRef<HTMLDivElement>(null);
-const trackRef = useRef<HTMLDivElement>(null);
-const seqRef = useRef<HTMLUListElement>(null);
-
-    const [seqWidth, setSeqWidth] = useState<number>(0);
-    const [copyCount, setCopyCount] = useState<number>(ANIMATION_CONFIG.MIN_COPIES);
-    const [isHovered, setIsHovered] = useState<boolean>(false);
-
-    const targetVelocity = useMemo(() => {
-      const magnitude = Math.abs(speed);
-      const directionMultiplier = direction === 'left' ? 1 : -1;
-      const speedMultiplier = speed < 0 ? -1 : 1;
-      return magnitude * directionMultiplier * speedMultiplier;
-    }, [speed, direction]);
-
-    const updateDimensions = useCallback(() => {
-      const containerWidth = containerRef.current?.clientWidth ?? 0;
-      const sequenceWidth = seqRef.current?.getBoundingClientRect?.()?.width ?? 0;
-
-      if (sequenceWidth > 0) {
-        setSeqWidth(Math.ceil(sequenceWidth));
-        const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
-        setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
-      }
-    }, []);
-
-    useResizeObserver(updateDimensions, [containerRef, seqRef], [logos, gap, logoHeight]);
-
-    useImageLoader(seqRef, updateDimensions, [logos, gap, logoHeight]);
-
-    useAnimationLoop(trackRef, targetVelocity, seqWidth, isHovered, pauseOnHover);
-
-    const cssVariables = useMemo(
-      () =>
-        ({
-          '--logoloop-gap': `${gap}px`,
-          '--logoloop-logoHeight': `${logoHeight}px`,
-          ...(fadeOutColor && { '--logoloop-fadeColor': fadeOutColor })
-        }) as React.CSSProperties,
-      [gap, logoHeight, fadeOutColor]
-    );
-
-    const rootClassName = useMemo(
-      () =>
-        ['logoloop', fadeOut && 'logoloop--fade', scaleOnHover && 'logoloop--scale-hover', className]
-          .filter(Boolean)
-          .join(' '),
-      [fadeOut, scaleOnHover, className]
-    );
-
-    const handleMouseEnter = useCallback(() => {
-      if (pauseOnHover) setIsHovered(true);
-    }, [pauseOnHover]);
-
-    const handleMouseLeave = useCallback(() => {
-      if (pauseOnHover) setIsHovered(false);
-    }, [pauseOnHover]);
-
-    const renderLogoItem = useCallback((item: LogoItem, key: React.Key) => {
-      const isNodeItem = 'node' in item;
-
-      const content = isNodeItem ? (
-        <span className="logoloop__node" aria-hidden={!!item.href && !item.ariaLabel}>
-          {item.node}
-        </span>
-      ) : (
-        <img
-          src={item.src}
-          srcSet={item.srcSet}
-          sizes={item.sizes}
-          width={item.width}
-          height={item.height}
-          alt={item.alt ?? ''}
-          title={item.title}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-        />
-      );
-
-      const itemAriaLabel = isNodeItem ? (item.ariaLabel ?? item.title) : (item.alt ?? item.title);
-
-      const itemContent = item.href ? (
-        <a
-          className="logoloop__link"
-          href={item.href}
-          aria-label={itemAriaLabel || 'logo link'}
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          {content}
-        </a>
-      ) : (
-        content
-      );
-
-      return (
-        <li className="logoloop__item" key={key} role="listitem">
-          {itemContent}
-        </li>
-      );
-    }, []);
-
-    const logoLists = useMemo(
-      () =>
-        Array.from({ length: copyCount }, (_, copyIndex) => (
-          <ul
-            className="logoloop__list"
-            key={`copy-${copyIndex}`}
-            role="list"
-            aria-hidden={copyIndex > 0}
-            ref={copyIndex === 0 ? seqRef : undefined}
-          >
-            {logos.map((item, itemIndex) => renderLogoItem(item, `${copyIndex}-${itemIndex}`))}
-          </ul>
-        )),
-      [copyCount, logos, renderLogoItem]
-    );
-
-    const containerStyle = useMemo(
-      (): React.CSSProperties => ({
-        width: toCssLength(width) ?? '100%',
-        ...cssVariables,
-        ...style
-      }),
-      [width, cssVariables, style]
-    );
-
-    return (
-      <div
-        ref={containerRef}
-        className={rootClassName}
-        style={containerStyle}
-        role="region"
-        aria-label={ariaLabel}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div className="logoloop__track" ref={trackRef}>
-          {logoLists}
-        </div>
-      </div>
-    );
-
-}
-);
-
-LogoLoop.displayName = 'LogoLoop';
-
-export default LogoLoop;
-CSS
-.logoloop {
-position: relative;
-overflow-x: hidden;
-
---logoloop-gap: 32px;
---logoloop-logoHeight: 28px;
---logoloop-fadeColorAuto: #ffffff;
-}
-
-.logoloop--scale-hover {
-padding-top: calc(var(--logoloop-logoHeight) _ 0.1);
-padding-bottom: calc(var(--logoloop-logoHeight) _ 0.1);
-}
-
-@media (prefers-color-scheme: dark) {
-.logoloop {
---logoloop-fadeColorAuto: #0b0b0b;
-}
-}
-
-.logoloop\_\_track {
-display: flex;
-width: max-content;
-will-change: transform;
-user-select: none;
-}
-
-.logoloop\_\_list {
-display: flex;
-align-items: center;
-}
-
-.logoloop\_\_item {
-flex: 0 0 auto;
-margin-right: var(--logoloop-gap);
-font-size: var(--logoloop-logoHeight);
-line-height: 1;
-}
-
-.logoloop\_\_item:last-child {
-margin-right: var(--logoloop-gap);
-}
-
-.logoloop\_\_node {
-display: inline-flex;
-align-items: center;
-}
-
-.logoloop\_\_item img {
-height: var(--logoloop-logoHeight);
-width: auto;
-display: block;
-object-fit: contain;
-image-rendering: -webkit-optimize-contrast;
--webkit-user-drag: none;
-pointer-events: none;
-/_ Links handle interaction _/
-transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.logoloop--scale-hover .logoloop\_\_item {
-overflow: visible;
-}
-
-.logoloop--scale-hover .logoloop**item:hover img,
-.logoloop--scale-hover .logoloop**item:hover .logoloop\_\_node {
-transform: scale(1.2);
-transform-origin: center center;
-}
-
-.logoloop--scale-hover .logoloop\_\_node {
-transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.logoloop\_\_link {
-display: inline-flex;
-align-items: center;
-text-decoration: none;
-border-radius: 4px;
-transition: opacity 0.2s ease;
-}
-
-.logoloop\_\_link:hover {
-opacity: 0.8;
-}
-
-.logoloop\_\_link:focus-visible {
-outline: 2px solid currentColor;
-outline-offset: 2px;
-}
-
-.logoloop--fade::before,
-.logoloop--fade::after {
-content: '';
-position: absolute;
-top: 0;
-bottom: 0;
-width: clamp(24px, 8%, 120px);
-pointer-events: none;
-z-index: 1;
-}
-
-.logoloop--fade::before {
-left: 0;
-background: linear-gradient(
-to right,
-var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%,
-rgba(0, 0, 0, 0) 100%
+function ListCard({
+title,
+items,
+accent = "emerald",
+}: {
+title: string;
+items: string[];
+accent?: "emerald" | "rose";
+}) {
+const dot =
+accent === "emerald"
+? "bg-emerald-400"
+: "bg-rose-400";
+
+return (
+
+<div className="rounded-xl p-3 sm:p-4 ring-1 ring-black/5 dark:ring-white/10 bg-white/60 dark:bg-neutral-800/60">
+<div className="mb-1.5 text-sm font-semibold text-neutral-900 dark:text-white">
+{title}
+</div>
+<ul className="space-y-1.5">
+{items.map((it, i) => (
+<li key={i} className="flex items-start gap-2 text-[13px] text-neutral-700 dark:text-neutral-300">
+<span className={`mt-1 h-2 w-2 rounded-full ${dot}`} />
+<span>{it}</span>
+</li>
+))}
+</ul>
+</div>
 );
 }
 
-.logoloop--fade::after {
-right: 0;
-background: linear-gradient(
-to left,
-var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%,
-rgba(0, 0, 0, 0) 100%
-);
-}
+Örnek kullanım
+Calculator ile senkron kullanmak istersen: amount ve days’i useState ile Calculator’da tut ve InsuranceCard’a props olarak geç.
 
-@media (prefers-reduced-motion: reduce) {
-.logoloop\_\_track {
-transform: translate3d(0, 0, 0) !important;
-}
+⸻
 
-.logoloop**item img,
-.logoloop**node {
-transition: none !important;
-}
-}
+Aşama 4 — Hesaplama kuralları (microcopy)
+• Premium = principal × premiumRate30d × ceil(days/30)
+• Covered Amount = principal × coveragePct
+• Deductible = covered × deductiblePct
+• Est. Payout = min(covered − deductible, coverageCap)
+• Ödeme tetikleyicisi: bağımsız oracle + post-mortem († notu).
+
+⸻
+
+Aşama 5 — Animasyon & Etkileşim Notları
+• Kart açılış/kapanış AnimatePresence ile height/opacity.
+• Stat kutuları stagger ile geliyor; istersen transition={{ staggerChildren: 0.05 }} uygulayabilirsin.
+• Tier butonları “active/inactive” arası renk geçişli.
+• Kapsam/Kapsam Dışı kutuları “ring + subtle glass” ile ayrışıyor.
+• Sticky sağ sütun: md:sticky md:top-24 (header yüksekliğine göre ayarla).
+
+⸻
+
+Aşama 6 — Neden bu yerleşim?
+• Kullanıcı yatırım kararını verdiği an sigortayı da ekleme motivasyonu en yüksek.
+• Sağ sütunda, tek akış: Tutar→Süre→Sigorta.
+• Mobilde üst üste, karar aşaması bozulmadan devam eder.
+
+Bu kart, web3’de yield için sigorta etkileşimini Apple-vari “clean & explainable” bir düzende toplar: tek switch, üç tier, 4 net sayı ve iki net kapsama listesi.
+“Vay be” etkisi için kartı ilk açılışta küçük highlight pulse ekleyebilirsin (ring-emerald-300/50 gölgesi 1.5s).

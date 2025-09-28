@@ -169,7 +169,6 @@ export class DataTransformError extends Error {
   }
 }
 
-
 // Data transformation utilities
 function transformRiskLevel(risk: string): "Low" | "Medium" | "High" {
   const normalized = risk.toLowerCase();
@@ -338,18 +337,14 @@ class RealDataAdapter {
       const allOpportunities = [...filtered, ...testNetTransformed];
 
       if (testNetTransformed.length > 0) {
-        Logger.info(
-          `Added ${testNetTransformed.length} TestNet opportunities`,
-        );
+        Logger.info(`Added ${testNetTransformed.length} TestNet opportunities`);
       }
 
-      Logger.info(
-        `Total opportunities: ${allOpportunities.length}`,
-      );
+      Logger.info(`Total opportunities: ${allOpportunities.length}`);
 
       // Enrich with historical data (Phase 1 integration) - only on server side
       let enriched = allOpportunities;
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         enriched = await Promise.all(
           allOpportunities.map(async (opp) => {
             try {
@@ -357,24 +352,31 @@ class RealDataAdapter {
               const { historicalDataService } = await import(
                 "../../../../packages/adapters/dist/adapters/src/services/historical/index.js"
               );
-              return await historicalDataService.enrichOpportunityWithHistoricalData(opp);
+              return await historicalDataService.enrichOpportunityWithHistoricalData(
+                opp,
+              );
             } catch (error) {
-              Logger.warn(`Failed to enrich opportunity ${opp.id} with historical data:`, error);
+              Logger.warn(
+                `Failed to enrich opportunity ${opp.id} with historical data:`,
+                error,
+              );
               // Provide mock enhanced data for demonstration when real service fails
               return {
                 ...opp,
                 // Mock enhanced historical data fields for demonstration
-                volume24h: Math.floor(opp.tvlUsd * (0.05 + Math.random() * 0.15)), // 5-20% of TVL as daily volume
-                volume7d: Math.floor(opp.tvlUsd * (0.3 + Math.random() * 0.5)),    // 30-80% of TVL as weekly volume
-                volume30d: Math.floor(opp.tvlUsd * (1.2 + Math.random() * 2)),    // 120-320% of TVL as monthly volume
-                uniqueUsers24h: Math.floor(100 + Math.random() * 900),           // 100-1000 daily active users
-                uniqueUsers7d: Math.floor(500 + Math.random() * 4500),          // 500-5000 weekly active users
-                uniqueUsers30d: Math.floor(2000 + Math.random() * 18000),       // 2000-20000 monthly active users
-                concentrationRisk: Math.floor(10 + Math.random() * 40),        // 10-50% concentration risk
-                userRetention: Math.floor(60 + Math.random() * 30),             // 60-90% user retention
+                volume24h: Math.floor(
+                  opp.tvlUsd * (0.05 + Math.random() * 0.15),
+                ), // 5-20% of TVL as daily volume
+                volume7d: Math.floor(opp.tvlUsd * (0.3 + Math.random() * 0.5)), // 30-80% of TVL as weekly volume
+                volume30d: Math.floor(opp.tvlUsd * (1.2 + Math.random() * 2)), // 120-320% of TVL as monthly volume
+                uniqueUsers24h: Math.floor(100 + Math.random() * 900), // 100-1000 daily active users
+                uniqueUsers7d: Math.floor(500 + Math.random() * 4500), // 500-5000 weekly active users
+                uniqueUsers30d: Math.floor(2000 + Math.random() * 18000), // 2000-20000 monthly active users
+                concentrationRisk: Math.floor(10 + Math.random() * 40), // 10-50% concentration risk
+                userRetention: Math.floor(60 + Math.random() * 30), // 60-90% user retention
               };
             }
-          })
+          }),
         );
       }
 
@@ -429,15 +431,15 @@ class RealDataAdapter {
         Logger.warn(`Detail fetch failed, falling back to list search`, {
           opportunityId: id,
         });
-          Logger.warn(`Detail fetch failed, falling back to list search`, {
-            opportunityId: id,
-          });
-        }
+        Logger.warn(`Detail fetch failed, falling back to list search`, {
+          opportunityId: id,
+        });
+      }
 
-        // Fallback: search in full list
-        try {
-          const allOpportunities = await this.fetchOpportunities();
-          const found = allOpportunities.find((opp) => opp.id === id);
+      // Fallback: search in full list
+      try {
+        const allOpportunities = await this.fetchOpportunities();
+        const found = allOpportunities.find((opp) => opp.id === id);
 
         if (found) {
           Logger.info(`Found opportunity in list fallback`, {
@@ -514,7 +516,6 @@ class RealDataAdapter {
     }
   }
 
-  
   /**
    * Fetch historical chart series for an opportunity by id
    * Returns normalized points with timestamp, tvlUsd, apy, apr, volume24h when available
