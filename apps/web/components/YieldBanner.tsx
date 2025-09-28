@@ -75,7 +75,7 @@ export const YieldBanner: React.FC<YieldBannerProps> = ({
     >
       <div
         ref={contentRef}
-        className="flex items-center whitespace-nowrap"
+        className="yield-banner-content flex items-center whitespace-nowrap"
         style={{
           animation: `marquee ${data.length * speed / 20}s linear infinite`,
           willChange: "transform"
@@ -143,6 +143,14 @@ export const YieldBanner: React.FC<YieldBannerProps> = ({
           }
           100% {
             transform: translateX(0);
+          }
+        }
+
+        /* Override global reduced motion for this component */
+        @media (prefers-reduced-motion: reduce) {
+          .yield-banner-content {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
           }
         }
       `}</style>

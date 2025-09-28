@@ -20,6 +20,7 @@ import { RewardBreakdown } from './RewardBreakdown';
 import { AdvancedMetrics } from './AdvancedMetrics';
 import { LiquidityAnalysis } from './LiquidityAnalysis';
 import { ComparablePools } from './ComparablePools';
+import { RouterTab } from './RouterTab';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { ErrorMessage } from '../ui/ErrorMessage';
 
@@ -106,7 +107,8 @@ export function DetailPage({ poolId, opportunity }: DetailPageProps) {
               { id: 'risk', label: 'Risk', icon: '⚠️' },
               { id: 'rewards', label: 'Rewards', icon: '💰' },
               { id: 'liquidity', label: 'Liquidity', icon: '💧' },
-              { id: 'comparable', label: 'Compare', icon: '🔄' }
+              { id: 'comparable', label: 'Compare', icon: '🔄' },
+              ...(detailData.basic?.id === 'testnet-mock-yield-algo' ? [{ id: 'router', label: 'Router', icon: '🔗' }] : [])
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -191,29 +193,38 @@ export function DetailPage({ poolId, opportunity }: DetailPageProps) {
             {activeTab === 'comparable' && (
               <ComparablePools comparablePools={detailData.comparable} />
             )}
+
+            {activeTab === 'router' && detailData.basic?.id === 'testnet-mock-yield-algo' && (
+              <RouterTab opportunity={detailData.basic} />
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Footer Action Buttons */}
-      <div className="sticky bottom-0 bg-black/80 backdrop-blur-xl border-t border-purple-500/20 p-6">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="text-sm text-gray-400">
-            Last updated: {new Date(detailData.basic.lastUpdated).toLocaleString()}
-          </div>
-          <div className="flex space-x-4">
-            <button
-              onClick={fetchDetailData}
-              className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
-            >
-              🔄 Refresh Data
-            </button>
-            <button className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
-              💰 Deposit
-            </button>
+      {/* Footer Action Buttons - Only show for TestNet Mock-Yield */}
+      {detailData.basic?.id === 'testnet-mock-yield-algo' && (
+        <div className="sticky bottom-0 bg-black/80 backdrop-blur-xl border-t border-purple-500/20 p-6">
+          <div className="container mx-auto flex justify-between items-center">
+            <div className="text-sm text-gray-400">
+              Last updated: {new Date(detailData.basic.lastUpdated).toLocaleString()}
+            </div>
+            <div className="flex space-x-4">
+              <button
+                onClick={fetchDetailData}
+                className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+              >
+                🔄 Refresh Data
+              </button>
+              <button
+                onClick={() => setActiveTab('router')}
+                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg transition-colors"
+              >
+                🔗 Go to Router
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

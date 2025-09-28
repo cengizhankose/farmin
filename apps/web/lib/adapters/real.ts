@@ -7,6 +7,7 @@
 
 import { Opportunity as SharedOpportunity } from "../../../../packages/shared/src/types";
 import type { CardOpportunity as MockOpportunity } from "../types";
+import { getTestNetOpportunities } from "../mock/testnet-opportunities";
 
 // Logging utilities
 enum LogLevel {
@@ -330,11 +331,27 @@ class RealDataAdapter {
         `Transformed and filtered to ${filtered.length} opportunities`,
       );
 
+      // Add TestNet opportunities if in testnet mode
+      const testNetOpportunities = getTestNetOpportunities();
+      const testNetTransformed = testNetOpportunities.map(transformOpportunity);
+
+      const allOpportunities = [...filtered, ...testNetTransformed];
+
+      if (testNetTransformed.length > 0) {
+        Logger.info(
+          `Added ${testNetTransformed.length} TestNet opportunities`,
+        );
+      }
+
+      Logger.info(
+        `Total opportunities: ${allOpportunities.length}`,
+      );
+
       // Enrich with historical data (Phase 1 integration) - only on server side
-      let enriched = filtered;
+      let enriched = allOpportunities;
       if (typeof window === 'undefined') {
         enriched = await Promise.all(
-          filtered.map(async (opp) => {
+          allOpportunities.map(async (opp) => {
             try {
               // Import dynamically to avoid circular dependencies and client-side issues
               const { historicalDataService } = await import(

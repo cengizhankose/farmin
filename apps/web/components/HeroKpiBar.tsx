@@ -16,6 +16,7 @@ type Props = {
 };
 
 export function HeroKpiBar({ kpis }: Props) {
+  console.log('HeroKpiBar received kpis:', kpis);
   const reduceMotion = useReducedMotion();
 
   const fadeInAnim = reduceMotion
@@ -44,7 +45,7 @@ export function HeroKpiBar({ kpis }: Props) {
               Average APR
             </h3>
             <p className="text-2xl font-bold text-white">
-              {(kpis.avgApr7d / 100).toFixed(2)}%
+              {Number.isFinite(kpis.avgApr7d) ? kpis.avgApr7d.toFixed(2) : '0.00'}%
             </p>
             <p className="text-green-400 text-xs">+{mockChange24h.apr}%</p>
           </div>
@@ -55,7 +56,7 @@ export function HeroKpiBar({ kpis }: Props) {
               Total TVL
             </h3>
             <p className="text-2xl font-bold text-white">
-              ${(kpis.totalTvlUsd / 1000000).toFixed(1)}M
+              ${Number.isFinite(kpis.totalTvlUsd) ? (kpis.totalTvlUsd / 1000000).toFixed(1) : '0.0'}M
             </p>
             <p className="text-green-400 text-xs">+{mockChange24h.tvl}%</p>
           </div>
@@ -65,7 +66,7 @@ export function HeroKpiBar({ kpis }: Props) {
             <h3 className="text-white/70 text-sm font-medium mb-1">
               Participants
             </h3>
-            <p className="text-2xl font-bold text-white">{kpis.results}</p>
+            <p className="text-2xl font-bold text-white">{Number.isFinite(kpis.results) ? kpis.results : 0}</p>
             <p className="text-green-400 text-xs">
               +{mockChange24h.participants}%
             </p>
