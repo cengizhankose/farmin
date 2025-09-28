@@ -109,7 +109,7 @@ export const Header = () => {
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/logo-full.png"
-            alt="Farmer UI"
+            alt="Farmin UI"
             width={3547}
             height={850}
             className="h-8 w-auto"

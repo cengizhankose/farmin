@@ -34,7 +34,7 @@ async function deployToTestnet() {
   // Check account balance
   const accountInfo = await algodClient.accountInformation(creator.addr).do();
   const balance = accountInfo.amount;
-  console.log(`💰 Account balance: ${balance / 1_000_000} ALGO`);
+  console.log(`💰 Account balance: ${Number(balance) / 1_000_000} ALGO`);
 
   if (balance < 1_000_000) {
     throw new Error('Insufficient balance. Need at least 1 ALGO for deployment.');
@@ -43,25 +43,36 @@ async function deployToTestnet() {
   // Get suggested parameters
   const suggestedParams = await algodClient.getTransactionParams().do();
 
-  // Step 1: Deploy Mock-Yield contract
-  console.log('\n📋 Step 1: Deploying Mock-Yield contract...');
-  const mockYieldAppId = await MockYieldContract.create(
-    creator,
-    algodClient,
-    suggestedParams
-  );
-  console.log(`✅ Mock-Yield contract deployed with App ID: ${mockYieldAppId}`);
-  console.log(`🔍 TestNet Explorer: https://testnet.explorer.perawallet.app/app/${mockYieldAppId}`);
+  // Step 1: Deploy Mock-Yield contract (if not already deployed)
+  let mockYieldAppId = parseInt(process.env.MOCK_YIELD_APP_ID || '');
+  if (!mockYieldAppId) {
+    console.log('\n📋 Step 1: Deploying Mock-Yield contract...');
+    mockYieldAppId = await MockYieldContract.create(
+      creator,
+      algodClient,
+      suggestedParams
+    );
+    console.log(`✅ Mock-Yield contract deployed with App ID: ${mockYieldAppId}`);
+    console.log(`🔍 TestNet Explorer: https://testnet.explorer.perawallet.app/app/${mockYieldAppId}`);
+  } else {
+    console.log(`\n📋 Step 1: Using existing Mock-Yield contract with App ID: ${mockYieldAppId}`);
+  }
 
-  // Step 2: Deploy Router contract
-  console.log('\n📋 Step 2: Deploying Router contract...');
-  const routerAppId = await RouterContract.create(
-    creator,
-    algodClient,
-    suggestedParams
-  );
-  console.log(`✅ Router contract deployed with App ID: ${routerAppId}`);
-  console.log(`🔍 TestNet Explorer: https://testnet.explorer.perawallet.app/app/${routerAppId}`);
+  // Step 2: Deploy Router contract (if not already deployed)
+  let routerAppId = parseInt(process.env.ROUTER_APP_ID || '');
+  if (!routerAppId) {
+    console.log('\n📋 Step 2: Deploying Router contract...');
+    const routerSuggestedParams = await algodClient.getTransactionParams().do();
+    routerAppId = await RouterContract.create(
+      creator,
+      algodClient,
+      routerSuggestedParams
+    );
+    console.log(`✅ Router contract deployed with App ID: ${routerAppId}`);
+    console.log(`🔍 TestNet Explorer: https://testnet.explorer.perawallet.app/app/${routerAppId}`);
+  } else {
+    console.log(`\n📋 Step 2: Using existing Router contract with App ID: ${routerAppId}`);
+  }
 
   // Step 3: Create contract instances
   const mockYieldContract = new MockYieldContract(

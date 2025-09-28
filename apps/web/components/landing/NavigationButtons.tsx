@@ -1,14 +1,30 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { useWallet, WalletId } from "@txnlab/use-wallet-react";
 import { logger, logWalletEvent } from "@/wallet";
 
-export default function NavigationButtons() {
-  const [hideLinks, setHideLinks] = React.useState(false);
-  const [mounted, setMounted] = React.useState(false);
-  const [connecting, setConnecting] = React.useState<WalletId | null>(null);
-  React.useEffect(() => setMounted(true), []);
+// Inner component that uses wallet hooks safely
+function WalletNavigation() {
   const { wallets, activeAddress } = useWallet();
+  const [hideLinks, setHideLinks] = React.useState(false);
+  const [connecting, setConnecting] = React.useState<WalletId | null>(null);
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  React.useEffect(() => {
+    const onScroll = () => {
+      setHideLinks(window.scrollY > 100);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const clientActive = mounted ? activeAddress : null;
 
   const connectById = React.useCallback(
@@ -35,7 +51,7 @@ export default function NavigationButtons() {
         logWalletEvent({
           type: "ERROR",
           stage: "connect",
-          message: (e as any)?.message ?? "connect fail",
+          message: (e as Error)?.message ?? "connect fail",
         });
         setConnecting(null);
       }
@@ -52,19 +68,10 @@ export default function NavigationButtons() {
       logWalletEvent({
         type: "ERROR",
         stage: "disconnect",
-        message: (e as any)?.message ?? "disconnect fail",
+        message: (e as Error)?.message ?? "disconnect fail",
       });
     }
   }, [wallets]);
-
-  React.useEffect(() => {
-    const onScroll = () => {
-      setHideLinks(window.scrollY > 100);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <header
@@ -370,4 +377,20 @@ export default function NavigationButtons() {
       `}</style>
     </header>
   );
+}
+
+// Wrapper component to handle SSR safely
+export default function NavigationButtons() {
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    // Return null or a placeholder during SSR
+    return null;
+  }
+
+  return <WalletNavigation />;
 }
