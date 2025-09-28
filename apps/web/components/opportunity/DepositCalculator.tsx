@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useMockYield } from "@/wallet";
+import { usePortfolioStoreWithHydration } from "@/hooks/usePortfolioStore";
 type Opportunity = {
   id: string;
   protocol: string;
@@ -76,6 +77,8 @@ export function DepositCalculator({
     isWalletReady,
     walletError,
   } = useMockYield();
+  
+  const { addTransaction, hasHydrated } = usePortfolioStoreWithHydration();
 
   // Check if this is the TestNet Mock-Yield opportunity
   const isTestNetMockYield =
@@ -152,17 +155,24 @@ export function DepositCalculator({
           description: `Deposited ${amount} ALGO to Mock Yield Protocol`,
         });
 
-        // Add to portfolio history (implementation would go here)
-        console.log("Adding to portfolio:", {
-          id: data.id,
-          protocol: data.protocol,
-          pair: data.pair,
-          apr: data.apr,
-          amount,
-          days,
-          ts: Date.now(),
-          chain: data.chain,
-        });
+        // Add to portfolio history
+        if (hasHydrated) {
+          addTransaction({
+            id: data.id,
+            protocol: data.protocol,
+            pair: data.pair,
+            chain: data.chain,
+            apr: data.apr,
+            apy: data.apy,
+            amount,
+            days,
+            type: 'deposit',
+            rewardToken: data.rewardToken,
+            risk: data.risk,
+          });
+        } else {
+          console.warn('Portfolio store not hydrated yet, transaction not saved');
+        }
 
         setShowSuccess(true);
 
@@ -199,18 +209,24 @@ export function DepositCalculator({
           description: `Withdrew ${amount} ALGO from Mock Yield Protocol`,
         });
 
-        // Add withdrawal to portfolio history (implementation would go here)
-        console.log("Adding withdrawal to portfolio:", {
-          id: data.id,
-          protocol: data.protocol,
-          pair: data.pair,
-          apr: data.apr,
-          amount: -amount, // Negative amount for withdrawal
-          days,
-          ts: Date.now(),
-          chain: data.chain,
-          type: "withdrawal",
-        });
+        // Add withdrawal to portfolio history
+        if (hasHydrated) {
+          addTransaction({
+            id: data.id,
+            protocol: data.protocol,
+            pair: data.pair,
+            chain: data.chain,
+            apr: data.apr,
+            apy: data.apy,
+            amount: -amount, // Negative amount for withdrawal
+            days,
+            type: 'withdrawal',
+            rewardToken: data.rewardToken,
+            risk: data.risk,
+          });
+        } else {
+          console.warn('Portfolio store not hydrated yet, transaction not saved');
+        }
 
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 1500);
