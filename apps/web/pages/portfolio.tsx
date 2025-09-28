@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { colors } from "../lib/colors";
 import { AccountSummary } from "@/components/portfolio/AccountSummary";
 import { PositionsList } from "@/components/portfolio/PositionsList";
-import RewardsChart from "@/components/RewardsChart";
 import PortfolioOverviewChart from "@/components/PortfolioOverviewChart";
 import { ActivityFeed } from "@/components/portfolio/ActivityFeed";
 import { toCSV, downloadCSV } from "@/lib/csv";
@@ -457,13 +456,6 @@ export default function PortfolioPage() {
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <PositionsList rows={rows as any} />
-            <div className="mt-8">
-              <RewardsChart
-                className="mt-0"
-                dataWeekly={rewardsWeekly}
-                dataMonthly={rewardsMonthly}
-              />
-            </div>
             <Card className="mt-6 border-white/40 bg-white/60 p-4 backdrop-blur-2xl">
               <div className="flex items-center justify-between px-2">
                 <h3 className="typo-section-h">Recent activity</h3>
